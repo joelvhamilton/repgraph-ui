@@ -24,13 +24,13 @@ d3.json("data.json").get(function(error,data){
 
 
 var sNodes = [
-    {index:0,tokens:[0,1],label:"_I_p_1",edges:[2],edgelabels:"ARG/Subj",xPos:0,yPos:0},
-    {index:1,tokens:[2],label:"_go_v_1",edges:[-1],edgelabels:"ROOT",xPos:0,yPos:0},
-    {index:2,tokens:[3],label:"_home_n_1",edges:[3],edgelabels:"ARG/Dobj",xPos:0,yPos:0},
-    {index:3,tokens:[4],label:"_today_n_1",edges:[1],edgelabels:"ARG/mod",xPos:0,yPos:0}];
+    {index:0,tokens:[0,1],label:"_I_p_1",edges:[2],edgelabels:["ARG/Subj"],xPos:0,yPos:0},
+    {index:1,tokens:[2],label:"_go_v_1",edges:[-1],edgelabels:["ROOT"],xPos:0,yPos:0},
+    {index:2,tokens:[3],label:"_home_n_1",edges:[3,1],edgelabels:["ARG/Dobj", "awelabel"],xPos:0,yPos:0},
+    {index:3,tokens:[4],label:"_today_n_1",edges:[1],edgelabels:["ARG/mod"],xPos:0,yPos:0}];
 var aNodes = [
-    {index:4,tokens:[0,1],label:"be_p_1",edges:[0],edgelabels:"BV",xPos:0,yPos:0},
-    {index:5,tokens:[2,3],label:"TOP",edges:[1,2],edgelabels:"ROOT",xPos:0,yPos:0}];
+    {index:4,tokens:[0,1],label:"be_p_1",edges:[0],edgelabels:["BV"],xPos:0,yPos:0},
+    {index:5,tokens:[2,3],label:"TOP",edges:[1,2,4],edgelabels:["ROOT", "TOOT", "mbrother"],xPos:0,yPos:0}];
     //  WORKS ON THE ASSUMPTION THAT TOKENS HERE REFERENCES THE TOKENS THAT ARE ANCHORED BY THE CHILDREN OF THE ANODE.
 var sNodeLabels = sNodes.map(x => x.label);
 var aNodeLabels = aNodes.map(x => x.label);
@@ -213,106 +213,118 @@ zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
 //  SURFACE EDGES
 sNodes.forEach(element => {
     if(element.edges[0] != -1){
-        if(element.xPos >= sNodes[sNodeIndexes.indexOf(element.edges[0])].xPos ){
-            var fromToS = [{x:element.xPos -23,y:element.yPos},
-                {x:element.xPos -83 ,y:element.yPos -80 },
-                {x:sNodes[sNodeIndexes.indexOf(element.edges[0])].xPos +89,y:sNodes[sNodeIndexes.indexOf(element.edges[0])].yPos -80},
-                {x:sNodes[sNodeIndexes.indexOf(element.edges[0])].xPos +29,y:sNodes[sNodeIndexes.indexOf(element.edges[0])].yPos}]; //needs worku
+        for(var i=0; i<element.edges.length ;i++){
+            if(element.xPos >= sNodes[sNodeIndexes.indexOf(element.edges[i])].xPos ){
+                var fromToS = [{x:element.xPos -23,y:element.yPos -14},
+                    {x:element.xPos -83 ,y:element.yPos -80 },
+                    {x:sNodes[sNodeIndexes.indexOf(element.edges[i])].xPos +89,y:sNodes[sNodeIndexes.indexOf(element.edges[i])].yPos -80},
+                    {x:sNodes[sNodeIndexes.indexOf(element.edges[i])].xPos +27,y:sNodes[sNodeIndexes.indexOf(element.edges[i])].yPos -14}]; //needs worku
+            }
+            else{
+                var fromToS = [{x:element.xPos +25,y:element.yPos},
+                    {x:element.xPos +87,y:element.yPos -17+80},
+                    {x:sNodes[sNodeIndexes.indexOf(element.edges[i])].xPos -83,y:sNodes[sNodeIndexes.indexOf(element.edges[i])].yPos -17+80},
+                    {x:sNodes[sNodeIndexes.indexOf(element.edges[i])].xPos -28,y:sNodes[sNodeIndexes.indexOf(element.edges[i])].yPos + 8}]; //needs worku
+            }
+            var line = d3.line()
+                    .x(function(d){return d.x;})
+                    .y(function(d){return d.y;})
+                    .curve(d3.curveBundle);
+                zoomGroup.append("path")
+                    .attr("d",line(fromToS))
+                    .attr("stroke", "orange")
+                    .attr("stroke-width","2")
+                    .attr("marker-end", "url(#arrow)")
+                    .attr("fill", "none");
+         // LABEL
+            var labelX = (fromToS.map(e => e.x)).reduce((a,b) => a+b,0)/fromToS.length +3;
+            var labelY = (fromToS.map(e => e.y)).reduce((a,b) => a+b,0)/fromToS.length +3;
+            zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
+                .text(d=> d.edgelabels[i])
+                .attr("x",labelX.toString())
+                .attr("y",labelY.toString())
+                .attr("font-family","Arial")
+                .attr("font-size","18px")
+                .attr("dominant-baseline", "middle")
+                .attr("text-anchor","middle")
+                .attr("fill","#242424")
+                .attr("fill", "gray");
         }
-        else{
-            var fromToS = [{x:element.xPos +17,y:element.yPos -17},
-                {x:element.xPos +87,y:element.yPos -17+80},
-                {x:sNodes[sNodeIndexes.indexOf(element.edges[0])].xPos -83,y:sNodes[sNodeIndexes.indexOf(element.edges[0])].yPos -17+80},
-                {x:sNodes[sNodeIndexes.indexOf(element.edges[0])].xPos -23,y:sNodes[sNodeIndexes.indexOf(element.edges[0])].yPos -17}]; //needs worku
-        }
-        var line = d3.line()
-                .x(function(d){return d.x;})
-                .y(function(d){return d.y;})
-                .curve(d3.curveBundle);
-            zoomGroup.append("path")
-                .attr("d",line(fromToS))
-                .attr("stroke", "orange")
-                .attr("stroke-width","2")
-                .attr("marker-end", "url(#arrow)")
-                .attr("fill", "none");
-                //LABEL
-        // var labelX = (fromToS[0].x + fromToS[1].x)/2 +3;
-        // var labelY = (fromToS[0].y + fromToS[1].y)/2 +2; //THIS WILL HAVE TO BE CHANGED IF PATHS BECOME CURVED.
-        // zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
-        //     .text(d=> d.edgelabels)
-        //     .attr("x",labelX.toString())
-        //     .attr("y",labelY.toString())
-        //     .attr("font-family","Arial")
-        //     .attr("font-size","18px")
-        //     .attr("dominant-baseline", "end")
-        //     .attr("text-anchor","end")
-        //     .attr("fill","#242424");
     }
-    
 });
 
 //  EDGES AND SPANS OF ABSTRACT NODES
 aNodes.forEach(element => {
-    if(element.edges.length > 1){
-        //SPAN
-        var shortX = Number.MAX_SAFE_INTEGER;
-        var longX = 0;
-        element.edges.forEach(edge => {
-            shortX = Math.min(sNodes[edge].xPos,shortX);
-            longX = Math.max(sNodes[edge].xPos,longX)
-        });
-        zoomGroup.selectAll("line.span1")
-            .data([element])
-            .enter().append("line")
-            .attr("class","span1")
-            .attr("x1",function(d,i){return d.xPos;})
-            .attr("y1",function(d,i){return d.yPos +23;})
-            .attr("x2",function(d,i){return d.xPos;})
-            .attr("y2",function(d,i){return d.yPos + 53 ;})
-            .attr("stroke", "red")
-            .attr("stroke-width","2");
-        zoomGroup.selectAll("line.span2")
-            .data([element])
-            .enter().append("line")
-            .attr("class","span2")
-            .attr("x1",(shortX -23).toString())
-            .attr("y1",function(d,i){return d.yPos +53;})
-            .attr("x2",(longX +23).toString())
-            .attr("y2",function(d,i){return d.yPos +53 ;})
-            .attr("stroke", "red")
-            .attr("stroke-width","2");
-        zoomGroup.selectAll("line.span3")
-            .data([element])
-            .enter().append("line")
-            .attr("class","span3")
-            .attr("x1",(shortX -23).toString())
-            .attr("y1",function(d,i){return d.yPos +53;})
-            .attr("x2",(shortX -23).toString())
-            .attr("y2",function(d,i){return d.yPos +103 ;})
-            .attr("stroke", "red")
-            .attr("stroke-width","2");
-        zoomGroup.selectAll("line.span4")
-            .data([element])
-            .enter().append("line")
-            .attr("class","span4")
-            .attr("x1",(longX +23).toString())
-            .attr("y1",function(d,i){return d.yPos +53;})
-            .attr("x2",(longX +23).toString())
-            .attr("y2",function(d,i){return d.yPos +103 ;})
-            .attr("stroke", "red")
-            .attr("stroke-width","2");
-    }
-    else{
-        //EDGE
-        if(sNodeIndexes.includes(element.edges[0])){
-            var fromTo = [{x:element.xPos,y:element.yPos +23},{x:sNodes[sNodeIndexes.indexOf(element.edges[0])].xPos,y:sNodes[sNodeIndexes.indexOf(element.edges[0])].yPos-29}];
+    //SPANS - DO NOT WORRY FOR NOW
+
+    //RETHINK THIS !!!!!
+
+    // var shortX = Number.MAX_SAFE_INTEGER;
+    // var longX = 0;
+    // element.edges.forEach(edge => {
+    //     shortX = Math.min(sNodes[edge].xPos,shortX);
+    //     longX = Math.max(sNodes[edge].xPos,longX)
+    // });
+    // var colour = "gray";
+    // var width = "0.5";
+    // if(element.label =="TOP"){
+    //     colour = "red";
+    //     width = "1";
+    // }
+    // zoomGroup.selectAll("line.span1")
+    //     .data([element])
+    //     .enter().append("line")
+    //     .attr("class","span1")
+    //     .attr("x1",function(d,i){return d.xPos;})
+    //     .attr("y1",function(d,i){return d.yPos +23;})
+    //     .attr("x2",function(d,i){return d.xPos;})
+    //     .attr("y2",function(d,i){return d.yPos + 53 ;})
+    //     .attr("stroke", colour)
+    //     .attr("stroke-width",width);
+    // zoomGroup.selectAll("line.span2")
+    //     .data([element])
+    //     .enter().append("line")
+    //     .attr("class","span2")
+    //     .attr("x1",(shortX -23).toString())
+    //     .attr("y1",function(d,i){return d.yPos +53;})
+    //     .attr("x2",(longX +23).toString())
+    //     .attr("y2",function(d,i){return d.yPos +53 ;})
+    //     .attr("stroke", colour)
+    //     .attr("stroke-width",width);
+    // zoomGroup.selectAll("line.span3")
+    //     .data([element])
+    //     .enter().append("line")
+    //     .attr("class","span3")
+    //     .attr("x1",(shortX -23).toString())
+    //     .attr("y1",function(d,i){return d.yPos +53;})
+    //     .attr("x2",(shortX -23).toString())
+    //     .attr("y2",function(d,i){return d.yPos +67 ;})
+    //     .attr("stroke", colour)
+    //     .attr("stroke-width",width);
+    // zoomGroup.selectAll("line.span4")
+    //     .data([element])
+    //     .enter().append("line")
+    //     .attr("class","span4")
+    //     .attr("x1",(longX +23).toString())
+    //     .attr("y1",function(d,i){return d.yPos +53;})
+    //     .attr("x2",(longX +23).toString())
+    //     .attr("y2",function(d,i){return d.yPos +67 ;})
+    //     .attr("stroke", colour)
+    //     .attr("stroke-width",width);
+    //EDGE
+    for(var i =0; i< element.edges.length; i++){
+        console.log(element.label + "  " + element.xPos + "   " + element.yPos);
+        if(sNodeIndexes.includes(element.edges[i])){
+            var fromTo = [{x:element.xPos,y:element.yPos +23},{x:sNodes[sNodeIndexes.indexOf(element.edges[i])].xPos,y:sNodes[sNodeIndexes.indexOf(element.edges[i])].yPos-29}];
         }
         else{
-            if(element.xPos >= aNodes[element.edges[0]].xPos){
-                var fromTo = [{x:element.xPos -23,y:element.yPos},{x:aNodes[aNodeIndexes.indexOf(element.edges[0])].xPos+29,y:aNodes[aNodeIndexes.indexOf(element.edges[0])].yPos}];   
+            if(element.xPos >= aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos){
+                console.log(aNodes[aNodeIndexes.indexOf(element.edges[i])].label);
+                var fromTo = [{x:element.xPos -23,y:element.yPos},{x:aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos+29,y:aNodes[aNodeIndexes.indexOf(element.edges[i])].yPos}];   
             }else{
-                var fromTo = [{x:element.xPos +23 ,y:element.yPos},{x:aNodes[aNodeIndexes.indexOf(element.edges[0])].xPos -29,y:aNodes[aNodeIndexes.indexOf(element.edges[0])].yPos}];
+                var fromTo = [{x:element.xPos +23 ,y:element.yPos},{x:aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos -29,y:aNodes[aNodeIndexes.indexOf(element.edges[i])].yPos}];
             }
+
         }
         //ABOVE SEGMENT HAS NEVER BEEN TESTed        
         var line = d3.line()
@@ -328,13 +340,14 @@ aNodes.forEach(element => {
         var labelX = (fromTo[0].x + fromTo[1].x)/2 +3;
         var labelY = (fromTo[0].y + fromTo[1].y)/2 +2; //THIS WILL HAVE TO BE CHANGED IF PATHS BECOME CURVED.
         zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
-            .text(d=> d.edgelabels)
+            .text(d=> d.edgelabels[i])
             .attr("x",labelX.toString())
             .attr("y",labelY.toString())
             .attr("font-family","Arial")
             .attr("font-size","18px")
             .attr("fill","#242424");
     }
+        
 //ABSTRACT NODE LABELS
 zoomGroup.selectAll("rect.alabels")
     .data(aNodes)
@@ -364,14 +377,4 @@ zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter()
 
 });
 
-//funtcion to search for a specific node index and return the node that has it.
-//returning null?
-function search(nodeArray, index){
-    nodeArray.forEach(element => {
-        if (element.index == index){
-            return element;
-        }
-    })
-    return null;
-}
   
