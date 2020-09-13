@@ -1,23 +1,16 @@
 <template>
   <div>
-    <h1 font="Segoe-UI" > Welcome to Repgraph </h1>
-    <el-upload
-      class="upload-demo"
-      ref="upload"
-      action="https://jsonplaceholder.typicode.com/posts/"
-      :auto-upload="false">
-      <el-button slot="trigger" size="small" type="primary">Select File</el-button>
-      <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">Upload</el-button>
-    </el-upload>
+    <nav-bar/>
+    <sub-menu-card/>
     <div class="col align-content-center">
     <graph-visual v-for="(v, i) in tempArray" :key="i" :data="v"></graph-visual>
     </div>
   </div>
-  
 </template>
 
 <script>
 import {Upload, Button} from "element-ui"
+
 export default {
   name: 'Home',
   data () {
@@ -27,6 +20,8 @@ export default {
   },
   components: {
     'graph-visual': () => import("./GraphVisual"),
+    'nav-bar': () => import("./NavBar"),
+    'sub-menu-card': () => import("./SubMenuCard"),
     [Upload.name]: Upload,
     [Button.name]: Button
   },
