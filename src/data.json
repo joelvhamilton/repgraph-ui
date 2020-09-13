@@ -1,0 +1,396 @@
+{
+    "a_nodes": {
+       "0": {
+          "label": "pron",
+          "incoming": [
+             1,
+             2
+          ],
+          "outgoing": [],
+          "anchors": [
+             0
+          ]
+       },
+       "1": {
+          "label": "pronoun_q",
+          "incoming": [],
+          "outgoing": [
+             0
+          ],
+          "anchors": [
+             0
+          ]
+       },
+       "7": {
+          "label": "compound",
+          "incoming": [
+             5
+          ],
+          "outgoing": [
+             9,
+             4
+          ],
+          "anchors": [
+             4,
+             5,
+             6
+          ]
+       },
+       "8": {
+          "label": "udef_q",
+          "incoming": [],
+          "outgoing": [
+             4
+          ],
+          "anchors": [
+             4,
+             5,
+             6
+          ]
+       },
+       "11": {
+          "label": "proper_q",
+          "incoming": [],
+          "outgoing": [
+             12
+          ],
+          "anchors": [
+             9
+          ]
+       },
+       "12": {
+          "label": "named",
+          "incoming": [
+             10,
+             11
+          ],
+          "outgoing": [],
+          "anchors": [
+             9
+          ]
+       },
+       "14": {
+          "label": "card",
+          "incoming": [],
+          "outgoing": [
+             15
+          ],
+          "anchors": [
+             11
+          ]
+       },
+       "16": {
+          "label": "udef_q",
+          "incoming": [],
+          "outgoing": [
+             15
+          ],
+          "anchors": [
+             11,
+             12
+          ]
+       }
+    },
+    "s_nodes": {
+       "2": {
+          "label": "_be_v_id",
+          "incoming": [
+             10,
+             13
+          ],
+          "outgoing": [
+             0,
+             9
+          ],
+          "anchors": [
+             2
+          ]
+       },
+       "3": {
+          "label": "_a_q",
+          "incoming": [],
+          "outgoing": [
+             9
+          ],
+          "anchors": [
+             3
+          ]
+       },
+       "4": {
+          "label": "_sale_n_of",
+          "incoming": [
+             7,
+             8,
+             5
+          ],
+          "outgoing": [],
+          "anchors": [
+             4
+          ]
+       },
+       "5": {
+          "label": "_and_c",
+          "incoming": [],
+          "outgoing": [
+             7,
+             4,
+             6,
+             6,
+             9
+          ],
+          "anchors": [
+             5
+          ]
+       },
+       "6": {
+          "label": "_market_v_1",
+          "incoming": [
+             5,
+             5
+          ],
+          "outgoing": [
+             9
+          ],
+          "anchors": [
+             6
+          ]
+       },
+       "9": {
+          "label": "_executive_n_1",
+          "incoming": [
+             2,
+             3,
+             7,
+             6,
+             5
+          ],
+          "outgoing": [],
+          "anchors": [
+             7
+          ]
+       },
+       "10": {
+          "label": "_with_p",
+          "incoming": [],
+          "outgoing": [
+             2,
+             12
+          ],
+          "anchors": [
+             8
+          ]
+       },
+       "13": {
+          "label": "_for_p",
+          "incoming": [],
+          "outgoing": [
+             2,
+             15
+          ],
+          "anchors": [
+             10
+          ]
+       },
+       "15": {
+          "label": "_year_n_1",
+          "incoming": [
+             13,
+             16,
+             14
+          ],
+          "outgoing": [],
+          "anchors": [
+             12
+          ]
+       }
+    },
+    "edges": [
+       {
+          "src": 1,
+          "trg": 0,
+          "label": "RSTR/H"
+       },
+       {
+          "src": 2,
+          "trg": 0,
+          "label": "ARG1/NEQ"
+       },
+       {
+          "src": 2,
+          "trg": 9,
+          "label": "ARG2/NEQ"
+       },
+       {
+          "src": 3,
+          "trg": 9,
+          "label": "RSTR/H"
+       },
+       {
+          "src": 7,
+          "trg": 9,
+          "label": "ARG1/NEQ"
+       },
+       {
+          "src": 7,
+          "trg": 4,
+          "label": "ARG2/NEQ"
+       },
+       {
+          "src": 8,
+          "trg": 4,
+          "label": "RSTR/H"
+       },
+       {
+          "src": 5,
+          "trg": 7,
+          "label": "L-HNDL/HEQ"
+       },
+       {
+          "src": 5,
+          "trg": 4,
+          "label": "L-INDEX/NEQ"
+       },
+       {
+          "src": 5,
+          "trg": 6,
+          "label": "R-HNDL/HEQ"
+       },
+       {
+          "src": 5,
+          "trg": 6,
+          "label": "R-INDEX/NEQ"
+       },
+       {
+          "src": 6,
+          "trg": 9,
+          "label": "ARG1/NEQ"
+       },
+       {
+          "src": 10,
+          "trg": 2,
+          "label": "ARG1/EQ"
+       },
+       {
+          "src": 10,
+          "trg": 12,
+          "label": "ARG2/NEQ"
+       },
+       {
+          "src": 11,
+          "trg": 12,
+          "label": "RSTR/H"
+       },
+       {
+          "src": 13,
+          "trg": 2,
+          "label": "ARG1/EQ"
+       },
+       {
+          "src": 13,
+          "trg": 15,
+          "label": "ARG2/NEQ"
+       },
+       {
+          "src": 16,
+          "trg": 15,
+          "label": "RSTR/H"
+       },
+       {
+          "src": 14,
+          "trg": 15,
+          "label": "ARG1/EQ"
+       },
+       {
+          "src": 5,
+          "trg": 9,
+          "label": "MOD/EQ"
+       }
+    ],
+    "tokens": {
+       "0": {
+          "form": "he",
+          "lemma": "he"
+       },
+       "1": {
+          "form": "had",
+          "lemma": "had"
+       },
+       "2": {
+          "form": "been",
+          "lemma": "be"
+       },
+       "3": {
+          "form": "a",
+          "lemma": "a"
+       },
+       "4": {
+          "form": "sales",
+          "lemma": "sale"
+       },
+       "5": {
+          "form": "and",
+          "lemma": "and"
+       },
+       "6": {
+          "form": "marketing",
+          "lemma": "market"
+       },
+       "7": {
+          "form": "executive",
+          "lemma": "executive"
+       },
+       "8": {
+          "form": "with",
+          "lemma": "with"
+       },
+       "9": {
+          "form": "Chrysler",
+          "lemma": "Chrysler",
+          "carg": "Chrysler"
+       },
+       "10": {
+          "form": "for",
+          "lemma": "for"
+       },
+       "11": {
+          "form": "20",
+          "lemma": "20",
+          "carg": "20"
+       },
+       "12": {
+          "form": "years.",
+          "lemma": "year"
+       }
+    },
+    "tops": {
+       "2": {
+          "label": "_be_v_id",
+          "incoming": [
+             10,
+             13
+          ],
+          "outgoing": [
+             0,
+             9
+          ],
+          "anchors": [
+             2
+          ]
+       }
+    },
+    "sentence": [
+       "He",
+       "had",
+       "been",
+       "a",
+       "sales",
+       "and",
+       "marketing",
+       "executive",
+       "with",
+       "Chrysler",
+       "for",
+       "20",
+       "years."
+    ]
+ }
