@@ -1,16 +1,19 @@
 
 var layers = {bottom:0,token:0,surface:0,top:10};
-var tokenList = ["I", "am", "going", "home","today"];
-
 var dummyS =[];
 var dummyA =[];
+var dummyTokens =[];
+
 d3.json("data.json").get(function(error,data){
     var a_nodes = Object.entries(data.a_nodes);
     var s_nodes = Object.entries(data.s_nodes);
     var dataEdges = Object.entries(data.edges);
-    var dataTokens = Object.entries(data.sentence);
+    var dataTokens = Object.values(data.sentence);
+    var top = Object.entries(data.tops);
     //TOP IS A SPECIFIC THING TAHT NEEDS TO BE READ IN FROM THE DATA AND IS NOT NECESSARILY LABELLED.
-
+    dataTokens.forEach(element => {
+        dummyTokens.push(element);
+    });
     a_nodes.forEach(element => {
         var dummyNodeA = {index:element[0],tokens:element[1].anchors,label:element[1].label,edges:element[1].outgoing,edgelabels:[],xPos:0,yPos:0};
         //need to add edgelabel from edges
@@ -23,38 +26,35 @@ d3.json("data.json").get(function(error,data){
 
     var dummySNodeIndexes = dummyS.map(x => x.index);
     var dummyANodeIndexes = dummyA.map(x => x.index);
+    var SLabels = dummyS.map(x => x.label);
+    var maxIndex = Math.max(Math.max(...dummyANodeIndexes),Math.max(...dummySNodeIndexes));
 
-    console.log(dataEdges);
-    console.log(dummySNodeIndexes);
+    top.forEach(element => {
+        var i=1
+        var dummyNodeA = {index:maxIndex +i,tokens:dummyS[SLabels.indexOf(element[1].label)].tokens,label:"TOP",edges:[],edgelabels:[],xPos:0,yPos:0};
+        i++;
+        dummyA.push(dummyNodeA);
+    });
 
     dataEdges.forEach(element => {
         if(dummySNodeIndexes.includes(element[1].src.toString())){
-            console.log("got here");
-            //do stuff ehre
+            dummyS[dummySNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
+             //do stuff ehre
         }
-        
+        else{
+            dummyA[dummyANodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
+        }
     });
-    // console.log(dummySNodeIndexes);
+var tokenList = dummyTokens;
 
 
-
-    // console.log(data.a_nodes);
-});
-
-
-var sNodes = [
-    {index:0,tokens:[0,1],label:"_I_p_1",edges:[2],edgelabels:["ARG/Subj"],xPos:0,yPos:0},
-    {index:1,tokens:[2],label:"_go_v_1",edges:[-1],edgelabels:["ROOT"],xPos:0,yPos:0},
-    {index:2,tokens:[3],label:"_home_n_1",edges:[3,1],edgelabels:["ARG/Dobj", "awelabel"],xPos:0,yPos:0},
-    {index:3,tokens:[4],label:"_today_n_1",edges:[1,4],edgelabels:["ARG/mod","bra"],xPos:0,yPos:0}];
-var aNodes = [
-    {index:4,tokens:[0,1],label:"be_p_1",edges:[0],edgelabels:["BV"],xPos:0,yPos:0},
-    {index:5,tokens:[2,3],label:"TOP",edges:[1,2,4],edgelabels:["ROOT", "TOOT", "mbrother"],xPos:0,yPos:0}];
+var sNodes = dummyS;
+var aNodes = dummyA
     //  WORKS ON THE ASSUMPTION THAT TOKENS HERE REFERENCES THE TOKENS THAT ARE ANCHORED BY THE CHILDREN OF THE ANODE.
 var sNodeLabels = sNodes.map(x => x.label);
 var aNodeLabels = aNodes.map(x => x.label);
-var sNodeIndexes =sNodes.map(x => x.index);
-var aNodeIndexes =aNodes.map(x => x.index);
+var sNodeIndexes =dummySNodeIndexes;
+var aNodeIndexes =dummyANodeIndexes;
 
 var width = tokenList.length*200;
 var height;
@@ -78,15 +78,23 @@ aNodes.forEach(element => {
         TopNodeHeight = element.yPos;
     }
     else{
-        element.yPos = 100*(element.edges.length);
+        element.yPos = 100*(element.tokens.length);
         maxANodeHeight = Math.max(maxANodeHeight,element.yPos);
     }
 });
+
 layers.surface = TopNodeHeight + gapBetweenBottomNodeAndLayer + maxANodeHeight; //height determined for surface layer marker.
 aNodes.forEach(element => {
     if(element.label != "TOP"){
         element.yPos = layers.surface - element.yPos;
+        aNodes.forEach(element2 => {
+            if(element.xPos == element2.xPos && element.yPos == element2.yPos){
+                element.xPos = element.xPos -50;
+                element2.xPos = element2.xPos +50;
+            }
+        });
     }
+
 });
 sNodes.forEach(element => {
     element.yPos = layers.surface + 100 + maxSNodeHeight - element.yPos;
@@ -100,7 +108,7 @@ var layerVals = Object.values(layers);
 
 
 var svg = d3.select("body").append("svg").attr("id", "viewSvg")
-.attr("height", height +"px").attr("width", width+"px")
+.attr("height", height +"px").attr("width", 1000+"px")
 .attr("viewBox","0,0,"+width +","+ height )
 var group = svg.append("g").attr("id", "group");
 var zoomGroup = group.append("g");
@@ -248,6 +256,12 @@ sNodes.forEach(element => {
                 }
             }
             else{
+                console.log(element);
+                console.log(element.edges[i]);
+
+                console.log(aNodeIndexes.indexOf(element.edges[i]));
+
+                console.log(aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos);
                 if(element.xPos >= aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos ){
                     var fromToS = [{x:element.xPos -23,y:element.yPos -14},
                         {x:element.xPos -83 ,y:element.yPos -80 },
@@ -407,6 +421,7 @@ zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter()
     .attr("fill","black")
     .attr("font-family","Cambria");
 
+});
 });
 
   
