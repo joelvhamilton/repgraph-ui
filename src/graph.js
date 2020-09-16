@@ -2,22 +2,41 @@
 var layers = {bottom:0,token:0,surface:0,top:10};
 var tokenList = ["I", "am", "going", "home","today"];
 
-var dummyS;
-var dummyA;
+var dummyS =[];
+var dummyA =[];
 d3.json("data.json").get(function(error,data){
-    var dummyNode = {index:-1,tokens:[],label:"label",edges:[],edgelabels:[],xPos:0,yPos:0};
     var a_nodes = Object.entries(data.a_nodes);
+    var s_nodes = Object.entries(data.s_nodes);
+    var dataEdges = Object.entries(data.edges);
+    var dataTokens = Object.entries(data.sentence);
+    //TOP IS A SPECIFIC THING TAHT NEEDS TO BE READ IN FROM THE DATA AND IS NOT NECESSARILY LABELLED.
+
     a_nodes.forEach(element => {
-        dummyNode.index=element[0];
-        dummyNode.tokens=element[1].anchors;
-        dummyNode.label = element[1].label;
-        dummyNode.edges = element[1].outgoing;
-        dummyNode.edgelabels = element[1].label;
-
-        // console.log(dummyNode.tokens);
-        // console.log(element[1].anchors);
-
+        var dummyNodeA = {index:element[0],tokens:element[1].anchors,label:element[1].label,edges:element[1].outgoing,edgelabels:[],xPos:0,yPos:0};
+        //need to add edgelabel from edges
+        dummyA.push(dummyNodeA);
     });
+    s_nodes.forEach(element => {
+        var dummyNodeS = {index:element[0],tokens:element[1].anchors,label:element[1].label,edges:element[1].outgoing,edgelabels:[],xPos:0,yPos:0};
+        dummyS.push(dummyNodeS);
+    });
+
+    var dummySNodeIndexes = dummyS.map(x => x.index);
+    var dummyANodeIndexes = dummyA.map(x => x.index);
+
+    console.log(dataEdges);
+    console.log(dummySNodeIndexes);
+
+    dataEdges.forEach(element => {
+        if(dummySNodeIndexes.includes(element[1].src.toString())){
+            console.log("got here");
+            //do stuff ehre
+        }
+        
+    });
+    // console.log(dummySNodeIndexes);
+
+
 
     // console.log(data.a_nodes);
 });
