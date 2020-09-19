@@ -190,26 +190,6 @@ zoomGroup.selectAll("line.relations").data(sNodes).enter().append("line")
     .attr("stroke","gray")
     .attr("stroke-width","2");
 
-//LABELLING NODES.
-zoomGroup.selectAll("rect.labels")
-    .data(sNodes)
-    .enter().append("rect")
-    .attr("class","labels")
-    .attr("height","20")
-    .attr("width","60") //changes with length of the label.
-    .attr("x",function(d,i){return d.xPos-30;})
-    .attr("y",function(d,i){return d.yPos + 33;})
-    .attr("fill", "#ffff99");
-zoomGroup.append("text").selectAll("text.nodeLabels").data(sNodeLabels).enter().append("tspan").text(d => d)
-    .attr("class","nodeLabels")
-    .attr("x",function(d,i){return sNodes[i].xPos;})
-    .attr("y",function(d,i){return sNodes[i].yPos + 43;})
-    .attr("font-size","12")
-    .attr("text-anchor","middle")
-    .attr("dominant-baseline","middle")
-    .attr("fill","black")
-    .attr("font-family","Cambria");
-
 // HIGHLIGHTING ANCHORS
 zoomGroup.selectAll("rect.highlights")
     .data(sNodes)
@@ -241,38 +221,32 @@ zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
 sNodes.forEach(element => {
     if(element.edges[0] != -1){
         for(var i=0; i<element.edges.length ;i++){
-            if(sNodeIndexes.includes(element.edges[i])){
-                if(element.xPos >= sNodes[sNodeIndexes.indexOf(element.edges[i])].xPos ){
+            if(sNodeIndexes.includes(element.edges[i].toString())){
+                if(element.xPos >= sNodes[sNodeIndexes.indexOf(element.edges[i].toString())].xPos ){
                     var fromToS = [{x:element.xPos -23,y:element.yPos -14},
                         {x:element.xPos -83 ,y:element.yPos -80 },
-                        {x:sNodes[sNodeIndexes.indexOf(element.edges[i])].xPos +89,y:sNodes[sNodeIndexes.indexOf(element.edges[i])].yPos -80},
-                        {x:sNodes[sNodeIndexes.indexOf(element.edges[i])].xPos +27,y:sNodes[sNodeIndexes.indexOf(element.edges[i])].yPos -14}]; //needs worku
+                        {x:sNodes[sNodeIndexes.indexOf(element.edges[i].toString())].xPos +89,y:sNodes[sNodeIndexes.indexOf(element.edges[i].toString())].yPos -80},
+                        {x:sNodes[sNodeIndexes.indexOf(element.edges[i].toString())].xPos +27,y:sNodes[sNodeIndexes.indexOf(element.edges[i].toString())].yPos -14}]; //needs worku
                 }
                 else{
                     var fromToS = [{x:element.xPos +25,y:element.yPos},
                         {x:element.xPos +87,y:element.yPos -17+80},
-                        {x:sNodes[sNodeIndexes.indexOf(element.edges[i])].xPos -83,y:sNodes[sNodeIndexes.indexOf(element.edges[i])].yPos -17+80},
-                        {x:sNodes[sNodeIndexes.indexOf(element.edges[i])].xPos -28,y:sNodes[sNodeIndexes.indexOf(element.edges[i])].yPos + 8}]; //needs worku
+                        {x:sNodes[sNodeIndexes.indexOf(element.edges[i].toString())].xPos -83,y:sNodes[sNodeIndexes.indexOf(element.edges[i].toString())].yPos -17+80},
+                        {x:sNodes[sNodeIndexes.indexOf(element.edges[i].toString())].xPos -28,y:sNodes[sNodeIndexes.indexOf(element.edges[i].toString())].yPos + 8}]; //needs worku
                 }
             }
             else{
-                console.log(element);
-                console.log(element.edges[i]);
-
-                console.log(aNodeIndexes.indexOf(element.edges[i]));
-
-                console.log(aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos);
-                if(element.xPos >= aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos ){
+                if(element.xPos >= aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].xPos ){
                     var fromToS = [{x:element.xPos -23,y:element.yPos -14},
                         {x:element.xPos -83 ,y:element.yPos -80 },
-                        {x:aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos +89,y:aNodes[aNodeIndexes.indexOf(element.edges[i])].yPos -80},
-                        {x:aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos +27,y:aNodes[aNodeIndexes.indexOf(element.edges[i])].yPos -14}]; //needs worku
+                        {x:aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].xPos +89,y:aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].yPos -80},
+                        {x:aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].xPos +27,y:aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].yPos -14}]; //needs worku
                 }
                 else{
                     var fromToS = [{x:element.xPos +25,y:element.yPos},
                         {x:element.xPos +87,y:element.yPos -17+80},
-                        {x:aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos -83,y:aNodes[aNodeIndexes.indexOf(element.edges[i])].yPos -17+80},
-                        {x:aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos -28,y:aNodes[aNodeIndexes.indexOf(element.edges[i])].yPos + 8}]; //needs worku
+                        {x:aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].xPos -83,y:aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].yPos -17+80},
+                        {x:aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].xPos -28,y:aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].yPos + 8}]; //needs worku
                 }
             }
             var line = d3.line()
@@ -362,14 +336,14 @@ aNodes.forEach(element => {
     //     .attr("stroke-width",width);
     //EDGE
     for(var i =0; i< element.edges.length; i++){
-        if(sNodeIndexes.includes(element.edges[i])){
-            var fromTo = [{x:element.xPos,y:element.yPos +23},{x:sNodes[sNodeIndexes.indexOf(element.edges[i])].xPos,y:sNodes[sNodeIndexes.indexOf(element.edges[i])].yPos-29}];
+        if(sNodeIndexes.includes(element.edges[i].toString())){
+            var fromTo = [{x:element.xPos,y:element.yPos +23},{x:sNodes[sNodeIndexes.indexOf(element.edges[i].toString())].xPos,y:sNodes[sNodeIndexes.indexOf(element.edges[i].toString())].yPos-29}];
         }
         else{
-            if(element.xPos >= aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos){
-                var fromTo = [{x:element.xPos -23,y:element.yPos},{x:aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos+29,y:aNodes[aNodeIndexes.indexOf(element.edges[i])].yPos}];   
+            if(element.xPos >= aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].xPos){
+                var fromTo = [{x:element.xPos -23,y:element.yPos},{x:aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].xPos+29,y:aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].yPos}];   
             }else{
-                var fromTo = [{x:element.xPos +23 ,y:element.yPos},{x:aNodes[aNodeIndexes.indexOf(element.edges[i])].xPos -29,y:aNodes[aNodeIndexes.indexOf(element.edges[i])].yPos}];
+                var fromTo = [{x:element.xPos +23 ,y:element.yPos},{x:aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].xPos -29,y:aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].yPos}];
             }
 
         }
@@ -421,6 +395,26 @@ zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter()
     .attr("fill","black")
     .attr("font-family","Cambria");
 
+
+//LABELLING NODES.
+zoomGroup.selectAll("rect.labels")
+    .data(sNodes)
+    .enter().append("rect")
+    .attr("class","labels")
+    .attr("height","20")
+    .attr("width","60") //changes with length of the label.
+    .attr("x",function(d,i){return d.xPos-30;})
+    .attr("y",function(d,i){return d.yPos + 33;})
+    .attr("fill", "#ffff99");
+zoomGroup.append("text").selectAll("text.nodeLabels").data(sNodeLabels).enter().append("tspan").text(d => d)
+    .attr("class","nodeLabels")
+    .attr("x",function(d,i){return sNodes[i].xPos;})
+    .attr("y",function(d,i){return sNodes[i].yPos + 43;})
+    .attr("font-size","12")
+    .attr("text-anchor","middle")
+    .attr("dominant-baseline","middle")
+    .attr("fill","black")
+    .attr("font-family","Cambria");
 });
 });
 
