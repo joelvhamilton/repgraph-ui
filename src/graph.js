@@ -31,8 +31,9 @@ d3.json("data.json").get(function(error,data){
 
     top.forEach(element => {
         var i=1
-        var dummyNodeA = {index:maxIndex +i,tokens:dummyS[SLabels.indexOf(element[1].label)].tokens,label:"TOP",edges:[],edgelabels:[],xPos:0,yPos:0, colour:"green"};
+        var dummyNodeA = {index:maxIndex +i,tokens:dummyS[SLabels.indexOf(element[1].label)].tokens,label:"TOP",edges:[],edgelabels:[],xPos:0,yPos:0, colour:"green",relation: element[1].label};
         i++;
+        console.log(dummyNodeA.relation);
         dummyA.push(dummyNodeA);
     });
 
@@ -183,7 +184,7 @@ zoomGroup.append("path")
 };
 
 
-
+//BACKGROUND RECTANGLE
 zoomGroup.append("rect")
     .attr("class","back")
     .attr("height","100%")
@@ -247,7 +248,7 @@ zoomGroup.selectAll("rect.highlights")
         }return "none";})
     .style("opacity","0.4");
 
-//  ABSTRACT NODES
+// ABSTRACT NODES
 zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
     .attr("class","aNodes")
     .attr("cx",function(d,i){return d.xPos;})
@@ -267,37 +268,49 @@ sNodes.forEach(element => {
             var otherSNode = sNodes[sNodeIndexes.indexOf(element.edges[i].toString())];
             var otherANode = aNodes[aNodeIndexes.indexOf(element.edges[i].toString())];
             if(sNodeIndexes.includes(element.edges[i].toString())){
+                var abDiffX = Math.abs(element.xPos - otherSNode.xPos);
+                // var abDiffY = Math.abs(element.yPos - otherSNode.yPos);
                 if(element.xPos >= otherSNode.xPos ){
-                    var fromToS = [{x:element.xPos -23,y:element.yPos -14},
-                        {x:element.xPos -83 ,y:element.yPos -80 },
-                        {x:otherSNode.xPos +89,y:otherSNode.yPos -80},
-                        {x:otherSNode.xPos +27,y:otherSNode.yPos -14}]; //needs worku
+                    if(abDiffX < 240){
+                        var fromToS = [{x:element.xPos -23,y:element.yPos},{x:otherSNode.xPos +27,y:otherSNode.yPos}];
+                    }
+                    else{
+                        var fromToS = [{x:element.xPos -23,y:element.yPos -14},
+                            {x:element.xPos -abDiffX/11 ,y:element.yPos - abDiffX/11 },
+                            {x:otherSNode.xPos +abDiffX/11,y:otherSNode.yPos -abDiffX/11},
+                            {x:otherSNode.xPos +27,y:otherSNode.yPos -14}]; //needs worku
+                    }
                 }
                 else{
-                    var fromToS = [{x:element.xPos +25,y:element.yPos},
-                        {x:element.xPos +87,y:element.yPos -17+80},
-                        {x:otherSNode.xPos -83,y:otherSNode.yPos -17+80},
-                        {x:otherSNode.xPos -28,y:otherSNode.yPos + 8}]; //needs worku
+                    if(abDiffX < 240){
+                        var fromToS = [{x:element.xPos +23,y:element.yPos},{x:otherSNode.xPos -27,y:otherSNode.yPos}];
+                    }
+                    else{
+                        var fromToS = [{x:element.xPos +25,y:element.yPos},
+                            {x:element.xPos +abDiffX/12,y:element.yPos +abDiffX/12},
+                            {x:otherSNode.xPos -abDiffX/12,y:otherSNode.yPos +abDiffX/12},
+                            {x:otherSNode.xPos -28,y:otherSNode.yPos + 8}]; //needs worku
+                    }
                 }
             }
             else{
                 if(element.xPos >= otherANode.xPos ){
-                    var fromToS = [{x:element.xPos -23,y:element.yPos -14},
+                    var fromToS = [{x:element.xPos,y:element.yPos -17},
                         {x:element.xPos -83 ,y:element.yPos -80 },
                         {x:otherANode.xPos +89,y:otherANode.yPos -80},
-                        {x:otherANode.xPos +27,y:otherANode.yPos -14}]; //needs worku
+                        {x:otherANode.xPos +19,y:otherANode.yPos -14}]; //needs worku
                 }
                 else{
-                    var fromToS = [{x:element.xPos +25,y:element.yPos},
-                        {x:element.xPos +87,y:element.yPos -17+80},
+                    var fromToS = [{x:element.xPos,y:element.yPos -17},
+                        {x:element.xPos +87,y:element.yPos -60},
                         {x:otherANode.xPos -83,y:otherANode.yPos -17+80},
-                        {x:otherANode.xPos -28,y:otherANode.yPos + 8}]; //needs worku
+                        {x:otherANode.xPos -19,y:otherANode.yPos + 8}]; //needs worku
                 }
             }
             drawLine(element.colour,fromToS, element.index);
  // LABEL
-    var labelX = (fromToS.map(e => e.x)).reduce((a,b) => a+b,0)/fromToS.length +3;
-    var labelY = (fromToS.map(e => e.y)).reduce((a,b) => a+b,0)/fromToS.length +3;
+    var labelX = (fromToS[0].x+fromToS[1].x)/2 + 10;
+    var labelY = (fromToS[0].y+fromToS[1].y)/2 + 10;
     zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
         .text(d=> d.edgelabels[i])
         .attr("x",labelX.toString())
@@ -314,6 +327,17 @@ sNodes.forEach(element => {
 
 //  EDGES AND SPANS OF ABSTRACT NODES
 aNodes.forEach(element => {
+    if(element.label == "TOP"){
+    zoomGroup.selectAll("line.top").data([element]).enter().append("line")
+        .attr("class","top")
+        .attr("x1",function(d,i){return d.xPos;})
+        .attr("y1",function(d,i){return d.yPos + 23;})
+        .attr("x2",function(d,i){return d.xPos;})
+        .attr("y2",function(d,i){return sNodes[sNodeLabels.indexOf(d.relation.toString())].yPos -17;})
+        .attr("stroke-dasharray","3,3")
+        .attr("stroke",function(d,i){return d.colour;})
+        .attr("stroke-width","2");
+    };
     //SPANS - DO NOT WORRY FOR NOW
 
     //RETHINK THIS !!!!!
@@ -375,32 +399,37 @@ aNodes.forEach(element => {
         var otherSNode = sNodes[sNodeIndexes.indexOf(element.edges[i].toString())] ;
         var otherANode = aNodes[aNodeIndexes.indexOf(element.edges[i].toString())];
         if(sNodeIndexes.includes(element.edges[i].toString())){
-            var fromTo = [{x:element.xPos,y:element.yPos +23},{x:otherSNode.xPos,y:otherSNode.yPos-29}];
+            if(element.xPos >= otherSNode.xPos){
+                var fromTo = [{x:element.xPos -8 ,y:element.yPos +15},{x:otherSNode.xPos +8,y:otherSNode.yPos-20}];
+            }
+            else{
+                var fromTo = [{x:element.xPos +8 ,y:element.yPos +15},{x:otherSNode.xPos -8,y:otherSNode.yPos-20}];
+            }
         }
         else{
-            if(element.xPos >= aNodes[aNodeIndexes.indexOf(element.edges[i].toString())].xPos){
+            if(element.xPos >= otherANode.xPos){
                 var fromTo = [{x:element.xPos -23,y:element.yPos},{x:otherANode.xPos+29,y:otherANode.yPos}];   
             }else{
                 var fromTo = [{x:element.xPos +23 ,y:element.yPos},{x:otherANode.xPos -29,y:otherANode.yPos}];
             }
 
         }
-        //ABOVE SEGMENT HAS NEVER BEEN TESTed        
         var line = d3.line()
                         .x(function(d){return d.x;})
                         .y(function(d){return d.y;});
         drawLine(element.colour,fromTo, element.index);
 
         //LABEL
-        var labelX = (fromTo[0].x + fromTo[1].x)/2 +3;
-        var labelY = (fromTo[0].y + fromTo[1].y)/2 +2; //THIS WILL HAVE TO BE CHANGED IF PATHS BECOME CURVED.
+        var labelX = (fromTo[0].x + fromTo[1].x)/2;
+        var labelY = (fromTo[0].y + fromTo[1].y)/2 -8; //THIS WILL HAVE TO BE CHANGED IF PATHS BECOME CURVED.
         zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
             .text(d=> d.edgelabels[i])
             .attr("x",labelX.toString())
             .attr("y",labelY.toString())
             .attr("font-family","Arial")
             .attr("font-size","12px")
-            .attr("fill","#242424");
+            .attr("fill","#242424")
+            .attr("text-anchor","middle");
     }
     
 //LABELLING NODES.
