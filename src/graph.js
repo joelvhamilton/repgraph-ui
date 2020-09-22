@@ -1,10 +1,10 @@
-
+var start = performance.now();
 var layers = {bottom:0,token:0,surface:0,top:10};
 var dummyS =[];
 var dummyA =[];
 var dummyTokens =[];
 
-d3.json("data.json").get(function(error,data){
+d3.json("data3.json").get(function(error,data){
     var a_nodes = Object.entries(data.a_nodes);
     var s_nodes = Object.entries(data.s_nodes);
     var dataEdges = Object.entries(data.edges);
@@ -27,13 +27,19 @@ d3.json("data.json").get(function(error,data){
     var dummySNodeIndexes = dummyS.map(x => x.index);
     var dummyANodeIndexes = dummyA.map(x => x.index);
     var SLabels = dummyS.map(x => x.label);
+    var ALabels = dummyA.map(x => x.label);
+
     var maxIndex = Math.max(Math.max(...dummyANodeIndexes),Math.max(...dummySNodeIndexes));
 
     top.forEach(element => {
         var i=1
-        var dummyNodeA = {index:maxIndex +i,tokens:dummyS[SLabels.indexOf(element[1].label)].tokens,label:"TOP",edges:[],edgelabels:[],xPos:0,yPos:0, colour:"green",relation: element[1].label};
+        if(element[1].label[0] == "_"){
+            var dummyNodeA = {index:maxIndex +i,tokens:dummyS[SLabels.indexOf(element[1].label)].tokens,label:"TOP",edges:[],edgelabels:[],xPos:0,yPos:0, colour:"green",relation: element[1].label, abstract: false};
+        }
+        else{
+            var dummyNodeA = {index:maxIndex +i,tokens:dummyA[ALabels.indexOf(element[1].label)].tokens,label:"TOP",edges:[],edgelabels:[],xPos:0,yPos:0, colour:"green",relation: element[1].label, abstract: true};
+        }
         i++;
-        console.log(dummyNodeA.relation);
         dummyA.push(dummyNodeA);
     });
 
@@ -79,25 +85,25 @@ const arrowPoints = [[0, 0], [0, 6], [6, 3]];
 // GETTING POSITIONS OF NODE AND LAYER.
 sNodes.forEach(element => {
     element.xPos = offset + (width/tokenList.length)*(element.tokens.reduce((a,b) => a+b,0)/element.tokens.length);
-    element.yPos = 100*(element.tokens.length);
+    element.yPos = 50*(element.tokens.length);
     maxSNodeHeight = Math.max(maxSNodeHeight,element.yPos);
 });
 aNodes.forEach(element => {
     element.xPos = offset + (width/tokenList.length)*(element.tokens.reduce((a,b) => a+b,0)/element.tokens.length);
     if(element.label == "TOP"){
-        element.yPos = layers.top + 30; 
+        element.yPos = layers.top + 25; 
         TopNodeHeight = element.yPos;
     }
     else{
-        element.yPos = 100*(element.tokens.length);
+        element.yPos = 50*(element.tokens.length);
         maxANodeHeight = Math.max(maxANodeHeight,element.yPos);
     }
 });
 
-layers.surface = TopNodeHeight + gapBetweenBottomNodeAndLayer + maxANodeHeight; //height determined for surface layer marker.
+layers.surface = TopNodeHeight + gapBetweenBottomNodeAndLayer + maxANodeHeight +25; //height determined for surface layer marker.
 aNodes.forEach(element => {
     if(element.label != "TOP"){
-        element.yPos = layers.surface - element.yPos;
+        element.yPos = layers.surface - element.yPos -25;
         aNodes.forEach(element2 => {
             if(element.xPos == element2.xPos && element.yPos == element2.yPos){
                 element.xPos = element.xPos -50;
@@ -333,7 +339,12 @@ aNodes.forEach(element => {
         .attr("x1",function(d,i){return d.xPos;})
         .attr("y1",function(d,i){return d.yPos + 23;})
         .attr("x2",function(d,i){return d.xPos;})
-        .attr("y2",function(d,i){return sNodes[sNodeLabels.indexOf(d.relation.toString())].yPos -17;})
+        .attr("y2",function(d,i){if(!(element.abstract)){
+            return sNodes[sNodeLabels.indexOf(d.relation.toString())].yPos -17;
+        }
+        else{
+            return aNodes[aNodeLabels.indexOf(d.relation.toString())].yPos -17;
+        }})
         .attr("stroke-dasharray","3,3")
         .attr("stroke",function(d,i){return d.colour;})
         .attr("stroke-width","2");
@@ -480,6 +491,8 @@ zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter()
     .attr("font-family","Cambria");
 
 });
+var end = performance.now();
+console.log("Call to doSomething took " + (end - start) + " milliseconds.")
 });
 
 
