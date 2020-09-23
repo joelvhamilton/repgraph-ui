@@ -1,0 +1,894 @@
+{
+   "id": "20029012",
+   "a_nodes": {
+      "7": {
+         "label": "udef_q",
+         "incoming": [],
+         "outgoing": [
+            6
+         ],
+         "anchors": [
+            7
+         ]
+      },
+      "9": {
+         "label": "parg_d",
+         "incoming": [],
+         "outgoing": [
+            8,
+            11
+         ],
+         "anchors": [
+            8
+         ]
+      },
+      "10": {
+         "label": "compound",
+         "incoming": [],
+         "outgoing": [
+            8,
+            6
+         ],
+         "anchors": [
+            7,
+            8
+         ]
+      },
+      "12": {
+         "label": "udef_q",
+         "incoming": [],
+         "outgoing": [
+            11
+         ],
+         "anchors": [
+            7,
+            8,
+            9
+         ]
+      },
+      "13": {
+         "label": "udef_q",
+         "incoming": [],
+         "outgoing": [
+            4
+         ],
+         "anchors": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+         ]
+      },
+      "14": {
+         "label": "much-many_a",
+         "incoming": [
+            15
+         ],
+         "outgoing": [
+            19
+         ],
+         "anchors": [
+            11
+         ]
+      },
+      "15": {
+         "label": "comp",
+         "incoming": [],
+         "outgoing": [
+            14,
+            17
+         ],
+         "anchors": [
+            11
+         ]
+      },
+      "16": {
+         "label": "card",
+         "incoming": [],
+         "outgoing": [
+            17
+         ],
+         "anchors": [
+            13
+         ]
+      },
+      "18": {
+         "label": "udef_q",
+         "incoming": [],
+         "outgoing": [
+            17
+         ],
+         "anchors": [
+            13,
+            14
+         ]
+      },
+      "19": {
+         "label": "part_of",
+         "incoming": [
+            2,
+            20,
+            14
+         ],
+         "outgoing": [
+            22
+         ],
+         "anchors": [
+            11,
+            12,
+            13,
+            14
+         ]
+      },
+      "20": {
+         "label": "udef_q",
+         "incoming": [],
+         "outgoing": [
+            19
+         ],
+         "anchors": [
+            11,
+            12,
+            13,
+            14
+         ]
+      },
+      "23": {
+         "label": "card",
+         "incoming": [
+            25
+         ],
+         "outgoing": [],
+         "anchors": [
+            18
+         ]
+      },
+      "24": {
+         "label": "card",
+         "incoming": [
+            25
+         ],
+         "outgoing": [
+            22
+         ],
+         "anchors": [
+            19
+         ]
+      },
+      "25": {
+         "label": "times",
+         "incoming": [],
+         "outgoing": [
+            23,
+            24,
+            22
+         ],
+         "anchors": [
+            19
+         ]
+      },
+      "31": {
+         "label": "def_explicit_q",
+         "incoming": [],
+         "outgoing": [
+            35
+         ],
+         "anchors": [
+            25
+         ]
+      },
+      "32": {
+         "label": "poss",
+         "incoming": [],
+         "outgoing": [
+            35,
+            34
+         ],
+         "anchors": [
+            25
+         ]
+      },
+      "33": {
+         "label": "pronoun_q",
+         "incoming": [],
+         "outgoing": [
+            34
+         ],
+         "anchors": [
+            25
+         ]
+      },
+      "34": {
+         "label": "pron",
+         "incoming": [
+            32,
+            33
+         ],
+         "outgoing": [],
+         "anchors": [
+            25
+         ]
+      }
+   },
+   "s_nodes": {
+      "0": {
+         "label": "_such_q",
+         "incoming": [],
+         "outgoing": [
+            1
+         ],
+         "anchors": [
+            0
+         ]
+      },
+      "1": {
+         "label": "_device_n_1",
+         "incoming": [
+            0,
+            2
+         ],
+         "outgoing": [],
+         "anchors": [
+            1
+         ]
+      },
+      "2": {
+         "label": "_boost_v_to",
+         "incoming": [
+            30,
+            30
+         ],
+         "outgoing": [
+            1,
+            4,
+            19
+         ],
+         "anchors": [
+            3
+         ]
+      },
+      "3": {
+         "label": "_japanese_a_1",
+         "incoming": [],
+         "outgoing": [
+            4
+         ],
+         "anchors": [
+            4
+         ]
+      },
+      "4": {
+         "label": "_investment_n_1",
+         "incoming": [
+            2,
+            13,
+            3,
+            5
+         ],
+         "outgoing": [],
+         "anchors": [
+            5
+         ]
+      },
+      "5": {
+         "label": "_in_p",
+         "incoming": [],
+         "outgoing": [
+            4,
+            11
+         ],
+         "anchors": [
+            6
+         ]
+      },
+      "6": {
+         "label": "_mortgage_n_1",
+         "incoming": [
+            10,
+            7
+         ],
+         "outgoing": [],
+         "anchors": [
+            7
+         ]
+      },
+      "8": {
+         "label": "_back_v_1",
+         "incoming": [
+            10,
+            9
+         ],
+         "outgoing": [
+            11
+         ],
+         "anchors": [
+            8
+         ]
+      },
+      "11": {
+         "label": "_security_n_1",
+         "incoming": [
+            5,
+            12,
+            8,
+            9
+         ],
+         "outgoing": [],
+         "anchors": [
+            9
+         ]
+      },
+      "17": {
+         "label": "_percent_n_of",
+         "incoming": [
+            15,
+            18,
+            16
+         ],
+         "outgoing": [],
+         "anchors": [
+            14
+         ]
+      },
+      "21": {
+         "label": "_the_q",
+         "incoming": [],
+         "outgoing": [
+            22
+         ],
+         "anchors": [
+            16
+         ]
+      },
+      "22": {
+         "label": "_dollar_n_1",
+         "incoming": [
+            19,
+            21,
+            24,
+            26,
+            29,
+            25
+         ],
+         "outgoing": [],
+         "anchors": [
+            17
+         ]
+      },
+      "26": {
+         "label": "_in_p",
+         "incoming": [],
+         "outgoing": [
+            22,
+            28
+         ],
+         "anchors": [
+            20
+         ]
+      },
+      "27": {
+         "label": "_such_q",
+         "incoming": [],
+         "outgoing": [
+            28
+         ],
+         "anchors": [
+            21
+         ]
+      },
+      "28": {
+         "label": "_instrument_n_of",
+         "incoming": [
+            26,
+            27
+         ],
+         "outgoing": [],
+         "anchors": [
+            22
+         ]
+      },
+      "29": {
+         "label": "_outstanding_a_1",
+         "incoming": [],
+         "outgoing": [
+            22
+         ],
+         "anchors": [
+            23
+         ]
+      },
+      "30": {
+         "label": "_and_c",
+         "incoming": [],
+         "outgoing": [
+            2,
+            2,
+            36,
+            36
+         ],
+         "anchors": [
+            24
+         ]
+      },
+      "35": {
+         "label": "_purchase_n_of",
+         "incoming": [
+            31,
+            32,
+            36
+         ],
+         "outgoing": [],
+         "anchors": [
+            26
+         ]
+      },
+      "36": {
+         "label": "_grow_v_1",
+         "incoming": [
+            30,
+            30,
+            37
+         ],
+         "outgoing": [
+            35
+         ],
+         "anchors": [
+            28
+         ]
+      },
+      "37": {
+         "label": "_at_p",
+         "incoming": [],
+         "outgoing": [
+            36,
+            40
+         ],
+         "anchors": [
+            29
+         ]
+      },
+      "38": {
+         "label": "_a_q",
+         "incoming": [],
+         "outgoing": [
+            40
+         ],
+         "anchors": [
+            30
+         ]
+      },
+      "39": {
+         "label": "_rapid_a_1",
+         "incoming": [],
+         "outgoing": [
+            40
+         ],
+         "anchors": [
+            31
+         ]
+      },
+      "40": {
+         "label": "_rate_n_of",
+         "incoming": [
+            37,
+            38,
+            39
+         ],
+         "outgoing": [],
+         "anchors": [
+            32
+         ]
+      }
+   },
+   "edges": [
+      {
+         "src": 0,
+         "trg": 1,
+         "label": "RSTR/H"
+      },
+      {
+         "src": 2,
+         "trg": 1,
+         "label": "ARG1/NEQ"
+      },
+      {
+         "src": 2,
+         "trg": 4,
+         "label": "ARG2/NEQ"
+      },
+      {
+         "src": 2,
+         "trg": 19,
+         "label": "ARG3/NEQ"
+      },
+      {
+         "src": 13,
+         "trg": 4,
+         "label": "RSTR/H"
+      },
+      {
+         "src": 3,
+         "trg": 4,
+         "label": "ARG1/EQ"
+      },
+      {
+         "src": 5,
+         "trg": 4,
+         "label": "ARG1/EQ"
+      },
+      {
+         "src": 5,
+         "trg": 11,
+         "label": "ARG2/NEQ"
+      },
+      {
+         "src": 12,
+         "trg": 11,
+         "label": "RSTR/H"
+      },
+      {
+         "src": 10,
+         "trg": 8,
+         "label": "ARG1/EQ"
+      },
+      {
+         "src": 10,
+         "trg": 6,
+         "label": "ARG2/NEQ"
+      },
+      {
+         "src": 7,
+         "trg": 6,
+         "label": "RSTR/H"
+      },
+      {
+         "src": 8,
+         "trg": 11,
+         "label": "ARG2/EQ"
+      },
+      {
+         "src": 9,
+         "trg": 8,
+         "label": "ARG1/EQ"
+      },
+      {
+         "src": 9,
+         "trg": 11,
+         "label": "ARG2/EQ"
+      },
+      {
+         "src": 19,
+         "trg": 22,
+         "label": "ARG1/NEQ"
+      },
+      {
+         "src": 20,
+         "trg": 19,
+         "label": "RSTR/H"
+      },
+      {
+         "src": 14,
+         "trg": 19,
+         "label": "ARG1/EQ"
+      },
+      {
+         "src": 15,
+         "trg": 14,
+         "label": "ARG1/EQ"
+      },
+      {
+         "src": 15,
+         "trg": 17,
+         "label": "ARG2/NEQ"
+      },
+      {
+         "src": 18,
+         "trg": 17,
+         "label": "RSTR/H"
+      },
+      {
+         "src": 16,
+         "trg": 17,
+         "label": "ARG1/EQ"
+      },
+      {
+         "src": 21,
+         "trg": 22,
+         "label": "RSTR/H"
+      },
+      {
+         "src": 24,
+         "trg": 22,
+         "label": "ARG1/NEQ"
+      },
+      {
+         "src": 25,
+         "trg": 23,
+         "label": "ARG2/HEQ"
+      },
+      {
+         "src": 25,
+         "trg": 24,
+         "label": "ARG3/HEQ"
+      },
+      {
+         "src": 26,
+         "trg": 22,
+         "label": "ARG1/EQ"
+      },
+      {
+         "src": 26,
+         "trg": 28,
+         "label": "ARG2/NEQ"
+      },
+      {
+         "src": 27,
+         "trg": 28,
+         "label": "RSTR/H"
+      },
+      {
+         "src": 29,
+         "trg": 22,
+         "label": "ARG1/EQ"
+      },
+      {
+         "src": 30,
+         "trg": 2,
+         "label": "L-HNDL/H"
+      },
+      {
+         "src": 30,
+         "trg": 2,
+         "label": "L-INDEX/NEQ"
+      },
+      {
+         "src": 30,
+         "trg": 36,
+         "label": "R-HNDL/H"
+      },
+      {
+         "src": 30,
+         "trg": 36,
+         "label": "R-INDEX/NEQ"
+      },
+      {
+         "src": 31,
+         "trg": 35,
+         "label": "RSTR/H"
+      },
+      {
+         "src": 32,
+         "trg": 35,
+         "label": "ARG1/EQ"
+      },
+      {
+         "src": 32,
+         "trg": 34,
+         "label": "ARG2/NEQ"
+      },
+      {
+         "src": 33,
+         "trg": 34,
+         "label": "RSTR/H"
+      },
+      {
+         "src": 36,
+         "trg": 35,
+         "label": "ARG1/NEQ"
+      },
+      {
+         "src": 37,
+         "trg": 36,
+         "label": "ARG1/EQ"
+      },
+      {
+         "src": 37,
+         "trg": 40,
+         "label": "ARG2/NEQ"
+      },
+      {
+         "src": 38,
+         "trg": 40,
+         "label": "RSTR/H"
+      },
+      {
+         "src": 39,
+         "trg": 40,
+         "label": "ARG1/EQ"
+      },
+      {
+         "src": 25,
+         "trg": 22,
+         "label": "MOD/EQ"
+      }
+   ],
+   "tokens": {
+      "0": {
+         "form": "such",
+         "lemma": "such"
+      },
+      "1": {
+         "form": "devices",
+         "lemma": "device"
+      },
+      "2": {
+         "form": "have",
+         "lemma": "have"
+      },
+      "3": {
+         "form": "boosted",
+         "lemma": "boost"
+      },
+      "4": {
+         "form": "japanese",
+         "lemma": "japanese"
+      },
+      "5": {
+         "form": "investment",
+         "lemma": "investment"
+      },
+      "6": {
+         "form": "in",
+         "lemma": "in"
+      },
+      "7": {
+         "form": "mortgage-",
+         "lemma": "mortgage"
+      },
+      "8": {
+         "form": "backed",
+         "lemma": "back"
+      },
+      "9": {
+         "form": "securities",
+         "lemma": "security"
+      },
+      "10": {
+         "form": "to",
+         "lemma": "to"
+      },
+      "11": {
+         "form": "more",
+         "lemma": "more"
+      },
+      "12": {
+         "form": "than",
+         "lemma": "than"
+      },
+      "13": {
+         "form": "1",
+         "lemma": "1",
+         "carg": "1"
+      },
+      "14": {
+         "form": "%",
+         "lemma": "percent"
+      },
+      "15": {
+         "form": "of",
+         "lemma": "of"
+      },
+      "16": {
+         "form": "the",
+         "lemma": "the"
+      },
+      "17": {
+         "form": "$",
+         "lemma": "dollar"
+      },
+      "18": {
+         "form": "900",
+         "lemma": "900",
+         "carg": "900"
+      },
+      "19": {
+         "form": "billion",
+         "lemma": "1000000000",
+         "carg": "1000000000"
+      },
+      "20": {
+         "form": "in",
+         "lemma": "in"
+      },
+      "21": {
+         "form": "such",
+         "lemma": "such"
+      },
+      "22": {
+         "form": "instruments",
+         "lemma": "instrument"
+      },
+      "23": {
+         "form": "outstanding,",
+         "lemma": "outstanding"
+      },
+      "24": {
+         "form": "and",
+         "lemma": "and"
+      },
+      "25": {
+         "form": "their",
+         "lemma": "their"
+      },
+      "26": {
+         "form": "purchases",
+         "lemma": "purchase"
+      },
+      "27": {
+         "form": "are",
+         "lemma": "are"
+      },
+      "28": {
+         "form": "growing",
+         "lemma": "grow"
+      },
+      "29": {
+         "form": "at",
+         "lemma": "at"
+      },
+      "30": {
+         "form": "a",
+         "lemma": "a"
+      },
+      "31": {
+         "form": "rapid",
+         "lemma": "rapid"
+      },
+      "32": {
+         "form": "rate.",
+         "lemma": "rate"
+      }
+   },
+   "tops": {
+      "30": {
+         "label": "_and_c",
+         "incoming": [],
+         "outgoing": [
+            2,
+            2,
+            36,
+            36
+         ],
+         "anchors": [
+            24
+         ]
+      }
+   },
+   "sentence": [
+      "such",
+      "devices",
+      "have",
+      "boosted",
+      "japanese",
+      "investment",
+      "in",
+      "mortgage-",
+      "backed",
+      "securities",
+      "to",
+      "more",
+      "than",
+      "1",
+      "%",
+      "of",
+      "the",
+      "$",
+      "900",
+      "billion",
+      "in",
+      "such",
+      "instruments",
+      "outstanding,",
+      "and",
+      "their",
+      "purchases",
+      "are",
+      "growing",
+      "at",
+      "a",
+      "rapid",
+      "rate."
+   ]
+}
