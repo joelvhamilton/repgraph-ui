@@ -1,10 +1,15 @@
+
+var data = "data.json";
+makeGraph(data);
+function makeGraph(data){
+
 var start = performance.now();
 var layers = {bottom:0,token:0,surface:0,top:10};
-var dummyS =[];
-var dummyA =[];
-var dummyTokens =[];
+var sNodes =[];
+var aNodes =[];
+var tokenList =[];
 
-d3.json("data3.json").get(function(error,data){
+d3.json(data).get(function(error,data){
     var a_nodes = Object.entries(data.a_nodes);
     var s_nodes = Object.entries(data.s_nodes);
     var dataEdges = Object.entries(data.edges);
@@ -12,67 +17,58 @@ d3.json("data3.json").get(function(error,data){
     var top = Object.entries(data.tops);
     //TOP IS A SPECIFIC THING TAHT NEEDS TO BE READ IN FROM THE DATA AND IS NOT NECESSARILY LABELLED.
     dataTokens.forEach(element => {
-        dummyTokens.push(element);
+        tokenList.push(element);
     });
     a_nodes.forEach(element => {
         var dummyNodeA = {index:element[0],tokens:element[1].anchors,label:element[1].label,edges:element[1].outgoing,edgelabels:[],xPos:0,yPos:0,colour:"green"};
         //need to add edgelabel from edges
-        dummyA.push(dummyNodeA);
+        aNodes.push(dummyNodeA);
     });
     s_nodes.forEach(element => {
         var dummyNodeS = {index:element[0],tokens:element[1].anchors,label:element[1].label,edges:element[1].outgoing,edgelabels:[],xPos:0,yPos:0,colour:"green"};
-        dummyS.push(dummyNodeS);
+        sNodes.push(dummyNodeS);
     });
 
-    var dummySNodeIndexes = dummyS.map(x => x.index);
-    var dummyANodeIndexes = dummyA.map(x => x.index);
-    var SLabels = dummyS.map(x => x.label);
-    var ALabels = dummyA.map(x => x.label);
+    var sNodeIndexes = sNodes.map(x => x.index);
+    var aNodeIndexes = aNodes.map(x => x.index);
+    var sNodeLabels = sNodes.map(x => x.label);
+    var aNodeLabels = aNodes.map(x => x.label);
 
-    var maxIndex = Math.max(Math.max(...dummyANodeIndexes),Math.max(...dummySNodeIndexes));
+    var maxIndex = Math.max(Math.max(...aNodeIndexes),Math.max(...sNodeIndexes));
 
     top.forEach(element => {
         var i=1
         if(element[1].label[0] == "_"){
-            var dummyNodeA = {index:maxIndex +i,tokens:dummyS[SLabels.indexOf(element[1].label)].tokens,label:"TOP",edges:[],edgelabels:[],xPos:0,yPos:0, colour:"green",relation: element[1].label, abstract: false};
+            var dummyNodeA = {index:maxIndex +i,tokens:sNodes[sNodeLabels.indexOf(element[1].label)].tokens,label:"TOP",edges:[],edgelabels:[],xPos:0,yPos:0, colour:"green",relation: element[1].label, abstract: false};
         }
         else{
-            var dummyNodeA = {index:maxIndex +i,tokens:dummyA[ALabels.indexOf(element[1].label)].tokens,label:"TOP",edges:[],edgelabels:[],xPos:0,yPos:0, colour:"green",relation: element[1].label, abstract: true};
+            var dummyNodeA = {index:maxIndex +i,tokens:aNodes[aNodeLabels.indexOf(element[1].label)].tokens,label:"TOP",edges:[],edgelabels:[],xPos:0,yPos:0, colour:"green",relation: element[1].label, abstract: true};
         }
         i++;
-        dummyA.push(dummyNodeA);
+        aNodes.push(dummyNodeA);
     });
 
     dataEdges.forEach(element => {
-        if(dummySNodeIndexes.includes(element[1].src.toString())){
-            dummyS[dummySNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
-             //do stuff ehre
-        }
+        if(sNodeIndexes.includes(element[1].src.toString())){
+            sNodes[sNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
+                }
         else{
-            dummyA[dummyANodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
+            aNodes[aNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
         }
     });
-var tokenList = dummyTokens;
-var abstractColourScale = d3.scaleLinear().domain([0,dummyANodeIndexes.length]).range(["yellow", "red"]);
-var surfaceColourScale =  d3.scaleSequential().domain([0,dummySNodeIndexes.length]).interpolator(d3.interpolateCool);
+var abstractColourScale = d3.scaleLinear().domain([0,aNodeIndexes.length]).range(["yellow", "red"]);
+var surfaceColourScale =  d3.scaleSequential().domain([0,sNodeIndexes.length]).interpolator(d3.interpolateCool);
 
-var sNodes = dummyS;
-var aNodes = dummyA;
-
+// determining the colour of each node.
 for(var i=0; i<sNodes.length; i++){
     sNodes[i].colour = surfaceColourScale(i);
 }
 for(var i=0; i<aNodes.length; i++){
     aNodes[i].colour = abstractColourScale(i);
 }
-    //  WORKS ON THE ASSUMPTION THAT TOKENS HERE REFERENCES THE TOKENS THAT ARE ANCHORED BY THE CHILDREN OF THE ANODE.
-var sNodeLabels = sNodes.map(x => x.label);
-var aNodeLabels = aNodes.map(x => x.label);
-var sNodeIndexes =dummySNodeIndexes;
-var aNodeIndexes =dummyANodeIndexes;
 
+// GRAPH SIZE DEFINITIONS
 var width = tokenList.length*200;
-var height;
 var offset = width/(tokenList.length*2);
 var maxSNodeHeight=0;
 var maxANodeHeight = 0;
@@ -80,6 +76,7 @@ var minSNode = 0;
 var TopNodeHeight=0;
 var gapBetweenBottomNodeAndLayer = 100;
 
+// ARROW SIZE DEFINIITONS
 const arrowPoints = [[0, 0], [0, 6], [6, 3]];
 
 // GETTING POSITIONS OF NODE AND LAYER.
@@ -104,7 +101,7 @@ layers.surface = TopNodeHeight + gapBetweenBottomNodeAndLayer + maxANodeHeight +
 aNodes.forEach(element => {
     if(element.label != "TOP"){
         element.yPos = layers.surface - element.yPos -25;
-        aNodes.forEach(element2 => {
+        aNodes.forEach(element2 => { //NESTED FOR-LOOP, CAN PROBABLY BE DONE BETTER. Investiagte issue with more than 2 nodes on same xy.
             if(element.xPos == element2.xPos && element.yPos == element2.yPos){
                 element.xPos = element.xPos -50;
                 element2.xPos = element2.xPos +50;
@@ -120,12 +117,13 @@ sNodes.forEach(element => {
 layers.token = minSNode + 100;
 layers.bottom = layers.token + 100;
 height=layers.bottom +10;
+
 //  AT THIS POINT NODE HEIGHTS AND LAYER HEIGHTS HAVE BEEN DETERMINED.
 var layerVals = Object.values(layers);
 
 
 var svg = d3.select("body").append("svg").attr("id", "viewSvg")
-.attr("height", height +"px").attr("width", 1000+"px")
+.attr("height", "700px").attr("width", 1000+"px")
 .attr("viewBox","0,0,"+width +","+ height )
 var group = svg.append("g").attr("id", "group");
 var zoomGroup = group.append("g");
@@ -134,8 +132,8 @@ group.call(d3.zoom()
     .on("zoom",function(){
     zoomGroup.attr("transform", d3.event.transform);
 })); //allows for zooming
-//ARROWHEAD DEFINITION
 
+//ARROWHEAD DEFINITION
 zoomGroup.append("defs").selectAll("marker.s").data(sNodes).enter().append("marker")
         .attr("class","s")
         .attr('id', function(d,i){return "arrow-"+d.index;})
@@ -160,21 +158,6 @@ zoomGroup.select("defs").selectAll("marker.a").data(aNodes).enter().append("mark
     .append('path')
         .attr('d', d3.line()(arrowPoints))
         .attr("fill", function(d,i){return d.colour;});
-// function arrowHead(colour){
-//     zoomGroup.append("defs")
-//     .append('marker')
-//         .attr('id', 'arrow')
-//         .attr("class","arrow")
-//         .attr('viewBox', [0, 0, 7, 7])
-//         .attr('refX', 3.5)
-//         .attr('refY', 3.5)
-//         .attr('markerWidth', 6)
-//         .attr('markerHeight', 6)
-//         .attr('orient', 'auto')
-//     .append('path')
-//         .attr('d', d3.line()(arrowPoints))
-//         .attr("fill", colour);
-// }
 
 function drawLine(colour, data, index){
     var line = d3.line()
@@ -275,7 +258,6 @@ sNodes.forEach(element => {
             var otherANode = aNodes[aNodeIndexes.indexOf(element.edges[i].toString())];
             if(sNodeIndexes.includes(element.edges[i].toString())){
                 var abDiffX = Math.abs(element.xPos - otherSNode.xPos);
-                // var abDiffY = Math.abs(element.yPos - otherSNode.yPos);
                 if(element.xPos >= otherSNode.xPos ){
                     if(abDiffX < 240){
                         var fromToS = [{x:element.xPos -23,y:element.yPos},{x:otherSNode.xPos +27,y:otherSNode.yPos}];
@@ -292,9 +274,11 @@ sNodes.forEach(element => {
                         var fromToS = [{x:element.xPos +23,y:element.yPos},{x:otherSNode.xPos -27,y:otherSNode.yPos}];
                     }
                     else{
+                        var limitLine = 130;
+                        var edgeLineYAxis = Math.min(limitLine, abDiffX/12);
                         var fromToS = [{x:element.xPos +25,y:element.yPos},
-                            {x:element.xPos +abDiffX/12,y:element.yPos +abDiffX/12},
-                            {x:otherSNode.xPos -abDiffX/12,y:otherSNode.yPos +abDiffX/12},
+                            {x:element.xPos +edgeLineYAxis,y:element.yPos +edgeLineYAxis},
+                            {x:otherSNode.xPos -edgeLineYAxis,y:otherSNode.yPos +edgeLineYAxis},
                             {x:otherSNode.xPos -28,y:otherSNode.yPos + 8}]; //needs worku
                     }
                 }
@@ -479,7 +463,7 @@ zoomGroup.selectAll("rect.alabels")
     .attr("y",function(d,i){return d.yPos + 30;})
     .attr("fill", function(d,i){if(d.label=="TOP"){
         return "red";
-    }return "gray";});
+    }return "#a5a5a5";});
 zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter().append("tspan").text(d => d)
     .attr("class","anodeLabels")
     .attr("x",function(d,i){return aNodes[i].xPos;})
@@ -492,10 +476,7 @@ zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter()
 
 });
 var end = performance.now();
-console.log("Call to doSomething took " + (end - start) + " milliseconds.")
+console.log("Making the graph took " + (end - start) + " milliseconds.")
 });
 
-
-
-
-  
+}
