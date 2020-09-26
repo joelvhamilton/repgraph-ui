@@ -1,7 +1,7 @@
 
 var data = "data.json";
-makeGraph(data);
-function makeGraph(data){
+makeGraph(data, false);
+function makeGraph(data, showTokens){
 
 var start = performance.now();
 var layers = {bottom:0,token:0,surface:0,top:10};
@@ -176,13 +176,20 @@ zoomGroup.append("path")
 //BACKGROUND RECTANGLE
 zoomGroup.append("rect")
     .attr("class","back")
-    .attr("height","100%")
+    .attr("height",function(d,i){if(showTokens){
+        return height;
+    }
+    return height-100;})
     .attr("width","100%")
     .attr("x","0")
     .attr("y","0")
     .attr("fill","#f2f0f0");
 
 // DRAWING LAYER LINES
+if(!(showTokens)){
+    layerVals[0] = layerVals[1];
+    console.log(layerVals);
+}
 zoomGroup.selectAll("line.layers").data(layerVals).enter().append("line")
     .attr("class","layers")
     .attr("x1","0")
@@ -193,15 +200,29 @@ zoomGroup.selectAll("line.layers").data(layerVals).enter().append("line")
     .attr("stroke-width","2");
 
 // DRAWING TOKENS
-zoomGroup.append("text").selectAll("text.tokens").data(tokenList).enter().append("tspan").text(d => d)
-    .attr("class","tokens")
-    .attr("x",function(d,i){return offset + i*(width/(tokenList.length));})
-    .attr("y",function(){return layers.bottom - 50;}) //change with depth of token layer.
-    .attr("font-size","30")
-    .attr("text-anchor","middle")
-    .attr("dominant-baseline","middle")
-    .attr("fill","black")
-    .attr("font-family","Arial");
+if(showTokens){
+    zoomGroup.append("text").selectAll("text.tokens").data(tokenList).enter().append("tspan").text(d => d)
+        .attr("class","tokens")
+        .attr("x",function(d,i){return offset + i*(width/(tokenList.length));})
+        .attr("y",function(){return layers.bottom - 50;}) //change with depth of token layer.
+        .attr("font-size","30")
+        .attr("text-anchor","middle")
+        .attr("dominant-baseline","middle")
+        .attr("fill","black")
+        .attr("font-family","Arial");
+
+    // DRAWING TOKEN->NODE DASHES.
+    zoomGroup.selectAll("line.relations").data(sNodes).enter().append("line")
+        .attr("class","relations")
+        .attr("x1",function(d,i){return d.xPos;})
+        .attr("y1",function(d,i){return d.yPos + 23;})
+        .attr("x2",function(d,i){return d.xPos;})
+        .attr("y2",function(d,i){return layers.bottom - 70;})
+        .attr("stroke-dasharray","3,3")
+        .attr("stroke","gray")
+        .attr("stroke-width","2");
+}
+
 
 // DRAWING SURFACE NODES
 zoomGroup.selectAll("circle.nodes").data(sNodes).enter().append("circle")
@@ -209,18 +230,8 @@ zoomGroup.selectAll("circle.nodes").data(sNodes).enter().append("circle")
     .attr("cx",function(d,i){return d.xPos})
     .attr("cy",function(d,i){return d.yPos;})
     .attr("r","12")
-    .attr("fill", function(d,i){return d.colour;});
-
-// DRAWING TOKEN->NODE DASHES.
-zoomGroup.selectAll("line.relations").data(sNodes).enter().append("line")
-    .attr("class","relations")
-    .attr("x1",function(d,i){return d.xPos;})
-    .attr("y1",function(d,i){return d.yPos + 23;})
-    .attr("x2",function(d,i){return d.xPos;})
-    .attr("y2",function(d,i){return layers.bottom - 70;})
-    .attr("stroke-dasharray","3,3")
-    .attr("stroke","gray")
-    .attr("stroke-width","2");
+    .attr("fill", function(d,i){return d.colour;})
+    .on("click", function(d,i){ console.log("Hello from: " + d.label);});
 
 // HIGHLIGHTING ANCHORS
 zoomGroup.selectAll("rect.highlights")
@@ -247,7 +258,8 @@ zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
             return "20";
         }
         return "12";})
-    .attr("fill", function(d,i){return d.colour;});
+    .attr("fill", function(d,i){return d.colour;})
+    .on("click", function(d,i){ console.log("Hello from: " + d.label);});
     
 
 //  SURFACE EDGES
