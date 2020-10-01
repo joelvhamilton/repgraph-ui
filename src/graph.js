@@ -1,20 +1,18 @@
-
-var data = "data.json";
-makeGraph(data);
-function makeGraph(data){
+export const makeGraph = function (data) {
 
 var start = performance.now();
 var layers = {bottom:0,token:0,surface:0,top:10};
 var sNodes =[];
 var aNodes =[];
 var tokenList =[];
+    // debugger
 
-d3.json(data).get(function(error,data){
     var a_nodes = Object.entries(data.a_nodes);
     var s_nodes = Object.entries(data.s_nodes);
     var dataEdges = Object.entries(data.edges);
-    var dataTokens = Object.values(data.sentence);
+    var dataTokens = Object.entries(data.sentence);
     var top = Object.entries(data.tops);
+
     //TOP IS A SPECIFIC THING TAHT NEEDS TO BE READ IN FROM THE DATA AND IS NOT NECESSARILY LABELLED.
     dataTokens.forEach(element => {
         tokenList.push(element);
@@ -47,7 +45,7 @@ d3.json(data).get(function(error,data){
         i++;
         aNodes.push(dummyNodeA);
     });
-
+    
     dataEdges.forEach(element => {
         if(sNodeIndexes.includes(element[1].src.toString())){
             sNodes[sNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
@@ -116,13 +114,16 @@ sNodes.forEach(element => {
 });
 layers.token = minSNode + 100;
 layers.bottom = layers.token + 100;
-height=layers.bottom +10;
+let height=layers.bottom +10;
 
 //  AT THIS POINT NODE HEIGHTS AND LAYER HEIGHTS HAVE BEEN DETERMINED.
 var layerVals = Object.values(layers);
 
+if (document.getElementsByClassName("d3-graph").length === 5){
+    d3.select("svg").remove()
+}
 
-var svg = d3.select("body").append("svg").attr("id", "viewSvg")
+var svg = d3.select("body").append("svg").attr("id", "viewSvg").attr("class", "d3-graph")
 .attr("height", "700px").attr("width", 1000+"px")
 .attr("viewBox","0,0,"+width +","+ height )
 var group = svg.append("g").attr("id", "group");
@@ -147,6 +148,7 @@ zoomGroup.append("defs").selectAll("marker.s").data(sNodes).enter().append("mark
         .attr('d', d3.line()(arrowPoints))
         .attr("fill", function(d,i){return d.colour;});
 zoomGroup.select("defs").selectAll("marker.a").data(aNodes).enter().append("marker")
+    
         .attr("class","a")
         .attr('id', function(d,i){return "arrow-"+d.index;})
         .attr('viewBox', [0, 0, 7, 7])
@@ -475,8 +477,7 @@ zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter()
     .attr("font-family","Cambria");
 
 });
+
 var end = performance.now();
 console.log("Making the graph took " + (end - start) + " milliseconds.")
-});
-
 }

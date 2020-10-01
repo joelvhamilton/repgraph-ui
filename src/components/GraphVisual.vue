@@ -1,26 +1,37 @@
 <template>
-    <div>
-        <script src="https://d3js.org/d3.v4.js"></script>
-        <h1> graph goes here </h1>
-        <h2> stuff</h2>
-        <h2> stuff</h2>
-        <h2> stuff</h2>
-        <h2> stuff</h2>
+    <div class="d-flex">
     </div>
 </template>
 <!-- all d3 logic will be here -->
 
-<script src="graph.js"></script>
+
+
+<script src="https://d3js.org/d3.v4.js"></script>
 <script>
     import {Progress} from "element-ui"
+    import {makeGraph} from "../graph.js"
     export default {
         props: ["data"],
         components: {
             [Progress.name]: Progress
+        },
+        mounted () {
+            makeGraph(this.data)
+        },
+        watch: {
+            data (val) {
+                makeGraph(this.data)
+            }
         }
     }
 </script>
 
-<style lang="scss" scoped>
-
+<style>
+#viewSvg {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border: 3px solid lightgray;
+    border-radius: 30px;
+}
 </style>
