@@ -1,20 +1,29 @@
 
-var data = "data.json";
-makeGraph(data, false);
+data = 'data1.json';
+makeGraph(data,true);
+//remove above =====================================================
 function makeGraph(data, showTokens){
+// export const makeGraph = function (data,showTokens) {
+    //ADD EXPORT TO THE ABOVE LINE and remove this ============
+    // d3.json(data).get(function(error,data)
+    //=========================================================
 
 var start = performance.now();
 var layers = {bottom:0,token:0,surface:0,top:10};
 var sNodes =[];
 var aNodes =[];
 var tokenList =[];
+    // debugger
 
 d3.json(data).get(function(error,data){
+
+    var id = data.id;
     var a_nodes = Object.entries(data.a_nodes);
     var s_nodes = Object.entries(data.s_nodes);
     var dataEdges = Object.entries(data.edges);
-    var dataTokens = Object.values(data.sentence);
+    var dataTokens = Object.entries(data.sentence);
     var top = Object.entries(data.tops);
+
     //TOP IS A SPECIFIC THING TAHT NEEDS TO BE READ IN FROM THE DATA AND IS NOT NECESSARILY LABELLED.
     dataTokens.forEach(element => {
         tokenList.push(element);
@@ -46,8 +55,12 @@ d3.json(data).get(function(error,data){
         }
         i++;
         aNodes.push(dummyNodeA);
+        aNodeLabels.push("TOP");
+        aNodeIndexes.push(dummyNodeA.index);
     });
 
+
+    
     dataEdges.forEach(element => {
         if(sNodeIndexes.includes(element[1].src.toString())){
             sNodes[sNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
@@ -75,6 +88,7 @@ var maxANodeHeight = 0;
 var minSNode = 0;
 var TopNodeHeight=0;
 var gapBetweenBottomNodeAndLayer = 100;
+var tokenGap = width/tokenList.length;
 
 // ARROW SIZE DEFINIITONS
 const arrowPoints = [[0, 0], [0, 6], [6, 3]];
@@ -116,13 +130,16 @@ sNodes.forEach(element => {
 });
 layers.token = minSNode + 100;
 layers.bottom = layers.token + 100;
-height=layers.bottom +10;
+let height=layers.bottom +10;
 
 //  AT THIS POINT NODE HEIGHTS AND LAYER HEIGHTS HAVE BEEN DETERMINED.
 var layerVals = Object.values(layers);
 
+if (document.getElementsByClassName("d3-graph").length === 5){
+    d3.select("svg").remove()
+}
 
-var svg = d3.select("body").append("svg").attr("id", "viewSvg")
+var svg = d3.select("body").append("svg").attr("id", "viewSvg").attr("class", "d3-graph")
 .attr("height", "700px").attr("width", 1000+"px")
 .attr("viewBox","0,0,"+width +","+ height )
 var group = svg.append("g").attr("id", "group");
@@ -147,6 +164,7 @@ zoomGroup.append("defs").selectAll("marker.s").data(sNodes).enter().append("mark
         .attr('d', d3.line()(arrowPoints))
         .attr("fill", function(d,i){return d.colour;});
 zoomGroup.select("defs").selectAll("marker.a").data(aNodes).enter().append("marker")
+    
         .attr("class","a")
         .attr('id', function(d,i){return "arrow-"+d.index;})
         .attr('viewBox', [0, 0, 7, 7])
@@ -188,7 +206,6 @@ zoomGroup.append("rect")
 // DRAWING LAYER LINES
 if(!(showTokens)){
     layerVals[0] = layerVals[1];
-    console.log(layerVals);
 }
 zoomGroup.selectAll("line.layers").data(layerVals).enter().append("line")
     .attr("class","layers")
@@ -203,7 +220,7 @@ zoomGroup.selectAll("line.layers").data(layerVals).enter().append("line")
 if(showTokens){
     zoomGroup.append("text").selectAll("text.tokens").data(tokenList).enter().append("tspan").text(d => d)
         .attr("class","tokens")
-        .attr("x",function(d,i){return offset + i*(width/(tokenList.length));})
+        .attr("x",function(d,i){return offset + i*tokenGap;})
         .attr("y",function(){return layers.bottom - 50;}) //change with depth of token layer.
         .attr("font-size","30")
         .attr("text-anchor","middle")
@@ -231,22 +248,24 @@ zoomGroup.selectAll("circle.nodes").data(sNodes).enter().append("circle")
     .attr("cy",function(d,i){return d.yPos;})
     .attr("r","12")
     .attr("fill", function(d,i){return d.colour;})
-    .on("click", function(d,i){ console.log("Hello from: " + d.label);});
+    .on("click", function(d,i){ console.log("Hello from graph: " + id + " and node: " + d.label);})
+    .on("mouseover", function(d,i){mouseHover(d.colour,d.tokens)})
+    .on("mouseout", mouseOut);;
 
 // HIGHLIGHTING ANCHORS
-zoomGroup.selectAll("rect.highlights")
-    .data(sNodes)
+if(showTokens){
+    zoomGroup.selectAll("rect.highlights")
+    .data(tokenList)
     .enter().append("rect")
-    .attr("class","highlights")
+    .attr("class",function(d,i){return "highlights rectangle"+i;}) //index of the token
     .attr("height","35")
-    .attr("width",function(d,i){return 120*d.tokens.length;})
-    .attr("x",function(d,i){return d.xPos -120;})
+    .attr("width",function(d,i){return 200;})
+    .attr("x",function(d,i){return offset + i*tokenGap -100;})
     .attr("y",function(d,i){return layers.bottom - 67;})
-    .attr("fill", function(d,i){
-        if(d.tokens.length > 1){
-            return d.colour;
-        }return "none";})
+    .attr("fill", "none")
     .style("opacity","0.4");
+}
+
 
 // ABSTRACT NODES
 zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
@@ -255,12 +274,13 @@ zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
     .attr("cy",function(d,i){return d.yPos;})
     .attr("r",function(d,i){
         if(d.label=="TOP"){
-            return "20";
+            return "18";
         }
         return "12";})
     .attr("fill", function(d,i){return d.colour;})
-    .on("click", function(d,i){ console.log("Hello from: " + d.label);});
-    
+    .on("click", function(d,i){ console.log("Hello from graph: " + id + " and node: " + d.label);})
+    .on("mouseover", function(d,i){mouseHover(d.colour,d.tokens)})
+    .on("mouseout", mouseOut);    
 
 //  SURFACE EDGES
 sNodes.forEach(element => {
@@ -487,8 +507,20 @@ zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter()
     .attr("font-family","Cambria");
 
 });
+
 var end = performance.now();
 console.log("Making the graph took " + (end - start) + " milliseconds.")
-});
-
+}); //REMOVE THIS=================================================================================
 }
+
+function mouseHover(colour, anchors){
+    // console.log(colour);
+    for(var i=0; i<anchors.length; i++){
+        d3.selectAll("rect.rectangle"+anchors[i])
+        .attr("fill", colour);
+    }
+};
+function mouseOut(){
+    d3.selectAll("rect.highlights")
+    .attr("fill", "none");
+};

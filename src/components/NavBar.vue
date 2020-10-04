@@ -49,26 +49,17 @@
                 let formData = new FormData();
                 formData.append('graphs', this.file);
                 console.log(formData)
-                axios.post( 'http://localhost:8000/load_graphs', 
-                  formData,
-                  {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                  }
-                ).then(() => {
-                  axios.get('http://localhost:8000/get_graphs/1');
-                  })
+                this.$store.dispatch("uploadGraphs", formData).then(() => {
+                  this.$store.dispatch("updateGraphsBeingDisplayed");
+                })
             },
           handleFileUpload(){
             this.file = this.$refs.file.files[0];
-            console.log(this.file)
           }
         },
         data() {
             return {
                 file: null,
-                page_one_graphs: null
             }
         }
     }
