@@ -1,5 +1,5 @@
 
-data = 'data1.json';
+data = 'data.json';
 makeGraph(data,true);
 //remove above =====================================================
 function makeGraph(data, showTokens){
@@ -112,18 +112,23 @@ aNodes.forEach(element => {
 });
 
 layers.surface = TopNodeHeight + gapBetweenBottomNodeAndLayer + maxANodeHeight +25; //height determined for surface layer marker.
-aNodes.forEach(element => {
+aNodes.forEach(element =>{
     if(element.label != "TOP"){
         element.yPos = layers.surface - element.yPos -25;
-        aNodes.forEach(element2 => { //NESTED FOR-LOOP, CAN PROBABLY BE DONE BETTER. Investiagte issue with more than 2 nodes on same xy.
-            if(element.xPos == element2.xPos && element.yPos == element2.yPos){
-                element.xPos = element.xPos -50;
-                element2.xPos = element2.xPos +50;
+    }
+})
+for(var j=0;j<aNodes.length;j++){//this is expensive af
+    if(aNodes[j].label != "TOP"){
+        for(var i =0; i< aNodes.length; i++) { //NESTED FOR-LOOP, CAN PROBABLY BE DONE BETTER.
+            if(aNodes[j].xPos == aNodes[i].xPos && aNodes[j].yPos == aNodes[i].yPos && aNodes[j].index != aNodes[i].index){
+                aNodes[j].xPos = aNodes[j].xPos -75;
+                aNodes[i].xPos = aNodes[i].xPos +75;
+                j=0;
             }
-        });
+        }
     }
 
-});
+}
 sNodes.forEach(element => {
     element.yPos = layers.surface + 100 + maxSNodeHeight - element.yPos;
     minSNode = Math.max(minSNode,element.yPos);
@@ -292,38 +297,44 @@ sNodes.forEach(element => {
                 var abDiffX = Math.abs(element.xPos - otherSNode.xPos);
                 if(element.xPos >= otherSNode.xPos ){
                     if(abDiffX < 240){
-                        var fromToS = [{x:element.xPos -23,y:element.yPos},{x:otherSNode.xPos +27,y:otherSNode.yPos}];
+                        var fromToS = [{x:element.xPos -17,y:element.yPos},{x:otherSNode.xPos +20,y:otherSNode.yPos}];
                     }
                     else{
-                        var fromToS = [{x:element.xPos -23,y:element.yPos -14},
+                        var fromToS = [{x:element.xPos -17,y:element.yPos -14},
                             {x:element.xPos -abDiffX/11 ,y:element.yPos - abDiffX/11 },
                             {x:otherSNode.xPos +abDiffX/11,y:otherSNode.yPos -abDiffX/11},
-                            {x:otherSNode.xPos +27,y:otherSNode.yPos -14}]; //needs worku
+                            {x:otherSNode.xPos +17,y:otherSNode.yPos -14}]; //needs worku
                     }
                 }
                 else{
                     if(abDiffX < 240){
-                        var fromToS = [{x:element.xPos +23,y:element.yPos},{x:otherSNode.xPos -27,y:otherSNode.yPos}];
+                        var fromToS = [{x:element.xPos +17,y:element.yPos},{x:otherSNode.xPos -20,y:otherSNode.yPos}];
                     }
                     else{
                         var limitLine = 130;
                         var edgeLineYAxis = Math.min(limitLine, abDiffX/12);
-                        var fromToS = [{x:element.xPos +25,y:element.yPos},
+                        var fromToS = [{x:element.xPos +17,y:element.yPos},
                             {x:element.xPos +edgeLineYAxis,y:element.yPos +edgeLineYAxis},
                             {x:otherSNode.xPos -edgeLineYAxis,y:otherSNode.yPos +edgeLineYAxis},
-                            {x:otherSNode.xPos -28,y:otherSNode.yPos + 8}]; //needs worku
+                            {x:otherSNode.xPos -20,y:otherSNode.yPos + 8}]; //needs worku
                     }
                 }
             }
             else{
-                if(element.xPos >= otherANode.xPos ){
+                if(element.xPos > otherANode.xPos){
+                    var fromToS = [{x:element.xPos-10,y:element.yPos -15},
+                        {x:element.xPos -83 ,y:element.yPos -80 },
+                        {x:otherANode.xPos +89,y:otherANode.yPos -80},
+                        {x:otherANode.xPos +15,y:otherANode.yPos -15}]; //needs worku
+                }
+                else if (element.xPos == otherANode.xPos){
                     var fromToS = [{x:element.xPos,y:element.yPos -17},
                         {x:element.xPos -83 ,y:element.yPos -80 },
                         {x:otherANode.xPos +89,y:otherANode.yPos -80},
-                        {x:otherANode.xPos +19,y:otherANode.yPos -14}]; //needs worku
+                        {x:otherANode.xPos ,y:otherANode.yPos -17}]; //needs worku
                 }
                 else{
-                    var fromToS = [{x:element.xPos,y:element.yPos -17},
+                    var fromToS = [{x:element.xPos + 14,y:element.yPos -14},
                         {x:element.xPos +87,y:element.yPos -60},
                         {x:otherANode.xPos -83,y:otherANode.yPos -17+80},
                         {x:otherANode.xPos -19,y:otherANode.yPos + 8}]; //needs worku
@@ -341,13 +352,12 @@ sNodes.forEach(element => {
         .attr("font-size","12px")
         .attr("dominant-baseline", "middle")
         .attr("text-anchor","middle")
-        .attr("fill","#242424")
         .attr("fill", "black");
         }
     }
 });
 
-//  EDGES AND SPANS OF ABSTRACT NODES
+//  EDGES OF ABSTRACT NODES
 aNodes.forEach(element => {
     if(element.label == "TOP"){
     zoomGroup.selectAll("line.top").data([element]).enter().append("line")
@@ -365,69 +375,16 @@ aNodes.forEach(element => {
         .attr("stroke",function(d,i){return d.colour;})
         .attr("stroke-width","2");
     };
-    //SPANS - DO NOT WORRY FOR NOW
-
-    //RETHINK THIS !!!!!
-
-    // var shortX = Number.MAX_SAFE_INTEGER;
-    // var longX = 0;
-    // element.edges.forEach(edge => {
-    //     shortX = Math.min(sNodes[edge].xPos,shortX);
-    //     longX = Math.max(sNodes[edge].xPos,longX)
-    // });
-    // var colour = "gray";
-    // var width = "0.5";
-    // if(element.label =="TOP"){
-    //     colour = "red";
-    //     width = "1";
-    // }
-    // zoomGroup.selectAll("line.span1")
-    //     .data([element])
-    //     .enter().append("line")
-    //     .attr("class","span1")
-    //     .attr("x1",function(d,i){return d.xPos;})
-    //     .attr("y1",function(d,i){return d.yPos +23;})
-    //     .attr("x2",function(d,i){return d.xPos;})
-    //     .attr("y2",function(d,i){return d.yPos + 53 ;})
-    //     .attr("stroke", colour)
-    //     .attr("stroke-width",width);
-    // zoomGroup.selectAll("line.span2")
-    //     .data([element])
-    //     .enter().append("line")
-    //     .attr("class","span2")
-    //     .attr("x1",(shortX -23).toString())
-    //     .attr("y1",function(d,i){return d.yPos +53;})
-    //     .attr("x2",(longX +23).toString())
-    //     .attr("y2",function(d,i){return d.yPos +53 ;})
-    //     .attr("stroke", colour)
-    //     .attr("stroke-width",width);
-    // zoomGroup.selectAll("line.span3")
-    //     .data([element])
-    //     .enter().append("line")
-    //     .attr("class","span3")
-    //     .attr("x1",(shortX -23).toString())
-    //     .attr("y1",function(d,i){return d.yPos +53;})
-    //     .attr("x2",(shortX -23).toString())
-    //     .attr("y2",function(d,i){return d.yPos +67 ;})
-    //     .attr("stroke", colour)
-    //     .attr("stroke-width",width);
-    // zoomGroup.selectAll("line.span4")
-    //     .data([element])
-    //     .enter().append("line")
-    //     .attr("class","span4")
-    //     .attr("x1",(longX +23).toString())
-    //     .attr("y1",function(d,i){return d.yPos +53;})
-    //     .attr("x2",(longX +23).toString())
-    //     .attr("y2",function(d,i){return d.yPos +67 ;})
-    //     .attr("stroke", colour)
-    //     .attr("stroke-width",width);
     //EDGE
     for(var i =0; i< element.edges.length; i++){
         var otherSNode = sNodes[sNodeIndexes.indexOf(element.edges[i].toString())] ;
         var otherANode = aNodes[aNodeIndexes.indexOf(element.edges[i].toString())];
         if(sNodeIndexes.includes(element.edges[i].toString())){
-            if(element.xPos >= otherSNode.xPos){
+            if(element.xPos > otherSNode.xPos){
                 var fromTo = [{x:element.xPos -8 ,y:element.yPos +15},{x:otherSNode.xPos +8,y:otherSNode.yPos-20}];
+            }
+            else if(element.xPos == otherSNode.xPos){
+                var fromTo = [{x:element.xPos ,y:element.yPos +17},{x:otherSNode.xPos,y:otherSNode.yPos-20}];
             }
             else{
                 var fromTo = [{x:element.xPos +8 ,y:element.yPos +15},{x:otherSNode.xPos -8,y:otherSNode.yPos-20}];
@@ -435,9 +392,9 @@ aNodes.forEach(element => {
         }
         else{
             if(element.xPos >= otherANode.xPos){
-                var fromTo = [{x:element.xPos -23,y:element.yPos},{x:otherANode.xPos+29,y:otherANode.yPos}];   
+                var fromTo = [{x:element.xPos -17,y:element.yPos},{x:otherANode.xPos+20,y:otherANode.yPos}];   
             }else{
-                var fromTo = [{x:element.xPos +23 ,y:element.yPos},{x:otherANode.xPos -29,y:otherANode.yPos}];
+                var fromTo = [{x:element.xPos +17 ,y:element.yPos},{x:otherANode.xPos -20,y:otherANode.yPos}];
             }
 
         }
@@ -465,10 +422,12 @@ zoomGroup.selectAll("rect.labels")
     .enter().append("rect")
     .attr("class","labels")
     .attr("height","20")
-    .attr("width","60") //changes with length of the label.
-    .attr("x",function(d,i){return d.xPos-30;})
+    .attr("width","70") //changes with length of the label.
+    .attr("x",function(d,i){return d.xPos-35;})
     .attr("y",function(d,i){return d.yPos + 33;})
-    .attr("fill", function(d,i){return d.colour;});
+    .attr("stroke", function(d,i){return d.colour;})
+    .attr("stroke-width", "2")
+    .attr("fill", "#f2f0f0");
 zoomGroup.append("text").selectAll("text.nodeLabels").data(sNodeLabels).enter().append("tspan").text(d => d)
     .attr("class","nodeLabels")
     .attr("x",function(d,i){return sNodes[i].xPos;})
@@ -477,7 +436,7 @@ zoomGroup.append("text").selectAll("text.nodeLabels").data(sNodeLabels).enter().
     .attr("text-anchor","middle")
     .attr("dominant-baseline","middle")
     .attr("fill","black")
-    .attr("font-family","Cambria");
+    .attr("font-family","Arial");
 
 //ABSTRACT NODE LABELS - redo this so edges dont overwrite?
 zoomGroup.selectAll("rect.alabels")
@@ -493,9 +452,9 @@ zoomGroup.selectAll("rect.alabels")
      }
       return d.xPos-30;})
     .attr("y",function(d,i){return d.yPos + 30;})
-    .attr("fill", function(d,i){if(d.label=="TOP"){
-        return "red";
-    }return "#a5a5a5";});
+    .attr("stroke", function(d,i){return d.colour;})
+    .attr("stroke-width", "2")
+    .attr("fill", "#f2f0f0");
 zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter().append("tspan").text(d => d)
     .attr("class","anodeLabels")
     .attr("x",function(d,i){return aNodes[i].xPos;})
@@ -504,7 +463,7 @@ zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter()
     .attr("text-anchor","middle")
     .attr("dominant-baseline","middle")
     .attr("fill","black")
-    .attr("font-family","Cambria");
+    .attr("font-family","Arial");
 
 });
 
