@@ -89,6 +89,7 @@ var minSNode = 0;
 var TopNodeHeight=0;
 var gapBetweenBottomNodeAndLayer = 100;
 var tokenGap = width/tokenList.length;
+var layerText = ["Token layer", "Surface node layer", "Abstract node layer"];
 
 // ARROW SIZE DEFINIITONS
 const arrowPoints = [[0, 0], [0, 6], [6, 3]];
@@ -211,6 +212,7 @@ zoomGroup.append("rect")
 // DRAWING LAYER LINES
 if(!(showTokens)){
     layerVals[0] = layerVals[1];
+    layerText.splice(0,1);
 }
 zoomGroup.selectAll("line.layers").data(layerVals).enter().append("line")
     .attr("class","layers")
@@ -244,6 +246,16 @@ if(showTokens){
         .attr("stroke","gray")
         .attr("stroke-width","2");
 }
+//labelling layers
+zoomGroup.append("text").selectAll("text.layerText").data(layerText).enter().append("tspan").text(d => d)
+    .attr("class","layerText")
+    .attr("x",function(d,i){return 10;})
+    .attr("y",function(d,i){if(showTokens){
+        return layerVals[i]-5;
+    }return layerVals[i+1]-5;})
+    .attr("font-size","16")
+    .attr("fill","gray")
+    .attr("font-family","Arial");
 
 
 // DRAWING SURFACE NODES
@@ -271,6 +283,28 @@ if(showTokens){
     .style("opacity","0.4");
 }
 
+//LABELLING NODES.
+zoomGroup.selectAll("rect.labels")
+    .data(sNodes)
+    .enter().append("rect")
+    .attr("class","labels")
+    .attr("height","20")
+    .attr("width","70") //changes with length of the label.
+    .attr("x",function(d,i){return d.xPos-35;})
+    .attr("y",function(d,i){return d.yPos + 33;})
+    .attr("stroke", function(d,i){return d.colour;})
+    .attr("stroke-width", "2")
+    .attr("fill", "#f2f0f0");
+zoomGroup.append("text").selectAll("text.nodeLabels").data(sNodeLabels).enter().append("tspan").text(d => d)
+    .attr("class","nodeLabels")
+    .attr("x",function(d,i){return sNodes[i].xPos;})
+    .attr("y",function(d,i){return sNodes[i].yPos + 43;})
+    .attr("font-size","12px")
+    .attr("text-anchor","middle")
+    .attr("font-weight", "900")
+    .attr("dominant-baseline","middle")
+    .attr("fill","black")
+    .attr("font-family","Arial");
 
 // ABSTRACT NODES
 zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
@@ -285,7 +319,35 @@ zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
     .attr("fill", function(d,i){return d.colour;})
     .on("click", function(d,i){ console.log("Hello from graph: " + id + " and node: " + d.label);})
     .on("mouseover", function(d,i){mouseHover(d.colour,d.tokens)})
-    .on("mouseout", mouseOut);    
+    .on("mouseout", mouseOut); 
+
+//ABSTRACT NODE LABELS - redo this so edges dont overwrite?
+zoomGroup.selectAll("rect.alabels")
+    .data(aNodes)
+    .enter().append("rect")
+    .attr("class","alabels")
+    .attr("height","20")
+    .attr("width",function(d,i){if(d.label=="TOP"){
+        return "30";
+    }return "60";})
+    .attr("x",function(d,i){if(d.label=="TOP"){
+        return d.xPos-15;
+     }
+      return d.xPos-30;})
+    .attr("y",function(d,i){return d.yPos + 30;})
+    .attr("stroke", function(d,i){return d.colour;})
+    .attr("stroke-width", "2")
+    .attr("fill", "#f2f0f0");
+zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter().append("tspan").text(d => d)
+    .attr("class","anodeLabels")
+    .attr("x",function(d,i){return aNodes[i].xPos;})
+    .attr("y",function(d,i){return aNodes[i].yPos + 43;})
+    .attr("font-size","12px")
+    .attr("text-anchor","middle")
+    .attr("font-weight", "900")
+    .attr("dominant-baseline","middle")
+    .attr("fill","black")
+    .attr("font-family","Arial");
 
 //  SURFACE EDGES
 sNodes.forEach(element => {
@@ -349,7 +411,7 @@ sNodes.forEach(element => {
         .attr("x",labelX.toString())
         .attr("y",labelY.toString())
         .attr("font-family","Arial")
-        .attr("font-size","12px")
+        .attr("font-size","14px")
         .attr("dominant-baseline", "middle")
         .attr("text-anchor","middle")
         .attr("fill", "black");
@@ -415,55 +477,6 @@ aNodes.forEach(element => {
             .attr("fill","#242424")
             .attr("text-anchor","middle");
     }
-    
-//LABELLING NODES.
-zoomGroup.selectAll("rect.labels")
-    .data(sNodes)
-    .enter().append("rect")
-    .attr("class","labels")
-    .attr("height","20")
-    .attr("width","70") //changes with length of the label.
-    .attr("x",function(d,i){return d.xPos-35;})
-    .attr("y",function(d,i){return d.yPos + 33;})
-    .attr("stroke", function(d,i){return d.colour;})
-    .attr("stroke-width", "2")
-    .attr("fill", "#f2f0f0");
-zoomGroup.append("text").selectAll("text.nodeLabels").data(sNodeLabels).enter().append("tspan").text(d => d)
-    .attr("class","nodeLabels")
-    .attr("x",function(d,i){return sNodes[i].xPos;})
-    .attr("y",function(d,i){return sNodes[i].yPos + 43;})
-    .attr("font-size","12")
-    .attr("text-anchor","middle")
-    .attr("dominant-baseline","middle")
-    .attr("fill","black")
-    .attr("font-family","Arial");
-
-//ABSTRACT NODE LABELS - redo this so edges dont overwrite?
-zoomGroup.selectAll("rect.alabels")
-    .data(aNodes)
-    .enter().append("rect")
-    .attr("class","alabels")
-    .attr("height","20")
-    .attr("width",function(d,i){if(d.label=="TOP"){
-        return "30";
-    }return "60";})
-    .attr("x",function(d,i){if(d.label=="TOP"){
-        return d.xPos-15;
-     }
-      return d.xPos-30;})
-    .attr("y",function(d,i){return d.yPos + 30;})
-    .attr("stroke", function(d,i){return d.colour;})
-    .attr("stroke-width", "2")
-    .attr("fill", "#f2f0f0");
-zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter().append("tspan").text(d => d)
-    .attr("class","anodeLabels")
-    .attr("x",function(d,i){return aNodes[i].xPos;})
-    .attr("y",function(d,i){return aNodes[i].yPos + 43;})
-    .attr("font-size","12")
-    .attr("text-anchor","middle")
-    .attr("dominant-baseline","middle")
-    .attr("fill","black")
-    .attr("font-family","Arial");
 
 });
 
