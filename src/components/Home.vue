@@ -10,7 +10,7 @@
       <properties-modal/>
     </modal>
     <div class="col align-content-center">
-      <graph-visual v-for="(v,i) in data" :key="key" :data="v"></graph-visual>
+      <graph-visual v-for="(v,i) in data" :key="i" :data="v"></graph-visual>
     </div>
     <paging-bar/>
   </div>
@@ -41,7 +41,6 @@ export default {
   },
   watch: {
     getGraphsToDisplay (val) {
-      this.data = []
       this.data = val
       this.key += 1
   },

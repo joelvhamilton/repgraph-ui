@@ -29,7 +29,7 @@
         },
 
         components: {
-            'graph-visual': () => import("../GraphVisualForModal"),
+            'graph-visual': () => import("../GraphVisual"),
         },
 
         watch: {

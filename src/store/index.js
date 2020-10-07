@@ -10,7 +10,8 @@ export const store = new Vuex.Store({
         resultsOfGraphComparison: {}, // functionality to compare two graphs
         graphSearchResults: [], // functionality to search for a node label or subgraph
         currentPageOfGraphs: 0,
-        individualGraphToDisplay: {}
+        individualGraphToDisplay: {},
+        displayTokens: true
     },
 
     getters: {
@@ -20,7 +21,8 @@ export const store = new Vuex.Store({
         getResultsOfGraphComparison: state => state.resultsOfGraphComparison,
         getGraphSearchResults: state => state.graphSearchResults,
         getCurrentPageOfGraphs: state => state.currentPageOfGraphs,
-        getIndividualGraphToDisplay: state => state.individualGraphToDisplay
+        getIndividualGraphToDisplay: state => state.individualGraphToDisplay,
+        displayTokens: state => state.displayTokens
     },
 
     mutations: {
@@ -55,6 +57,10 @@ export const store = new Vuex.Store({
 
         setIndividualGraphToDisplay(state, graph){
             state.individualGraphToDisplay = graph;
+        },
+
+        changeDisplayTokens(state, updated_status){
+            state.displayTokens = updated_status;
         }
     },
 
@@ -91,6 +97,10 @@ export const store = new Vuex.Store({
                 }
             });
 
+        },
+        
+        updateDisplayTokens({commit}, new_status){
+            commit("changeDisplayTokens", new_status)
         },
 
         updateIndividualGraphToDisplay({commit}, graphId){

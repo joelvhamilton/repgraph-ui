@@ -12,14 +12,15 @@
                 <input class="form-control mr-sm-2" type="search" placeholder="Node label or subgraph" aria-label="Search">
                 <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
             </form>
+                <input type="checkbox" id="toDisplayTokens" v-model="mustDisplayTokens">
+                <label for="toDisplayTokens"> Display Tokens </label>
         </ul>
     </div>
 
 </template>
-
 <script>
     import axios from "axios"
-    import {mapActions} from "vuex"
+    import {mapActions, mapGetters} from "vuex"
     export default {
         methods: {
             checkProperties(graphId) {
@@ -28,16 +29,28 @@
                 })
             },
             ...mapActions({
-                setGraphProperties: 'setNewGraphProperties'
+                setGraphProperties: 'setNewGraphProperties',
+                updateDisplayTokens: 'updateDisplayTokens'
             }),
             togglePropertiesButton() {
                 this.propertiesButtonClicked = ! this.propertiesButtonClicked;
             }
         },
+        computed: {
+            ...mapGetters({
+                displayTokens: 'displayTokens'
+            })
+        },
         data() {
             return {
                 propertiesButtonClicked: false,
-                graphId: 0
+                graphId: 0,
+                mustDisplayTokens: true
+            }
+        },
+        watch: {
+            mustDisplayTokens(val){
+                this.updateDisplayTokens(val);
             }
         }
     }

@@ -11,18 +11,28 @@
 <script>
     import {Progress} from "element-ui"
     import {makeGraph} from "../graph.js"
+    import {mapGetters} from "vuex"
+
     export default {
         props: ["data"],
         components: {
             [Progress.name]: Progress
         },
-        mounted () {
-            makeGraph(this.data)
-        },
         watch: {
             data (val) {
-                makeGraph(this.data)
+                makeGraph(this.data, this.displayTokens);
+            },
+            displayTokens(val){
+                makeGraph(this.data, this.displayTokens);
             }
+        },
+        mounted () {
+            makeGraph(this.data, this.displayTokens);
+        },
+        computed: {
+            ...mapGetters({
+                displayTokens: 'displayTokens'
+            })
         }
     }
 </script>

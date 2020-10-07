@@ -1,5 +1,5 @@
 
-export const makeGraph = function (data,showTokens) {
+export const makeGraph = function (data, showTokens, forModal) {
 
 var start = performance.now();
 var layers = {bottom:0,token:0,surface:0,top:10};
@@ -471,9 +471,10 @@ aNodes.forEach(element => {
     }
 
 });
-}
+
 var end = performance.now();
-console.log("Making the graph took " + (end - start) + " milliseconds.") //REMOVE THIS}
+console.log("Making the graph took " + (end - start) + " milliseconds.") //REMOVE THIS=================================================================================
+}
 
 function mouseHover(colour, anchors){
     // console.log(colour);
@@ -485,4 +486,4 @@ function mouseHover(colour, anchors){
 function mouseOut(){
     d3.selectAll("rect.highlights")
     .attr("fill", "none");
-}
+};
