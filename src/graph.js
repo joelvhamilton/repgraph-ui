@@ -1,12 +1,5 @@
 
-data = 'data.json';
-makeGraph(data,true);
-//remove above =====================================================
-function makeGraph(data, showTokens){
-// export const makeGraph = function (data,showTokens) {
-    //ADD EXPORT TO THE ABOVE LINE and remove this ============
-    // d3.json(data).get(function(error,data)
-    //=========================================================
+export const makeGraph = function (data,showTokens) {
 
 var start = performance.now();
 var layers = {bottom:0,token:0,surface:0,top:10};
@@ -14,15 +7,12 @@ var sNodes =[];
 var aNodes =[];
 var tokenList =[];
     // debugger
-
-d3.json(data).get(function(error,data){
-
-    var id = data.id;
-    var a_nodes = Object.entries(data.a_nodes);
-    var s_nodes = Object.entries(data.s_nodes);
-    var dataEdges = Object.entries(data.edges);
-    var dataTokens = Object.entries(data.sentence);
-    var top = Object.entries(data.tops);
+var id = data.id;
+var a_nodes = Object.entries(data.a_nodes);
+var s_nodes = Object.entries(data.s_nodes);
+var dataEdges = Object.entries(data.edges);
+var dataTokens = Object.entries(data.sentence);
+var top = Object.entries(data.tops);
 
     //TOP IS A SPECIFIC THING TAHT NEEDS TO BE READ IN FROM THE DATA AND IS NOT NECESSARILY LABELLED.
     dataTokens.forEach(element => {
@@ -169,8 +159,8 @@ zoomGroup.append("defs").selectAll("marker.s").data(sNodes).enter().append("mark
     .append('path')
         .attr('d', d3.line()(arrowPoints))
         .attr("fill", function(d,i){return d.colour;});
+        
 zoomGroup.select("defs").selectAll("marker.a").data(aNodes).enter().append("marker")
-    
         .attr("class","a")
         .attr('id', function(d,i){return "arrow-"+d.index;})
         .attr('viewBox', [0, 0, 7, 7])
@@ -481,8 +471,7 @@ aNodes.forEach(element => {
 });
 
 var end = performance.now();
-console.log("Making the graph took " + (end - start) + " milliseconds.")
-}); //REMOVE THIS=================================================================================
+console.log("Making the graph took " + (end - start) + " milliseconds.") //REMOVE THIS=================================================================================
 }
 
 function mouseHover(colour, anchors){
