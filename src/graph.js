@@ -132,7 +132,8 @@ let height=layers.bottom +10;
 var layerVals = Object.values(layers);
 
 if (document.getElementsByClassName("d3-graph").length === 5){
-    d3.select("svg").remove()
+    d3.select("svg").remove();
+    // I WOULD SAY d3.selectAll("svg.d3-graph").remove();
 }
 
 var svg = d3.select("body").append("svg").attr("id", "viewSvg").attr("class", "d3-graph")
@@ -159,7 +160,7 @@ zoomGroup.append("defs").selectAll("marker.s").data(sNodes).enter().append("mark
     .append('path')
         .attr('d', d3.line()(arrowPoints))
         .attr("fill", function(d,i){return d.colour;});
-        
+
 zoomGroup.select("defs").selectAll("marker.a").data(aNodes).enter().append("marker")
         .attr("class","a")
         .attr('id', function(d,i){return "arrow-"+d.index;})
