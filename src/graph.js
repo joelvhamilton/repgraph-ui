@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 
 export const makeGraph = function (data,showTokens) {
-=======
-export const makeGraph = function (data) {
->>>>>>> master
 
 var start = performance.now();
 var layers = {bottom:0,token:0,surface:0,top:10};
@@ -11,7 +7,6 @@ var sNodes =[];
 var aNodes =[];
 var tokenList =[];
     // debugger
-<<<<<<< HEAD
 var id = data.id;
 var a_nodes = Object.entries(data.a_nodes);
 var s_nodes = Object.entries(data.s_nodes);
@@ -19,15 +14,6 @@ var dataEdges = Object.entries(data.edges);
 var dataTokens = Object.entries(data.sentence);
 var top = Object.entries(data.tops);
 
-=======
-
-    var a_nodes = Object.entries(data.a_nodes);
-    var s_nodes = Object.entries(data.s_nodes);
-    var dataEdges = Object.entries(data.edges);
-    var dataTokens = Object.entries(data.sentence);
-    var top = Object.entries(data.tops);
-
->>>>>>> master
     //TOP IS A SPECIFIC THING TAHT NEEDS TO BE READ IN FROM THE DATA AND IS NOT NECESSARILY LABELLED.
     dataTokens.forEach(element => {
         tokenList.push(element);
@@ -62,11 +48,8 @@ var top = Object.entries(data.tops);
         aNodeLabels.push("TOP");
         aNodeIndexes.push(dummyNodeA.index);
     });
-<<<<<<< HEAD
 
 
-=======
->>>>>>> master
     
     dataEdges.forEach(element => {
         if(sNodeIndexes.includes(element[1].src.toString())){
@@ -149,12 +132,8 @@ let height=layers.bottom +10;
 var layerVals = Object.values(layers);
 
 if (document.getElementsByClassName("d3-graph").length === 5){
-<<<<<<< HEAD
     d3.select("svg").remove();
     // I WOULD SAY d3.selectAll("svg.d3-graph").remove();
-=======
-    d3.select("svg").remove()
->>>>>>> master
 }
 
 var svg = d3.select("body").append("svg").attr("id", "viewSvg").attr("class", "d3-graph")
@@ -494,7 +473,6 @@ aNodes.forEach(element => {
 });
 
 var end = performance.now();
-<<<<<<< HEAD
 console.log("Making the graph took " + (end - start) + " milliseconds.") //REMOVE THIS=================================================================================
 }
 
@@ -509,7 +487,3 @@ function mouseOut(){
     d3.selectAll("rect.highlights")
     .attr("fill", "none");
 };
-=======
-console.log("Making the graph took " + (end - start) + " milliseconds.")
-}
->>>>>>> master
