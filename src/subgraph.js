@@ -1,9 +1,49 @@
 
-makeSubgraph("data.json");
-function makeSubgraph(data){
 
-d3.json(data).get(function(error,data){
+// TEST DATA
+var data = {"20004008": {
+    "edges": [
+        {
+            "src": 5,
+            "trg": 4,
+            "label": "RSTR/H"
+        }
+    ],
+    "a_nodes": {
+        "5": {
+            "label": "proper_q",
+            "anchors": [
+                2,
+                3
+            ]
+        },
+        "4": {
+            "label": "named",
+            "anchors": [
+                3
+            ]
+        }
+    },
+    "s_nodes": {},
+    "tokens": {
+        "3": {
+            "form": "Malizia",
+            "lemma": "Malizia",
+            "carg": "Malizia"
+        }
+    },
+    "tops": "5"
+}
+}
+
+makeSubgraph(data);
+
+function makeSubgraph(data){
         //remove above
+
+for(var boog in data){
+    var data = data[boog];
+}
 
 var sNodes =[];
 var aNodes =[];
@@ -11,13 +51,23 @@ var aNodes =[];
 var a_nodes = Object.entries(data.a_nodes);
 var s_nodes = Object.entries(data.s_nodes);
 var dataEdges = Object.entries(data.edges);
-
+var tops = parseInt(data.tops,10);
 a_nodes.forEach(element => {
-    var dummyNodeA = {index:element[0],tokens:element[1].anchors,label:element[1].label,edges:element[1].outgoing,edgelabels:[],xPos:0,yPos:0,colour:"green"};
+    if(element[0] == tops){
+        var dummyNodeA = {index:element[0],top:true,tokens:element[1].anchors,label:element[1].label,edgelabels:[],outgoing:[],xPos:0,yPos:0,colour:"black"};
+    }
+    else{
+        var dummyNodeA = {index:element[0],top:false,tokens:element[1].anchors,label:element[1].label,edgelabels:[],outgoing:[],xPos:0,yPos:0,colour:"black"};
+    }
     aNodes.push(dummyNodeA);
 });
 s_nodes.forEach(element => {
-    var dummyNodeS = {index:element[0],tokens:element[1].anchors,label:element[1].label,edges:element[1].outgoing,edgelabels:[],xPos:0,yPos:0,colour:"green"};
+    if(element[0]==tops){
+        var dummyNodeS = {index:element[0],top:true,tokens:element[1].anchors,label:element[1].label,edgelabels:[],outgoing:[],xPos:0,yPos:0,colour:"black"};
+    }
+    else{
+        var dummyNodeS = {index:element[0],top:false,tokens:element[1].anchors,label:element[1].label,edgelabels:[],outgoing:[],xPos:0,yPos:0,colour:"black"};
+    }
     sNodes.push(dummyNodeS);
 });
 
@@ -25,26 +75,41 @@ var sNodeIndexes = sNodes.map(x => x.index);
 var aNodeIndexes = aNodes.map(x => x.index);
 var sNodeLabels = sNodes.map(x => x.label);
 var aNodeLabels = aNodes.map(x => x.label);
-        //TODO READ IN THE SELECTED NODE.................
+
 dataEdges.forEach(element => {
     if(sNodeIndexes.includes(element[1].src.toString())){
         sNodes[sNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
+        sNodes[sNodeIndexes.indexOf(element[1].src.toString())].outgoing.push(element[1].trg);
             }
     else{
         aNodes[aNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
+        aNodes[aNodeIndexes.indexOf(element[1].src.toString())].outgoing.push(element[1].trg);
     }
 });
 
 //TODO DETERMINE SOME COLOUR SCHEME FOR NODES.
 
-var width;
-var height;
-var hasAbstractlayer;
-var abstractLayer;
-var maxNodeHeight;
-var maxSNodeHeight;
+var width = Math.max(Math.max(aNodes.length, sNodes.length)*100,700);
+var height = 500;
+var hasAbstractlayer = true;
+var abstractLayer = height/2;
+var aNodeHeight = height -450;
+var sNodeHeight = height -50;
+var aNodeInterval = width/aNodes.length;
+var sNodeInterval = width/sNodes.length;
 
-//TODO SOME WAY TO DETERMINE THE POSITION OF NODES. (TAKE INSPO FROM GRAPH.JS).
+var ai =0;
+aNodes.forEach(element => {
+    element.yPos = aNodeHeight;
+    element.xPos = aNodeInterval/2 + (aNodeInterval*ai);
+    ai++;
+});
+var si=0;
+sNodes.forEach(element => {
+    element.yPos = sNodeHeight;
+    element.xPos = sNodeInterval/2 + (sNodeInterval*si);
+    si++;
+});
 
 //SVG definitions.
 var svg = d3.select("body").append("svg").attr("id", "viewSvg").attr("class", "d3-subgraph")
@@ -104,12 +169,8 @@ zoomGroup.append("path")
 zoomGroup.append("rect")
     .attr("class","back")
     .attr("height","100%")
-    .attr("width","100%")
+    .attr("width",width)
     .attr("x","0")
     .attr("y","0")
     .attr("fill","#f2f0f0");
-
-
-    });
-    //remove above line
 }
