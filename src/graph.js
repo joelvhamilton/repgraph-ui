@@ -1,4 +1,5 @@
-export const makeGraph = function (data) {
+
+export const makeGraph = function (data,showTokens) {
 
 var start = performance.now();
 var layers = {bottom:0,token:0,surface:0,top:10};
@@ -6,12 +7,12 @@ var sNodes =[];
 var aNodes =[];
 var tokenList =[];
     // debugger
-
-    var a_nodes = Object.entries(data.a_nodes);
-    var s_nodes = Object.entries(data.s_nodes);
-    var dataEdges = Object.entries(data.edges);
-    var dataTokens = Object.entries(data.sentence);
-    var top = Object.entries(data.tops);
+var id = data.id;
+var a_nodes = Object.entries(data.a_nodes);
+var s_nodes = Object.entries(data.s_nodes);
+var dataEdges = Object.entries(data.edges);
+var dataTokens = Object.entries(data.sentence);
+var top = Object.entries(data.tops);
 
     //TOP IS A SPECIFIC THING TAHT NEEDS TO BE READ IN FROM THE DATA AND IS NOT NECESSARILY LABELLED.
     dataTokens.forEach(element => {
@@ -44,7 +45,11 @@ var tokenList =[];
         }
         i++;
         aNodes.push(dummyNodeA);
+        aNodeLabels.push("TOP");
+        aNodeIndexes.push(dummyNodeA.index);
     });
+
+
     
     dataEdges.forEach(element => {
         if(sNodeIndexes.includes(element[1].src.toString())){
@@ -73,6 +78,8 @@ var maxANodeHeight = 0;
 var minSNode = 0;
 var TopNodeHeight=0;
 var gapBetweenBottomNodeAndLayer = 100;
+var tokenGap = width/tokenList.length;
+var layerText = ["Token layer", "Surface node layer", "Abstract node layer"];
 
 // ARROW SIZE DEFINIITONS
 const arrowPoints = [[0, 0], [0, 6], [6, 3]];
@@ -96,18 +103,23 @@ aNodes.forEach(element => {
 });
 
 layers.surface = TopNodeHeight + gapBetweenBottomNodeAndLayer + maxANodeHeight +25; //height determined for surface layer marker.
-aNodes.forEach(element => {
+aNodes.forEach(element =>{
     if(element.label != "TOP"){
         element.yPos = layers.surface - element.yPos -25;
-        aNodes.forEach(element2 => { //NESTED FOR-LOOP, CAN PROBABLY BE DONE BETTER. Investiagte issue with more than 2 nodes on same xy.
-            if(element.xPos == element2.xPos && element.yPos == element2.yPos){
-                element.xPos = element.xPos -50;
-                element2.xPos = element2.xPos +50;
+    }
+})
+for(var j=0;j<aNodes.length;j++){//this is expensive af
+    if(aNodes[j].label != "TOP"){
+        for(var i =0; i< aNodes.length; i++) { //NESTED FOR-LOOP, CAN PROBABLY BE DONE BETTER.
+            if(aNodes[j].xPos == aNodes[i].xPos && aNodes[j].yPos == aNodes[i].yPos && aNodes[j].index != aNodes[i].index){
+                aNodes[j].xPos = aNodes[j].xPos -75;
+                aNodes[i].xPos = aNodes[i].xPos +75;
+                j=0;
             }
-        });
+        }
     }
 
-});
+}
 sNodes.forEach(element => {
     element.yPos = layers.surface + 100 + maxSNodeHeight - element.yPos;
     minSNode = Math.max(minSNode,element.yPos);
@@ -120,7 +132,8 @@ let height=layers.bottom +10;
 var layerVals = Object.values(layers);
 
 if (document.getElementsByClassName("d3-graph").length === 5){
-    d3.select("svg").remove()
+    d3.select("svg").remove();
+    // I WOULD SAY d3.selectAll("svg.d3-graph").remove();
 }
 
 var svg = d3.select("body").append("svg").attr("id", "viewSvg").attr("class", "d3-graph")
@@ -147,6 +160,7 @@ zoomGroup.append("defs").selectAll("marker.s").data(sNodes).enter().append("mark
     .append('path')
         .attr('d', d3.line()(arrowPoints))
         .attr("fill", function(d,i){return d.colour;});
+
 zoomGroup.select("defs").selectAll("marker.a").data(aNodes).enter().append("marker")
     
         .attr("class","a")
@@ -178,13 +192,20 @@ zoomGroup.append("path")
 //BACKGROUND RECTANGLE
 zoomGroup.append("rect")
     .attr("class","back")
-    .attr("height","100%")
+    .attr("height",function(d,i){if(showTokens){
+        return height;
+    }
+    return height-100;})
     .attr("width","100%")
     .attr("x","0")
     .attr("y","0")
     .attr("fill","#f2f0f0");
 
 // DRAWING LAYER LINES
+if(!(showTokens)){
+    layerVals[0] = layerVals[1];
+    layerText.splice(0,1);
+}
 zoomGroup.selectAll("line.layers").data(layerVals).enter().append("line")
     .attr("class","layers")
     .attr("x1","0")
@@ -195,15 +216,39 @@ zoomGroup.selectAll("line.layers").data(layerVals).enter().append("line")
     .attr("stroke-width","2");
 
 // DRAWING TOKENS
-zoomGroup.append("text").selectAll("text.tokens").data(tokenList).enter().append("tspan").text(d => d)
-    .attr("class","tokens")
-    .attr("x",function(d,i){return offset + i*(width/(tokenList.length));})
-    .attr("y",function(){return layers.bottom - 50;}) //change with depth of token layer.
-    .attr("font-size","30")
-    .attr("text-anchor","middle")
-    .attr("dominant-baseline","middle")
-    .attr("fill","black")
+if(showTokens){
+    zoomGroup.append("text").selectAll("text.tokens").data(tokenList).enter().append("tspan").text(d => d)
+        .attr("class","tokens")
+        .attr("x",function(d,i){return offset + i*tokenGap;})
+        .attr("y",function(){return layers.bottom - 50;}) //change with depth of token layer.
+        .attr("font-size","30")
+        .attr("text-anchor","middle")
+        .attr("dominant-baseline","middle")
+        .attr("fill","black")
+        .attr("font-family","Arial");
+
+    // DRAWING TOKEN->NODE DASHES.
+    zoomGroup.selectAll("line.relations").data(sNodes).enter().append("line")
+        .attr("class","relations")
+        .attr("x1",function(d,i){return d.xPos;})
+        .attr("y1",function(d,i){return d.yPos + 23;})
+        .attr("x2",function(d,i){return d.xPos;})
+        .attr("y2",function(d,i){return layers.bottom - 70;})
+        .attr("stroke-dasharray","3,3")
+        .attr("stroke","gray")
+        .attr("stroke-width","2");
+}
+//labelling layers
+zoomGroup.append("text").selectAll("text.layerText").data(layerText).enter().append("tspan").text(d => d)
+    .attr("class","layerText")
+    .attr("x",function(d,i){return 10;})
+    .attr("y",function(d,i){if(showTokens){
+        return layerVals[i]-5;
+    }return layerVals[i+1]-5;})
+    .attr("font-size","16")
+    .attr("fill","gray")
     .attr("font-family","Arial");
+
 
 // DRAWING SURFACE NODES
 zoomGroup.selectAll("circle.nodes").data(sNodes).enter().append("circle")
@@ -211,33 +256,47 @@ zoomGroup.selectAll("circle.nodes").data(sNodes).enter().append("circle")
     .attr("cx",function(d,i){return d.xPos})
     .attr("cy",function(d,i){return d.yPos;})
     .attr("r","12")
-    .attr("fill", function(d,i){return d.colour;});
-
-// DRAWING TOKEN->NODE DASHES.
-zoomGroup.selectAll("line.relations").data(sNodes).enter().append("line")
-    .attr("class","relations")
-    .attr("x1",function(d,i){return d.xPos;})
-    .attr("y1",function(d,i){return d.yPos + 23;})
-    .attr("x2",function(d,i){return d.xPos;})
-    .attr("y2",function(d,i){return layers.bottom - 70;})
-    .attr("stroke-dasharray","3,3")
-    .attr("stroke","gray")
-    .attr("stroke-width","2");
+    .attr("fill", function(d,i){return d.colour;})
+    .on("click", function(d,i){ console.log("Hello from graph: " + id + " and node: " + d.label);})
+    .on("mouseover", function(d,i){mouseHover(d.colour,d.tokens)})
+    .on("mouseout", mouseOut);;
 
 // HIGHLIGHTING ANCHORS
-zoomGroup.selectAll("rect.highlights")
+if(showTokens){
+    zoomGroup.selectAll("rect.highlights")
+    .data(tokenList)
+    .enter().append("rect")
+    .attr("class",function(d,i){return "highlights rectangle"+i;}) //index of the token
+    .attr("height","35")
+    .attr("width",function(d,i){return 200;})
+    .attr("x",function(d,i){return offset + i*tokenGap -100;})
+    .attr("y",function(d,i){return layers.bottom - 67;})
+    .attr("fill", "none")
+    .style("opacity","0.4");
+}
+
+//LABELLING NODES.
+zoomGroup.selectAll("rect.labels")
     .data(sNodes)
     .enter().append("rect")
-    .attr("class","highlights")
-    .attr("height","35")
-    .attr("width",function(d,i){return 120*d.tokens.length;})
-    .attr("x",function(d,i){return d.xPos -120;})
-    .attr("y",function(d,i){return layers.bottom - 67;})
-    .attr("fill", function(d,i){
-        if(d.tokens.length > 1){
-            return d.colour;
-        }return "none";})
-    .style("opacity","0.4");
+    .attr("class","labels")
+    .attr("height","20")
+    .attr("width","70") //changes with length of the label.
+    .attr("x",function(d,i){return d.xPos-35;})
+    .attr("y",function(d,i){return d.yPos + 33;})
+    .attr("stroke", function(d,i){return d.colour;})
+    .attr("stroke-width", "2")
+    .attr("fill", "#f2f0f0");
+zoomGroup.append("text").selectAll("text.nodeLabels").data(sNodeLabels).enter().append("tspan").text(d => d)
+    .attr("class","nodeLabels")
+    .attr("x",function(d,i){return sNodes[i].xPos;})
+    .attr("y",function(d,i){return sNodes[i].yPos + 43;})
+    .attr("font-size","12px")
+    .attr("text-anchor","middle")
+    .attr("font-weight", "900")
+    .attr("dominant-baseline","middle")
+    .attr("fill","black")
+    .attr("font-family","Arial");
 
 // ABSTRACT NODES
 zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
@@ -246,11 +305,41 @@ zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
     .attr("cy",function(d,i){return d.yPos;})
     .attr("r",function(d,i){
         if(d.label=="TOP"){
-            return "20";
+            return "18";
         }
         return "12";})
-    .attr("fill", function(d,i){return d.colour;});
-    
+    .attr("fill", function(d,i){return d.colour;})
+    .on("click", function(d,i){ console.log("Hello from graph: " + id + " and node: " + d.label);})
+    .on("mouseover", function(d,i){mouseHover(d.colour,d.tokens)})
+    .on("mouseout", mouseOut); 
+
+//ABSTRACT NODE LABELS - redo this so edges dont overwrite?
+zoomGroup.selectAll("rect.alabels")
+    .data(aNodes)
+    .enter().append("rect")
+    .attr("class","alabels")
+    .attr("height","20")
+    .attr("width",function(d,i){if(d.label=="TOP"){
+        return "30";
+    }return "60";})
+    .attr("x",function(d,i){if(d.label=="TOP"){
+        return d.xPos-15;
+     }
+      return d.xPos-30;})
+    .attr("y",function(d,i){return d.yPos + 30;})
+    .attr("stroke", function(d,i){return d.colour;})
+    .attr("stroke-width", "2")
+    .attr("fill", "#f2f0f0");
+zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter().append("tspan").text(d => d)
+    .attr("class","anodeLabels")
+    .attr("x",function(d,i){return aNodes[i].xPos;})
+    .attr("y",function(d,i){return aNodes[i].yPos + 43;})
+    .attr("font-size","12px")
+    .attr("text-anchor","middle")
+    .attr("font-weight", "900")
+    .attr("dominant-baseline","middle")
+    .attr("fill","black")
+    .attr("font-family","Arial");
 
 //  SURFACE EDGES
 sNodes.forEach(element => {
@@ -262,38 +351,44 @@ sNodes.forEach(element => {
                 var abDiffX = Math.abs(element.xPos - otherSNode.xPos);
                 if(element.xPos >= otherSNode.xPos ){
                     if(abDiffX < 240){
-                        var fromToS = [{x:element.xPos -23,y:element.yPos},{x:otherSNode.xPos +27,y:otherSNode.yPos}];
+                        var fromToS = [{x:element.xPos -17,y:element.yPos},{x:otherSNode.xPos +20,y:otherSNode.yPos}];
                     }
                     else{
-                        var fromToS = [{x:element.xPos -23,y:element.yPos -14},
+                        var fromToS = [{x:element.xPos -17,y:element.yPos -14},
                             {x:element.xPos -abDiffX/11 ,y:element.yPos - abDiffX/11 },
                             {x:otherSNode.xPos +abDiffX/11,y:otherSNode.yPos -abDiffX/11},
-                            {x:otherSNode.xPos +27,y:otherSNode.yPos -14}]; //needs worku
+                            {x:otherSNode.xPos +17,y:otherSNode.yPos -14}]; //needs worku
                     }
                 }
                 else{
                     if(abDiffX < 240){
-                        var fromToS = [{x:element.xPos +23,y:element.yPos},{x:otherSNode.xPos -27,y:otherSNode.yPos}];
+                        var fromToS = [{x:element.xPos +17,y:element.yPos},{x:otherSNode.xPos -20,y:otherSNode.yPos}];
                     }
                     else{
                         var limitLine = 130;
                         var edgeLineYAxis = Math.min(limitLine, abDiffX/12);
-                        var fromToS = [{x:element.xPos +25,y:element.yPos},
+                        var fromToS = [{x:element.xPos +17,y:element.yPos},
                             {x:element.xPos +edgeLineYAxis,y:element.yPos +edgeLineYAxis},
                             {x:otherSNode.xPos -edgeLineYAxis,y:otherSNode.yPos +edgeLineYAxis},
-                            {x:otherSNode.xPos -28,y:otherSNode.yPos + 8}]; //needs worku
+                            {x:otherSNode.xPos -20,y:otherSNode.yPos + 8}]; //needs worku
                     }
                 }
             }
             else{
-                if(element.xPos >= otherANode.xPos ){
+                if(element.xPos > otherANode.xPos){
+                    var fromToS = [{x:element.xPos-10,y:element.yPos -15},
+                        {x:element.xPos -83 ,y:element.yPos -80 },
+                        {x:otherANode.xPos +89,y:otherANode.yPos -80},
+                        {x:otherANode.xPos +15,y:otherANode.yPos -15}]; //needs worku
+                }
+                else if (element.xPos == otherANode.xPos){
                     var fromToS = [{x:element.xPos,y:element.yPos -17},
                         {x:element.xPos -83 ,y:element.yPos -80 },
                         {x:otherANode.xPos +89,y:otherANode.yPos -80},
-                        {x:otherANode.xPos +19,y:otherANode.yPos -14}]; //needs worku
+                        {x:otherANode.xPos ,y:otherANode.yPos -17}]; //needs worku
                 }
                 else{
-                    var fromToS = [{x:element.xPos,y:element.yPos -17},
+                    var fromToS = [{x:element.xPos + 14,y:element.yPos -14},
                         {x:element.xPos +87,y:element.yPos -60},
                         {x:otherANode.xPos -83,y:otherANode.yPos -17+80},
                         {x:otherANode.xPos -19,y:otherANode.yPos + 8}]; //needs worku
@@ -308,16 +403,15 @@ sNodes.forEach(element => {
         .attr("x",labelX.toString())
         .attr("y",labelY.toString())
         .attr("font-family","Arial")
-        .attr("font-size","12px")
+        .attr("font-size","14px")
         .attr("dominant-baseline", "middle")
         .attr("text-anchor","middle")
-        .attr("fill","#242424")
         .attr("fill", "black");
         }
     }
 });
 
-//  EDGES AND SPANS OF ABSTRACT NODES
+//  EDGES OF ABSTRACT NODES
 aNodes.forEach(element => {
     if(element.label == "TOP"){
     zoomGroup.selectAll("line.top").data([element]).enter().append("line")
@@ -335,69 +429,16 @@ aNodes.forEach(element => {
         .attr("stroke",function(d,i){return d.colour;})
         .attr("stroke-width","2");
     };
-    //SPANS - DO NOT WORRY FOR NOW
-
-    //RETHINK THIS !!!!!
-
-    // var shortX = Number.MAX_SAFE_INTEGER;
-    // var longX = 0;
-    // element.edges.forEach(edge => {
-    //     shortX = Math.min(sNodes[edge].xPos,shortX);
-    //     longX = Math.max(sNodes[edge].xPos,longX)
-    // });
-    // var colour = "gray";
-    // var width = "0.5";
-    // if(element.label =="TOP"){
-    //     colour = "red";
-    //     width = "1";
-    // }
-    // zoomGroup.selectAll("line.span1")
-    //     .data([element])
-    //     .enter().append("line")
-    //     .attr("class","span1")
-    //     .attr("x1",function(d,i){return d.xPos;})
-    //     .attr("y1",function(d,i){return d.yPos +23;})
-    //     .attr("x2",function(d,i){return d.xPos;})
-    //     .attr("y2",function(d,i){return d.yPos + 53 ;})
-    //     .attr("stroke", colour)
-    //     .attr("stroke-width",width);
-    // zoomGroup.selectAll("line.span2")
-    //     .data([element])
-    //     .enter().append("line")
-    //     .attr("class","span2")
-    //     .attr("x1",(shortX -23).toString())
-    //     .attr("y1",function(d,i){return d.yPos +53;})
-    //     .attr("x2",(longX +23).toString())
-    //     .attr("y2",function(d,i){return d.yPos +53 ;})
-    //     .attr("stroke", colour)
-    //     .attr("stroke-width",width);
-    // zoomGroup.selectAll("line.span3")
-    //     .data([element])
-    //     .enter().append("line")
-    //     .attr("class","span3")
-    //     .attr("x1",(shortX -23).toString())
-    //     .attr("y1",function(d,i){return d.yPos +53;})
-    //     .attr("x2",(shortX -23).toString())
-    //     .attr("y2",function(d,i){return d.yPos +67 ;})
-    //     .attr("stroke", colour)
-    //     .attr("stroke-width",width);
-    // zoomGroup.selectAll("line.span4")
-    //     .data([element])
-    //     .enter().append("line")
-    //     .attr("class","span4")
-    //     .attr("x1",(longX +23).toString())
-    //     .attr("y1",function(d,i){return d.yPos +53;})
-    //     .attr("x2",(longX +23).toString())
-    //     .attr("y2",function(d,i){return d.yPos +67 ;})
-    //     .attr("stroke", colour)
-    //     .attr("stroke-width",width);
     //EDGE
     for(var i =0; i< element.edges.length; i++){
         var otherSNode = sNodes[sNodeIndexes.indexOf(element.edges[i].toString())] ;
         var otherANode = aNodes[aNodeIndexes.indexOf(element.edges[i].toString())];
         if(sNodeIndexes.includes(element.edges[i].toString())){
-            if(element.xPos >= otherSNode.xPos){
+            if(element.xPos > otherSNode.xPos){
                 var fromTo = [{x:element.xPos -8 ,y:element.yPos +15},{x:otherSNode.xPos +8,y:otherSNode.yPos-20}];
+            }
+            else if(element.xPos == otherSNode.xPos){
+                var fromTo = [{x:element.xPos ,y:element.yPos +17},{x:otherSNode.xPos,y:otherSNode.yPos-20}];
             }
             else{
                 var fromTo = [{x:element.xPos +8 ,y:element.yPos +15},{x:otherSNode.xPos -8,y:otherSNode.yPos-20}];
@@ -405,9 +446,9 @@ aNodes.forEach(element => {
         }
         else{
             if(element.xPos >= otherANode.xPos){
-                var fromTo = [{x:element.xPos -23,y:element.yPos},{x:otherANode.xPos+29,y:otherANode.yPos}];   
+                var fromTo = [{x:element.xPos -17,y:element.yPos},{x:otherANode.xPos+20,y:otherANode.yPos}];   
             }else{
-                var fromTo = [{x:element.xPos +23 ,y:element.yPos},{x:otherANode.xPos -29,y:otherANode.yPos}];
+                var fromTo = [{x:element.xPos +17 ,y:element.yPos},{x:otherANode.xPos -20,y:otherANode.yPos}];
             }
 
         }
@@ -428,56 +469,21 @@ aNodes.forEach(element => {
             .attr("fill","#242424")
             .attr("text-anchor","middle");
     }
-    
-//LABELLING NODES.
-zoomGroup.selectAll("rect.labels")
-    .data(sNodes)
-    .enter().append("rect")
-    .attr("class","labels")
-    .attr("height","20")
-    .attr("width","60") //changes with length of the label.
-    .attr("x",function(d,i){return d.xPos-30;})
-    .attr("y",function(d,i){return d.yPos + 33;})
-    .attr("fill", function(d,i){return d.colour;});
-zoomGroup.append("text").selectAll("text.nodeLabels").data(sNodeLabels).enter().append("tspan").text(d => d)
-    .attr("class","nodeLabels")
-    .attr("x",function(d,i){return sNodes[i].xPos;})
-    .attr("y",function(d,i){return sNodes[i].yPos + 43;})
-    .attr("font-size","12")
-    .attr("text-anchor","middle")
-    .attr("dominant-baseline","middle")
-    .attr("fill","black")
-    .attr("font-family","Cambria");
-
-//ABSTRACT NODE LABELS - redo this so edges dont overwrite?
-zoomGroup.selectAll("rect.alabels")
-    .data(aNodes)
-    .enter().append("rect")
-    .attr("class","alabels")
-    .attr("height","20")
-    .attr("width",function(d,i){if(d.label=="TOP"){
-        return "30";
-    }return "60";})
-    .attr("x",function(d,i){if(d.label=="TOP"){
-        return d.xPos-15;
-     }
-      return d.xPos-30;})
-    .attr("y",function(d,i){return d.yPos + 30;})
-    .attr("fill", function(d,i){if(d.label=="TOP"){
-        return "red";
-    }return "#a5a5a5";});
-zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter().append("tspan").text(d => d)
-    .attr("class","anodeLabels")
-    .attr("x",function(d,i){return aNodes[i].xPos;})
-    .attr("y",function(d,i){return aNodes[i].yPos + 43;})
-    .attr("font-size","12")
-    .attr("text-anchor","middle")
-    .attr("dominant-baseline","middle")
-    .attr("fill","black")
-    .attr("font-family","Cambria");
 
 });
 
 var end = performance.now();
-console.log("Making the graph took " + (end - start) + " milliseconds.")
+console.log("Making the graph took " + (end - start) + " milliseconds.") //REMOVE THIS=================================================================================
 }
+
+function mouseHover(colour, anchors){
+    // console.log(colour);
+    for(var i=0; i<anchors.length; i++){
+        d3.selectAll("rect.rectangle"+anchors[i])
+        .attr("fill", colour);
+    }
+};
+function mouseOut(){
+    d3.selectAll("rect.highlights")
+    .attr("fill", "none");
+};
