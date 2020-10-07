@@ -6,30 +6,17 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav">
-      <!-- <li>
-          <form>
-               <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="validatedCustomFile" required>
-                    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
-                </div>
-          </form>
-      </li> -->
       <li>
         <input type="file" id="file" ref="file" @change="handleFileUpload()"/>
         <button v-on:click="postGraphs()">Submit</button>
-        <!-- <el-upload
-        class="upload-demo"
-        ref="upload"
-        action=""
-        v-model="file"
-        name="graphs"
-        :headers="{'Content-Type': 'multipart/form-data'}"
-        :auto-upload="false" 
-        :multiple="false">
-        <el-button slot="trigger" size="small" type="primary">Select File</el-button>
-        <el-button style="margin-left: 10px;" size="small" type="success" @click="postGraphs()">Upload</el-button>
-        </el-upload> -->
       </li>
+      <li>
+          <form class="form-inline">
+              <input v-model="graphId" class="form-control mr-sm-2" type="search" placeholder="e.g. 20001001" aria-label="Search">
+              <button class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="findGraph()">Find graph by ID</button>
+          </form>
+      </li>
+      {{graphId}}
     </ul>
   </div>
 </nav>
@@ -37,6 +24,7 @@
 
 <script>
     import {Upload, Button} from "element-ui"
+    import {mapActions, mapGetters} from "vuex"
     import axios from "axios"
 
     export default {
@@ -44,23 +32,30 @@
             [Upload.name]: Upload,
             [Button.name]: Button
         },
-        methods: {
-            postGraphs() {
-                let formData = new FormData();
-                formData.append('graphs', this.file);
-                console.log(formData)
-                this.$store.dispatch("uploadGraphs", formData).then(() => {
-                  this.$store.dispatch("updateGraphsBeingDisplayed");
-                })
-            },
-          handleFileUpload(){
-            this.file = this.$refs.file.files[0];
-          }
-        },
         data() {
             return {
                 file: null,
+                graphId: 0
             }
+        },
+        methods: {
+          postGraphs() {
+              let formData = new FormData();
+              formData.append('graphs', this.file);
+              console.log(formData)
+              this.$store.dispatch("uploadGraphs", formData).then(() => {
+                this.$store.dispatch("updateGraphsBeingDisplayed");
+              })
+          },
+          ...mapActions ({
+            findGraphById: 'updateIndividualGraphToDisplay'
+          }),
+          handleFileUpload(){
+            this.file = this.$refs.file.files[0];
+          },
+          findGraph(){
+            this.findGraphById(this.graphId);
+          }
         }
     }
 

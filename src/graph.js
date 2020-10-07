@@ -6,7 +6,7 @@ var sNodes =[];
 var aNodes =[];
 var tokenList =[];
     // debugger
-
+    console.log(data);
     var a_nodes = Object.entries(data.a_nodes);
     var s_nodes = Object.entries(data.s_nodes);
     var dataEdges = Object.entries(data.edges);

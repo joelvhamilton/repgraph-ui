@@ -8,10 +8,10 @@
                 </form>
             <button type="button" class="btn btn-info ml-2 mr-3">Compare Graphs</button>
             
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Node label or subgraph" aria-label="Search">
-                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-                </form>
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" type="search" placeholder="Node label or subgraph" aria-label="Search">
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+            </form>
         </ul>
     </div>
 
@@ -19,14 +19,17 @@
 
 <script>
     import axios from "axios"
+    import {mapActions} from "vuex"
     export default {
         methods: {
             checkProperties(graphId) {
-                axios.get(
-                `http://localhost:8000/graph_properties/${graphId}`).then(() => {
+                this.setGraphProperties(graphId).then(() => {
                     this.togglePropertiesButton();
                 })
             },
+            ...mapActions({
+                setGraphProperties: 'setNewGraphProperties'
+            }),
             togglePropertiesButton() {
                 this.propertiesButtonClicked = ! this.propertiesButtonClicked;
             }

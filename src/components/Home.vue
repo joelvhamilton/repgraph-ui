@@ -2,10 +2,17 @@
   <div>
     <nav-bar/>
     <sub-menu-card/>
+    <modal name="individualGraph" height="auto">
+      hello
+      <graph-modal :graph="graphToDisplayIndividually"></graph-modal>
+    </modal>
+    <modal name="propertiesModal" height="auto">
+      <properties-modal/>
+    </modal>
     <div class="col align-content-center">
       <graph-visual v-for="(v,i) in data" :key="key" :data="v"></graph-visual>
-      <i class="fa fa-arrow-right" style="colour: black" @click="nextPage">Next Page</i>
     </div>
+    <paging-bar/>
   </div>
 </template>
 
@@ -20,17 +27,16 @@ export default {
     return {
       data: [],
       key: 0,
-      tempArray: [{num:1}, {num:2}, {num:3}, {num:4}]
+      tempArray: [{num:1}, {num:2}, {num:3}, {num:4}],
+      graphToDisplayIndividually: null
     }
   },
   computed: {
     ...mapGetters({
-      getGraphsToDisplay: 'getGraphsToDisplayOnPage'
-    }),
-  },
-  methods: {
-    ...mapActions({
-      nextPage: 'updateGraphsBeingDisplayed'
+      getGraphsToDisplay: 'getGraphsToDisplayOnPage',
+      getCurrentPage: 'getCurrentPageOfGraphs',
+      getIndividualGraphToDisplay: 'getIndividualGraphToDisplay',
+      getCurrentGraphProperties: 'getCurrentGraphProperties'
     })
   },
   watch: {
@@ -38,12 +44,23 @@ export default {
       this.data = []
       this.data = val
       this.key += 1
+  },
+    getIndividualGraphToDisplay(val){
+      this.graphToDisplayIndividually = val;
+      this.$modal.show('individualGraph');
+    },
+    getCurrentGraphProperties(val){
+      this.$modal.show('propertiesModal')
     }
+
   },
   components: {
     'graph-visual': () => import("./GraphVisual"),
     'nav-bar': () => import("./NavBar"),
     'sub-menu-card': () => import("./SubMenuCard"),
+    'paging-bar': () => import("./PagingBar"),
+    'graph-modal': () => import("./modals/IndividualGraphDisplayModal"),
+    'properties-modal': () => import("./modals/GraphPropertiesModal"),
     [Upload.name]: Upload,
     [Button.name]: Button
   },
@@ -51,6 +68,7 @@ export default {
     msg: String
   }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
