@@ -1,35 +1,80 @@
 
 
 // TEST DATA
-var data = {"20004008": {
+var data = {"20004011": {
     "edges": [
         {
-            "src": 5,
-            "trg": 4,
+            "src": 1,
+            "trg": 5,
+            "label": "ARG2/NEQ"
+        },
+        {
+            "src": 2,
+            "trg": 5,
             "label": "RSTR/H"
+        },
+        {
+            "src": 3,
+            "trg": 5,
+            "label": "ARG1/EQ"
+        },
+        {
+            "src": 4,
+            "trg": 5,
+            "label": "ARG1/EQ"
         }
     ],
     "a_nodes": {
-        "5": {
-            "label": "proper_q",
-            "anchors": [
-                2,
-                3
-            ]
-        },
-        "4": {
-            "label": "named",
+        "3": {
+            "label": "card",
             "anchors": [
                 3
             ]
         }
     },
-    "s_nodes": {},
+    "s_nodes": {
+        "5": {
+            "label": "_fund_n_1",
+            "anchors": [
+                5
+            ]
+        },
+        "1": {
+            "label": "_of_p",
+            "anchors": [
+                1
+            ]
+        },
+        "2": {
+            "label": "_the_q",
+            "anchors": [
+                2
+            ]
+        },
+        "4": {
+            "label": "_taxable_u_unknown",
+            "anchors": [
+                4
+            ]
+        }
+    },
     "tokens": {
+        "1": {
+            "form": "of",
+            "lemma": "of"
+        },
+        "2": {
+            "form": "the",
+            "lemma": "the"
+        },
         "3": {
-            "form": "Malizia",
-            "lemma": "Malizia",
-            "carg": "Malizia"
+            "form": "400",
+            "lemma": "400",
+            "carg": "400"
+        },
+        "4": {
+            "form": "taxable",
+            "lemma": "taxable"
         }
     },
     "tops": "5"
@@ -47,28 +92,35 @@ for(var boog in data){
 
 var sNodes =[];
 var aNodes =[];
+var selectedNode =[];
 
 var a_nodes = Object.entries(data.a_nodes);
 var s_nodes = Object.entries(data.s_nodes);
 var dataEdges = Object.entries(data.edges);
 var tops = parseInt(data.tops,10);
+var selectedNodeIsAbstract;
+
 a_nodes.forEach(element => {
     if(element[0] == tops){
+        selectedNodeIsAbstract =true;
         var dummyNodeA = {index:element[0],top:true,tokens:element[1].anchors,label:element[1].label,edgelabels:[],outgoing:[],xPos:0,yPos:0,colour:"black"};
+        selectedNode.push(dummyNodeA);
     }
     else{
         var dummyNodeA = {index:element[0],top:false,tokens:element[1].anchors,label:element[1].label,edgelabels:[],outgoing:[],xPos:0,yPos:0,colour:"black"};
+        aNodes.push(dummyNodeA);
     }
-    aNodes.push(dummyNodeA);
 });
 s_nodes.forEach(element => {
     if(element[0]==tops){
+        selectedNodeIsAbstract =false;
         var dummyNodeS = {index:element[0],top:true,tokens:element[1].anchors,label:element[1].label,edgelabels:[],outgoing:[],xPos:0,yPos:0,colour:"black"};
+        selectedNode.push(dummyNodeS);
     }
     else{
         var dummyNodeS = {index:element[0],top:false,tokens:element[1].anchors,label:element[1].label,edgelabels:[],outgoing:[],xPos:0,yPos:0,colour:"black"};
+        sNodes.push(dummyNodeS);
     }
-    sNodes.push(dummyNodeS);
 });
 
 var sNodeIndexes = sNodes.map(x => x.index);
@@ -81,9 +133,13 @@ dataEdges.forEach(element => {
         sNodes[sNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
         sNodes[sNodeIndexes.indexOf(element[1].src.toString())].outgoing.push(element[1].trg);
             }
-    else{
+    else if (aNodeIndexes.includes(element[1].src.toString())){
         aNodes[aNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
         aNodes[aNodeIndexes.indexOf(element[1].src.toString())].outgoing.push(element[1].trg);
+    }
+    else{
+        selectedNode[0].edgelabels.push(element[1].label);
+        selectedNode[0].outgoing.push(element[1].trg);
     }
 });
 
@@ -91,10 +147,9 @@ dataEdges.forEach(element => {
 
 var width = Math.max(Math.max(aNodes.length, sNodes.length)*100,700);
 var height = 500;
-var hasAbstractlayer = true;
 var abstractLayer = height/2;
-var aNodeHeight = height -450;
-var sNodeHeight = height -50;
+var aNodeHeight = height -430;
+var sNodeHeight = height -70;
 var aNodeInterval = width/aNodes.length;
 var sNodeInterval = width/sNodes.length;
 
@@ -109,6 +164,15 @@ sNodes.forEach(element => {
     element.yPos = sNodeHeight;
     element.xPos = sNodeInterval/2 + (sNodeInterval*si);
     si++;
+});
+selectedNode.forEach(element => {
+    element.xPos = width/2;
+    if(selectedNodeIsAbstract){
+        element.yPos = height/2 -50;
+    }
+    else{
+        element.yPos = height/2 +25;
+    }
 });
 
 //SVG definitions.
@@ -173,4 +237,198 @@ zoomGroup.append("rect")
     .attr("x","0")
     .attr("y","0")
     .attr("fill","#f2f0f0");
+
+//ABSTRACT LINE
+zoomGroup.selectAll("line.layers").data([abstractLayer]).enter().append("line")
+    .attr("class","layers")
+    .attr("x1","0")
+    .attr("y1",function(d,i){return d;})
+    .attr("x2",width.toString())
+    .attr("y2",function(d,i){return d;})
+    .attr("stroke","gray")
+    .attr("stroke-width","2");
+
+//LABELLING LAYERS
+zoomGroup.append("text").selectAll("text.layerText").data(["Abstract node layer", "Surface node layer"]).enter().append("tspan").text(d => d)
+    .attr("class","layerText")
+    .attr("x",function(d,i){return 5;})
+    .attr("y",function(d,i){if(i==0){
+        return abstractLayer-5;
+    }return height-5;})
+    .attr("font-size","14")
+    .attr("fill","gray")
+    .attr("font-family","Arial");
+
+// DRAWING SURFACE NODES
+zoomGroup.selectAll("circle.nodes").data(sNodes).enter().append("circle")
+    .attr("class","nodes")
+    .attr("cx",function(d,i){return d.xPos})
+    .attr("cy",function(d,i){return d.yPos;})
+    .attr("r","12")
+    .attr("fill", function(d,i){return d.colour;})
+
+//LABELLING NODES.
+zoomGroup.selectAll("rect.labels")
+    .data(sNodes)
+    .enter().append("rect")
+    .attr("class","labels")
+    .attr("height","20")
+    .attr("width","70") //changes with length of the label.
+    .attr("x",function(d,i){return d.xPos-35;})
+    .attr("y",function(d,i){return d.yPos + 15;})
+    .attr("stroke", function(d,i){return d.colour;})
+    .attr("stroke-width", "2")
+    .attr("fill", "#f2f0f0");
+zoomGroup.append("text").selectAll("text.nodeLabels").data(sNodeLabels).enter().append("tspan").text(d => d)
+    .attr("class","nodeLabels")
+    .attr("x",function(d,i){return sNodes[i].xPos;})
+    .attr("y",function(d,i){return sNodes[i].yPos + 25;})
+    .attr("font-size","12px")
+    .attr("text-anchor","middle")
+    .attr("font-weight", "900")
+    .attr("dominant-baseline","middle")
+    .attr("fill","black")
+    .attr("font-family","Arial")
+
+// ABSTRACT NODES
+zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
+    .attr("class","aNodes")
+    .attr("cx",function(d,i){return d.xPos;})
+    .attr("cy",function(d,i){return d.yPos;})
+    .attr("r","12")
+    .attr("fill", function(d,i){return d.colour;})
+
+//SELECTED NODE
+zoomGroup.selectAll("circle.selectedNodes").data(selectedNode).enter().append("circle")
+.attr("class","selectedNodes")
+.attr("cx",function(d,i){return d.xPos;})
+.attr("cy",function(d,i){return d.yPos;})
+.attr("r","20")
+.attr("fill", function(d,i){return d.colour;})
+
+//ABSTRACT NODE LABEL
+zoomGroup.selectAll("rect.alabels")
+    .data(aNodes)
+    .enter().append("rect")
+    .attr("class","alabels")
+    .attr("height","20")
+    .attr("width","60")
+    .attr("x",function(d,i){ return d.xPos-30;})
+    .attr("y",function(d,i){return d.yPos - 45;})
+    .attr("stroke", function(d,i){return d.colour;})
+    .attr("stroke-width", "2")
+    .attr("fill", "#f2f0f0");
+zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter().append("tspan").text(d => d)
+    .attr("class","anodeLabels")
+    .attr("x",function(d,i){return aNodes[i].xPos;})
+    .attr("y",function(d,i){return aNodes[i].yPos - 33;})
+    .attr("font-size","12px")
+    .attr("text-anchor","middle")
+    .attr("font-weight", "900")
+    .attr("dominant-baseline","middle")
+    .attr("fill","black")
+    .attr("font-family","Arial");
+
+//SELECTED NODE LABEL
+zoomGroup.selectAll("rect.selectedlabels")
+    .data(selectedNode)
+    .enter().append("rect")
+    .attr("class","selectedlabels")
+    .attr("height","20")
+    .attr("width","60")
+    .attr("x",function(d,i){ return d.xPos+30;})
+    .attr("y",function(d,i){return d.yPos - 10;})
+    .attr("stroke", function(d,i){return d.colour;})
+    .attr("stroke-width", "2")
+    .attr("fill", "#f2f0f0");
+zoomGroup.append("text").selectAll("text.selectedLabels").data([selectedNode[0].label]).enter().append("tspan").text(d => d)
+    .attr("class","selectedLabels")
+    .attr("x",function(d,i){return selectedNode[i].xPos + 60;})
+    .attr("y",function(d,i){return selectedNode[i].yPos + 2;})
+    .attr("font-size","12px")
+    .attr("text-anchor","middle")
+    .attr("font-weight", "900")
+    .attr("dominant-baseline","middle")
+    .attr("fill","black")
+    .attr("font-family","Arial");
+
+    //  SURFACE EDGES
+sNodes.forEach(element => {
+        for(var i=0; i<element.outgoing.length ;i++){
+            var abDiffX = Math.abs(element.xPos - selectedNode[0].xPos);
+            var scaleX = abDiffX/40;
+            if(element.xPos >= selectedNode[0].xPos ){
+                if(abDiffX > 40){ //node is not directly underneath selected node
+                    var fromToS = [{x:element.xPos,y:element.yPos - 15},{x:selectedNode[0].xPos + abDiffX/scaleX,y:selectedNode[0].yPos + 25}];
+                }
+                else{
+                    var fromToS = [{x:element.xPos,y:element.yPos -15},{x:selectedNode[0].xPos,y:selectedNode[0].yPos + 25}];
+                }
+            }
+            else{
+                if(abDiffX > 40){ //node is not directly underneath selected node
+                    var fromToS = [{x:element.xPos,y:element.yPos - 15},{x:selectedNode[0].xPos - abDiffX/scaleX,y:selectedNode[0].yPos + 25}];
+                }
+                else{
+                    var fromToS = [{x:element.xPos,y:element.yPos -15},{x:selectedNode[0].xPos,y:selectedNode[0].yPos + 25}];
+                }
+            }
+        
+            drawLine(element.colour,fromToS, element.index);
+ // LABEL
+    var labelX = (fromToS[0].x+fromToS[1].x)/2 + 10;
+    var labelY = (fromToS[0].y+fromToS[1].y)/2 + 10;
+    zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
+        .text(d=> d.edgelabels[i])
+        .attr("x",labelX.toString())
+        .attr("y",labelY.toString())
+        .attr("font-family","Arial")
+        .attr("font-size","14px")
+        .attr("dominant-baseline", "middle")
+        .attr("text-anchor","middle")
+        .attr("fill", "black");
+        }
+});
+
+    //ABSTRACT EDGES
+    aNodes.forEach(element => {
+        for(var i=0; i<element.outgoing.length ;i++){
+            var abDiffX = Math.abs(element.xPos - selectedNode[0].xPos);
+            var scaleX = abDiffX/40;
+            if(element.xPos >= selectedNode[0].xPos ){
+                if(abDiffX > 40){ //node is not directly underneath selected node
+                    var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos + abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
+                }
+                else{
+                    var fromToS = [{x:element.xPos,y:element.yPos +15},{x:selectedNode[0].xPos,y:selectedNode[0].yPos - 32}];
+                }
+            }
+            else{
+                if(abDiffX > 40){ //node is not directly underneath selected node
+                    var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos - abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
+                }
+                else{
+                    var fromToS = [{x:element.xPos,y:element.yPos +15 },{x:selectedNode[0].xPos,y:selectedNode[0].yPos - 32}];
+                }
+            }
+        
+            drawLine(element.colour,fromToS, element.index);
+ // LABEL
+    var labelX = (fromToS[0].x+fromToS[1].x)/2 + 10;
+    var labelY = (fromToS[0].y+fromToS[1].y)/2 + 10;
+    zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
+        .text(d=> d.edgelabels[i])
+        .attr("x",labelX.toString())
+        .attr("y",labelY.toString())
+        .attr("font-family","Arial")
+        .attr("font-size","14px")
+        .attr("dominant-baseline", "middle")
+        .attr("text-anchor","middle")
+        .attr("fill", "black");
+        }
+});
 }
+
+
+
+
