@@ -1,20 +1,15 @@
 
 
 // TEST DATA
-var data = {"20004011": {
+var data = {"20004017": {
     "edges": [
         {
-            "src": 1,
-            "trg": 5,
-            "label": "ARG2/NEQ"
-        },
-        {
-            "src": 2,
+            "src": 0,
             "trg": 5,
             "label": "RSTR/H"
         },
         {
-            "src": 3,
+            "src": 6,
             "trg": 5,
             "label": "ARG1/EQ"
         },
@@ -22,59 +17,75 @@ var data = {"20004011": {
             "src": 4,
             "trg": 5,
             "label": "ARG1/EQ"
+        },
+        {
+            "src": 7,
+            "trg": 5,
+            "label": "ARG1/NEQ"
         }
     ],
     "a_nodes": {
-        "3": {
-            "label": "card",
+        "6": {
+            "label": "compound",
             "anchors": [
-                3
+                1,
+                2,
+                3,
+                4
             ]
         }
     },
     "s_nodes": {
         "5": {
-            "label": "_fund_n_1",
+            "label": "_yield_n_1",
             "anchors": [
-                5
+                4
             ]
         },
-        "1": {
-            "label": "_of_p",
-            "anchors": [
-                1
-            ]
-        },
-        "2": {
+        "0": {
             "label": "_the_q",
             "anchors": [
-                2
+                0
             ]
         },
         "4": {
-            "label": "_taxable_u_unknown",
+            "label": "_simple_a_for",
             "anchors": [
-                4
+                3
+            ]
+        },
+        "7": {
+            "label": "_fall_v_1",
+            "anchors": [
+                5
             ]
         }
     },
     "tokens": {
-        "1": {
-            "form": "of",
-            "lemma": "of"
-        },
-        "2": {
+        "0": {
             "form": "the",
             "lemma": "the"
         },
+        "1": {
+            "form": "30-",
+            "lemma": "30-"
+        },
+        "2": {
+            "form": "day",
+            "lemma": "day",
+            "carg": "30-"
+        },
         "3": {
-            "form": "400",
-            "lemma": "400",
-            "carg": "400"
+            "form": "simple",
+            "lemma": "simple"
         },
         "4": {
-            "form": "taxable",
-            "lemma": "taxable"
+            "form": "yield",
+            "lemma": "yield"
+        },
+        "5": {
+            "form": "fell",
+            "lemma": "fall"
         }
     },
     "tops": "5"
@@ -143,7 +154,16 @@ dataEdges.forEach(element => {
     }
 });
 
-//TODO DETERMINE SOME COLOUR SCHEME FOR NODES.
+var abstractColourScale = d3.scaleLinear().domain([0,Math.max(...aNodeIndexes)]).range(["yellow", "red"]);
+var surfaceColourScale =  d3.scaleSequential().domain([0,Math.max(...sNodeIndexes)]).interpolator(d3.interpolateCool);
+
+// determining the colour of each node.
+for(var i=0; i<sNodeIndexes.length; i++){
+    sNodes[i].colour = surfaceColourScale(sNodeIndexes[i]);
+}
+for(var i=0; i<aNodeIndexes.length; i++){
+    aNodes[i].colour = abstractColourScale(aNodeIndexes[i]);
+}
 
 var width = Math.max(Math.max(aNodes.length, sNodes.length)*100,700);
 var height = 500;
@@ -152,6 +172,8 @@ var aNodeHeight = height -430;
 var sNodeHeight = height -70;
 var aNodeInterval = width/aNodes.length;
 var sNodeInterval = width/sNodes.length;
+var allNodes = sNodes.concat(aNodes.concat(selectedNode));
+
 
 var ai =0;
 aNodes.forEach(element => {
@@ -188,9 +210,8 @@ group.call(d3.zoom()
 }));
 
 // ARROW DEFINITIONS
-//TODO THIS NEEDS NODES TO HAVE COLOURS DEFINED TO WORK. AND MAY ACTUALLY NEED OTHER STUFF.
 const arrowPoints = [[0, 0], [0, 6], [6, 3]];
-zoomGroup.append("defs").selectAll("marker.s").data(sNodes).enter().append("marker")
+zoomGroup.append("defs").selectAll("marker.s").data(allNodes).enter().append("marker")
         .attr("class","s")
         .attr('id', function(d,i){return "arrow-"+d.index;})
         .attr('viewBox', [0, 0, 7, 7])
@@ -203,18 +224,20 @@ zoomGroup.append("defs").selectAll("marker.s").data(sNodes).enter().append("mark
         .attr('d', d3.line()(arrowPoints))
         .attr("fill", function(d,i){return d.colour;});
         
-zoomGroup.select("defs").selectAll("marker.a").data(aNodes).enter().append("marker")
-        .attr("class","a")
-        .attr('id', function(d,i){return "arrow-"+d.index;})
-        .attr('viewBox', [0, 0, 7, 7])
-        .attr('refX', 3.5)
-        .attr('refY', 3.5)
-        .attr('markerWidth', 6)
-        .attr('markerHeight', 6)
-        .attr('orient', 'auto')
-    .append('path')
-        .attr('d', d3.line()(arrowPoints))
-        .attr("fill", function(d,i){return d.colour;});
+// zoomGroup.select("defs").selectAll("marker.a").data(aNodes).enter().append("marker")
+//         .attr("class","a")
+//         .attr('id', function(d,i){return "arrow-"+d.index;})
+//         .attr('viewBox', [0, 0, 7, 7])
+//         .attr('refX', 3.5)
+//         .attr('refY', 3.5)
+//         .attr('markerWidth', 6)
+//         .attr('markerHeight', 6)
+//         .attr('orient', 'auto')
+//     .append('path')
+//         .attr('d', d3.line()(arrowPoints))
+//         .attr("fill", function(d,i){return d.colour;});
+
+
 
 function drawLine(colour, data, index){
     var line = d3.line()
@@ -267,7 +290,7 @@ zoomGroup.selectAll("circle.nodes").data(sNodes).enter().append("circle")
     .attr("r","12")
     .attr("fill", function(d,i){return d.colour;})
 
-//LABELLING NODES.
+    //LABELLING NODES.
 zoomGroup.selectAll("rect.labels")
     .data(sNodes)
     .enter().append("rect")
@@ -397,18 +420,18 @@ sNodes.forEach(element => {
             var scaleX = abDiffX/40;
             if(element.xPos >= selectedNode[0].xPos ){
                 if(abDiffX > 40){ //node is not directly underneath selected node
-                    var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos + abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
+                    var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos -3,y:selectedNode[0].yPos - 32}];
                 }
                 else{
-                    var fromToS = [{x:element.xPos,y:element.yPos +15},{x:selectedNode[0].xPos,y:selectedNode[0].yPos - 32}];
+                    var fromToS = [{x:element.xPos,y:element.yPos +15},{x:selectedNode[0].xPos -3,y:selectedNode[0].yPos - 32}];
                 }
             }
             else{
                 if(abDiffX > 40){ //node is not directly underneath selected node
-                    var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos - abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
+                    var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos +3,y:selectedNode[0].yPos - 32}];
                 }
                 else{
-                    var fromToS = [{x:element.xPos,y:element.yPos +15 },{x:selectedNode[0].xPos,y:selectedNode[0].yPos - 32}];
+                    var fromToS = [{x:element.xPos,y:element.yPos +15 },{x:selectedNode[0].xPos +3,y:selectedNode[0].yPos - 32}];
                 }
             }
         
@@ -427,6 +450,67 @@ sNodes.forEach(element => {
         .attr("fill", "black");
         }
 });
+
+    //  SELECTED EDGES
+    selectedNode.forEach(element => {
+        for(var i=0; i<element.outgoing.length ;i++){
+            if(sNodeIndexes.includes(element.outgoing[i]) + ""){
+                var snode = sNodes[sNodeIndexes.indexOf(element.outgoing[i]+"")];
+                var abDiffX = Math.abs(element.xPos - snode.xPos);
+            if(element.xPos >= snode.xPos ){
+                if(abDiffX > 40){ //node is not directly underneath selected node
+                    var fromToS = [{x:element.xPos - 3,y:element.yPos +25},{x:snode.xPos ,y:snode.yPos -18}];
+                }
+                else{
+                    var fromToS = [{x:element.xPos ,y:element.yPos +25},{x:snode.xPos,y:snode.yPos-18}];
+                }
+            }
+            else{
+                if(abDiffX > 40){ //node is not directly underneath selected node
+                    var fromToS = [{x:element.xPos +3,y:element.yPos + 25},{x:snode.xPos ,y:snode.yPos -18}];
+                }
+                else{
+                    var fromToS = [{x:element.xPos ,y:element.yPos + 25},{x:snode.xPos,y:snode.yPos -18}];
+                }
+            }
+            }
+            else{
+                var anode = aNodes[aNodeIndexes.indexOf(element.edges[i]+"")];
+                var abDiffX = Math.abs(element.xPos - snode.xPos);
+                if(element.xPos >= snode.xPos ){
+                    if(abDiffX > 40){ //node is not directly underneath selected node
+                        var fromToS = [{x:element.xPos - 3,y:element.yPos +25},{x:anode.xPos ,y:anode.yPos -18}];
+                    }
+                    else{
+                        var fromToS = [{x:element.xPos ,y:element.yPos +25},{x:anode.xPos,y:anode.yPos-18}];
+                    }
+                }
+                else{
+                    if(abDiffX > 40){ //node is not directly underneath selected node
+                        var fromToS = [{x:element.xPos +3,y:element.yPos + 25},{x:anode.xPos ,y:anode.yPos -18}];
+                    }
+                    else{
+                        var fromToS = [{x:element.xPos ,y:element.yPos + 25},{x:anode.xPos,y:anode.yPos -18}];
+                    }
+                }
+            }
+        
+            drawLine(element.colour,fromToS, element.index);
+        // LABEL
+            var labelX = (fromToS[0].x+fromToS[1].x)/2 + 10;
+            var labelY = (fromToS[0].y+fromToS[1].y)/2 + 10;
+            zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
+                .text(d=> d.edgelabels[i])
+                .attr("x",labelX.toString())
+                .attr("y",labelY.toString())
+                .attr("font-family","Arial")
+                .attr("font-size","14px")
+                .attr("dominant-baseline", "middle")
+                .attr("text-anchor","middle")
+                .attr("fill", "black");
+        }
+});
+
 }
 
 
