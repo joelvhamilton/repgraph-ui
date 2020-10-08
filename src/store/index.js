@@ -11,7 +11,8 @@ export const store = new Vuex.Store({
         graphSearchResults: [], // functionality to search for a node label or subgraph
         currentPageOfGraphs: 0,
         individualGraphToDisplay: {},
-        displayTokens: true
+        displayTokens: true,
+        nodeSearchResults: []
     },
 
     getters: {
@@ -22,7 +23,8 @@ export const store = new Vuex.Store({
         getGraphSearchResults: state => state.graphSearchResults,
         getCurrentPageOfGraphs: state => state.currentPageOfGraphs,
         getIndividualGraphToDisplay: state => state.individualGraphToDisplay,
-        displayTokens: state => state.displayTokens
+        displayTokens: state => state.displayTokens,
+        getNodeSearchResults: state => state.nodeSearchResults
     },
 
     mutations: {
@@ -61,6 +63,10 @@ export const store = new Vuex.Store({
 
         changeDisplayTokens(state, updated_status){
             state.displayTokens = updated_status;
+        },
+        
+        updateNodeSearchResults(state, newResults){
+            state.nodeSearchResults = newResults;
         }
     },
 
@@ -145,6 +151,17 @@ export const store = new Vuex.Store({
 
         setNewGraphSearchResults({commit}, graphSearchResults){
             commit("newGraphSearchResults", graphSearchResults);
+        },
+
+        getNewNodeSearchResults({commit}, nodeLabel){
+            let formData = new FormData();
+            formData.append('node_labels', "[nodeLabel]");
+            axios.get(`http://localhost:8000/node_search`, 
+            '{"node_labels": ["udef_q"]}')
+            .then((response) => {
+                let newResults = response.data;
+                commit("updateNodeSearchResults", {node_labels: ["udef_q"] });
+            })
         }
 
     }

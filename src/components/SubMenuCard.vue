@@ -9,8 +9,8 @@
             <button type="button" class="btn btn-info ml-2 mr-3">Compare Graphs</button>
             
             <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Node label or subgraph" aria-label="Search">
-                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+                <input class="form-control mr-sm-2" type="search" placeholder="Node label" aria-label="Search" v-model="nodeLabelToSearchFor">
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="searchForNodeLabel()">Search for node label</button>
             </form>
                 <input type="checkbox" id="toDisplayTokens" v-model="mustDisplayTokens">
                 <label for="toDisplayTokens"> Display Tokens </label>
@@ -30,10 +30,14 @@
             },
             ...mapActions({
                 setGraphProperties: 'setNewGraphProperties',
-                updateDisplayTokens: 'updateDisplayTokens'
+                updateDisplayTokens: 'updateDisplayTokens',
+                searchForNode: 'getNewNodeSearchResults'
             }),
             togglePropertiesButton() {
                 this.propertiesButtonClicked = ! this.propertiesButtonClicked;
+            },
+            searchForNodeLabel(){
+                this.searchForNode(this.nodeLabelToSearchFor);
             }
         },
         computed: {
@@ -45,7 +49,8 @@
             return {
                 propertiesButtonClicked: false,
                 graphId: 0,
-                mustDisplayTokens: true
+                mustDisplayTokens: true,
+                nodeLabelToSearchFor: ""
             }
         },
         watch: {

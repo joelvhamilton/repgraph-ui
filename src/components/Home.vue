@@ -2,17 +2,18 @@
   <div>
     <nav-bar/>
     <sub-menu-card/>
-    <modal name="individualGraph" height="auto">
-      hello
-      <graph-modal :graph="graphToDisplayIndividually"></graph-modal>
-    </modal>
+    <div>
+      <modal name="individualGraph" height="auto" >
+        <graph-modal :graph="graphToDisplayIndividually" id="individualDisplayModal"></graph-modal>
+      </modal>
+    </div>
     <modal name="propertiesModal" height="auto">
       <properties-modal/>
     </modal>
-    <div class="col align-content-center">
-      <graph-visual v-for="(v,i) in data" :key="i" :data="v"></graph-visual>
-    </div>
     <paging-bar/>
+    <div class="col align-content-center">
+      <graph-visual v-for="(v,i) in data" :key="i" :graph="v" :elementId="body"></graph-visual>
+    </div>
   </div>
 </template>
 
@@ -28,7 +29,8 @@ export default {
       data: [],
       key: 0,
       tempArray: [{num:1}, {num:2}, {num:3}, {num:4}],
-      graphToDisplayIndividually: null
+      graphToDisplayIndividually: null,
+      body: "body"
     }
   },
   computed: {

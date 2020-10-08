@@ -1,5 +1,5 @@
 
-export const makeGraph = function (data, showTokens, forModal) {
+export const makeGraph = function (data, showTokens, elementId) {
 
 var start = performance.now();
 var layers = {bottom:0,token:0,surface:0,top:10};
@@ -131,14 +131,21 @@ let height=layers.bottom +10;
 //  AT THIS POINT NODE HEIGHTS AND LAYER HEIGHTS HAVE BEEN DETERMINED.
 var layerVals = Object.values(layers);
 
-if (document.getElementsByClassName("d3-graph").length === 5){
+// if (forModal){
+//     let svg = d3.
+// }
+
+if ( elementId == "body" && document.getElementsByClassName("d3-graph").length === 5){
     d3.select("svg").remove();
-    // I WOULD SAY d3.selectAll("svg.d3-graph").remove();
+} else if (elementId != "body") {
+    elementId = `#${elementId}`
 }
 
-var svg = d3.select("body").append("svg").attr("id", "viewSvg").attr("class", "d3-graph")
-.attr("height", "700px").attr("width", 1000+"px")
-.attr("viewBox","0,0,"+width +","+ height )
+/// NEED TO CHECK IF elementId = displayModalOrWhatever, then remove element and reappend
+var svg = d3.select(elementId).append("svg").attr("id", "viewSvg").attr("class", "d3-graph")
+.attr("height", "500px").attr("width", 1000+"px")
+.attr("viewBox","0,0,"+width +","+ height)
+
 var group = svg.append("g").attr("id", "group");
 var zoomGroup = group.append("g");
 group.call(d3.zoom()

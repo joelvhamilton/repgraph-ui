@@ -16,7 +16,6 @@
               <button class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="findGraph()">Find graph by ID</button>
           </form>
       </li>
-      {{graphId}}
     </ul>
   </div>
 </nav>

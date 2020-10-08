@@ -1,8 +1,7 @@
 <template>
     <div>
         <!-- <i class="far fa-times-circle" @click="close()"></i> -->
-        howzit awweeeee
-        <graph-visual :data="graph"></graph-visual>
+        <graph-visual :graph="graph" :elementId="individualDisplayModal"></graph-visual>
     </div>
 </template>
 
@@ -14,7 +13,8 @@
         props: ["graph"],
         data(){
             return {
-                graphToDisplay: null
+                graphToDisplay: null,
+                individualDisplayModal: "individualDisplayModal"
             }
         },
 
