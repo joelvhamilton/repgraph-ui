@@ -5,26 +5,28 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
     state: {
         graphsToDisplayOnPage: [], // core functionality of displaying graph
-        subGraphToDisplay: {}, // functionality to display a node and its neighbours
+        subsetToDisplay: {}, // functionality to display a node and its neighbours
         currentGraphProperties: {}, // functionality to display the properties for which a graph holds
         resultsOfGraphComparison: {}, // functionality to compare two graphs
         graphSearchResults: [], // functionality to search for a node label or subgraph
         currentPageOfGraphs: 0,
         individualGraphToDisplay: {},
         displayTokens: true,
-        nodeSearchResults: []
+        nodeSearchResults: [],
+        nodeLabelToSearchFor: "",
     },
 
     getters: {
         getGraphsToDisplayOnPage: state => state.graphsToDisplayOnPage,
-        getSubGraphToDisplay: state => state.subGraphToDisplay,
+        getSubsetToDisplay: state => state.subsetToDisplay,
         getCurrentGraphProperties: state => state.currentGraphProperties,
         getResultsOfGraphComparison: state => state.resultsOfGraphComparison,
         getGraphSearchResults: state => state.graphSearchResults,
         getCurrentPageOfGraphs: state => state.currentPageOfGraphs,
         getIndividualGraphToDisplay: state => state.individualGraphToDisplay,
         displayTokens: state => state.displayTokens,
-        getNodeSearchResults: state => state.nodeSearchResults
+        getNodeSearchResults: state => state.nodeSearchResults,
+        getNodeLabelToSearchFor: state => state.nodeLabelToSearchFor
     },
 
     mutations: {
@@ -45,8 +47,8 @@ export const store = new Vuex.Store({
             state.resultsOfGraphComparison = comparisonResults;
         },
 
-        newSubGraphBeingDisplayed(state, subgraph){
-            state.subGraphToDisplay = subgraph;
+        newSubsetToDisplay(state, subsetToDisplay){
+            state.subsetToDisplay = subsetToDisplay;
         },
 
         newGraphSearchResults(state, searchResults){
@@ -59,6 +61,10 @@ export const store = new Vuex.Store({
 
         setIndividualGraphToDisplay(state, graph){
             state.individualGraphToDisplay = graph;
+        },
+
+        changeNodeLabelToSearchFor(state, label){
+            state.nodeLabelToSearchFor = label;
         },
 
         changeDisplayTokens(state, updated_status){
@@ -136,7 +142,7 @@ export const store = new Vuex.Store({
             axios.get(
                 `http://localhost:8000/graph_properties/${graphId}`).then((res) => {
                     console.log(res.data)
-                    let graphProperties = res.data
+                    let graphProperties = res.data.output
                     commit("newGraphProperties", graphProperties);  
                 })
         },
@@ -145,22 +151,29 @@ export const store = new Vuex.Store({
             commit("newGraphComparisonResults", newComparisonResults);
         },
 
-        setNewSubGraphBeingDisplayed({commit}, newSubGraph){
-            commit("newSubGraphBeingDisplayed", newSubGraph);
+        setNewSubsetToDisplay( {commit}, subsetDetails){
+            let graphId = subsetDetails.graphId.toString();
+            let nodeId = subsetDetails.nodeId;
+            console.log(`node ID in store before request is made: ${nodeId}`);
+            axios.get(`http://localhost:8000/display_node_neighbours/${graphId}_${nodeId}`).then((res)=> {
+                let newSubset = res.data;
+                commit("newSubsetToDisplay", newSubset);
+            })
+
         },
 
         setNewGraphSearchResults({commit}, graphSearchResults){
             commit("newGraphSearchResults", graphSearchResults);
         },
 
-        getNewNodeSearchResults({commit}, nodeLabel){
+        setNewNodeSearchResults({commit}, nodeLabel){
             let formData = new FormData();
             formData.append('node_labels', "[nodeLabel]");
-            axios.get(`http://localhost:8000/node_search`, 
-            '{"node_labels": ["udef_q"]}')
+            axios.get(`http://localhost:8000/node_search/${nodeLabel}`) 
             .then((response) => {
-                let newResults = response.data;
-                commit("updateNodeSearchResults", {node_labels: ["udef_q"] });
+                let newResults = response.data.graph_ids;
+                commit("updateNodeSearchResults", newResults);
+                commit("changeNodeLabelToSearchFor", nodeLabel);
             })
         }
 

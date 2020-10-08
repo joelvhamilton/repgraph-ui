@@ -31,7 +31,7 @@
             ...mapActions({
                 setGraphProperties: 'setNewGraphProperties',
                 updateDisplayTokens: 'updateDisplayTokens',
-                searchForNode: 'getNewNodeSearchResults'
+                searchForNode: 'setNewNodeSearchResults'
             }),
             togglePropertiesButton() {
                 this.propertiesButtonClicked = ! this.propertiesButtonClicked;

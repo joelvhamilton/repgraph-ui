@@ -7,6 +7,9 @@
         <graph-modal :graph="graphToDisplayIndividually" id="individualDisplayModal"></graph-modal>
       </modal>
     </div>
+    <modal name="nodeLabelSearchModal" height="auto">
+      <node-search-results-modal :nodeLabel="getNodeSearchedFor" :results="getNodeSearchResults"></node-search-results-modal>
+    </modal>
     <modal name="propertiesModal" height="auto">
       <properties-modal/>
     </modal>
@@ -38,7 +41,9 @@ export default {
       getGraphsToDisplay: 'getGraphsToDisplayOnPage',
       getCurrentPage: 'getCurrentPageOfGraphs',
       getIndividualGraphToDisplay: 'getIndividualGraphToDisplay',
-      getCurrentGraphProperties: 'getCurrentGraphProperties'
+      getCurrentGraphProperties: 'getCurrentGraphProperties',
+      getNodeSearchResults: 'getNodeSearchResults',
+      getNodeSearchedFor: 'getNodeLabelToSearchFor'
     })
   },
   watch: {
@@ -52,6 +57,9 @@ export default {
     },
     getCurrentGraphProperties(val){
       this.$modal.show('propertiesModal')
+    },
+    getNodeSearchResults(val){
+      this.$modal.show('nodeLabelSearchModal')
     }
 
   },
@@ -62,6 +70,7 @@ export default {
     'paging-bar': () => import("./PagingBar"),
     'graph-modal': () => import("./modals/IndividualGraphDisplayModal"),
     'properties-modal': () => import("./modals/GraphPropertiesModal"),
+    'node-search-results-modal': () => import("./modals/NodeLabelSearchResultsModal"),
     [Upload.name]: Upload,
     [Button.name]: Button
   },
