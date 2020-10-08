@@ -1,96 +1,56 @@
 
 
 // TEST DATA
-var data = {"20004017": {
-    "edges": [
-        {
-            "src": 0,
-            "trg": 5,
-            "label": "RSTR/H"
+var data = {
+    "20004010": {
+        "edges": [
+            {
+                "src": 3,
+                "trg": 5,
+                "label": "ARG2/NEQ"
+            },
+            {
+                "src": 5,
+                "trg": 4,
+                "label": "RSTR/H"
+            }
+        ],
+        "a_nodes": {
+            "4": {
+                "label": "udef_q",
+                "anchors": [
+                    4
+                ]
+            }
         },
-        {
-            "src": 6,
-            "trg": 5,
-            "label": "ARG1/EQ"
+        "s_nodes": {
+            "5": {
+                "label": "_yield_n_1",
+                "anchors": [
+                    4
+                ]
+            },
+            "3": {
+                "label": "_in_p",
+                "anchors": [
+                    3
+                ]
+            }
         },
-        {
-            "src": 4,
-            "trg": 5,
-            "label": "ARG1/EQ"
+        "tokens": {
+            "3": {
+                "form": "in",
+                "lemma": "in"
+            },
+            "4": {
+                "form": "yields,",
+                "lemma": "yield"
+            }
         },
-        {
-            "src": 7,
-            "trg": 5,
-            "label": "ARG1/NEQ"
-        }
-    ],
-    "a_nodes": {
-        "6": {
-            "label": "compound",
-            "anchors": [
-                1,
-                2,
-                3,
-                4
-            ]
-        }
-    },
-    "s_nodes": {
-        "5": {
-            "label": "_yield_n_1",
-            "anchors": [
-                4
-            ]
-        },
-        "0": {
-            "label": "_the_q",
-            "anchors": [
-                0
-            ]
-        },
-        "4": {
-            "label": "_simple_a_for",
-            "anchors": [
-                3
-            ]
-        },
-        "7": {
-            "label": "_fall_v_1",
-            "anchors": [
-                5
-            ]
-        }
-    },
-    "tokens": {
-        "0": {
-            "form": "the",
-            "lemma": "the"
-        },
-        "1": {
-            "form": "30-",
-            "lemma": "30-"
-        },
-        "2": {
-            "form": "day",
-            "lemma": "day",
-            "carg": "30-"
-        },
-        "3": {
-            "form": "simple",
-            "lemma": "simple"
-        },
-        "4": {
-            "form": "yield",
-            "lemma": "yield"
-        },
-        "5": {
-            "form": "fell",
-            "lemma": "fall"
-        }
-    },
-    "tops": "5"
-}
-}
+        "tops": "5"
+    }
+
+  }
 
 makeSubgraph(data);
 
@@ -454,30 +414,31 @@ sNodes.forEach(element => {
     //  SELECTED EDGES
     selectedNode.forEach(element => {
         for(var i=0; i<element.outgoing.length ;i++){
-            if(sNodeIndexes.includes(element.outgoing[i]) + ""){
+            var isSNode = sNodeIndexes.includes(element.outgoing[i].toString());
+            if(isSNode){
                 var snode = sNodes[sNodeIndexes.indexOf(element.outgoing[i]+"")];
                 var abDiffX = Math.abs(element.xPos - snode.xPos);
-            if(element.xPos >= snode.xPos ){
-                if(abDiffX > 40){ //node is not directly underneath selected node
-                    var fromToS = [{x:element.xPos - 3,y:element.yPos +25},{x:snode.xPos ,y:snode.yPos -18}];
-                }
-                else{
-                    var fromToS = [{x:element.xPos ,y:element.yPos +25},{x:snode.xPos,y:snode.yPos-18}];
-                }
-            }
-            else{
-                if(abDiffX > 40){ //node is not directly underneath selected node
-                    var fromToS = [{x:element.xPos +3,y:element.yPos + 25},{x:snode.xPos ,y:snode.yPos -18}];
-                }
-                else{
-                    var fromToS = [{x:element.xPos ,y:element.yPos + 25},{x:snode.xPos,y:snode.yPos -18}];
-                }
-            }
-            }
-            else{
-                var anode = aNodes[aNodeIndexes.indexOf(element.edges[i]+"")];
-                var abDiffX = Math.abs(element.xPos - snode.xPos);
                 if(element.xPos >= snode.xPos ){
+                    if(abDiffX > 40){ //node is not directly underneath selected node
+                        var fromToS = [{x:element.xPos - 3,y:element.yPos +25},{x:snode.xPos ,y:snode.yPos -18}];
+                    }
+                    else{
+                        var fromToS = [{x:element.xPos ,y:element.yPos +25},{x:snode.xPos,y:snode.yPos-18}];
+                    }
+                }
+                else{
+                    if(abDiffX > 40){ //node is not directly underneath selected node
+                        var fromToS = [{x:element.xPos +3,y:element.yPos + 25},{x:snode.xPos ,y:snode.yPos -18}];
+                    }
+                    else{
+                        var fromToS = [{x:element.xPos ,y:element.yPos + 25},{x:snode.xPos,y:snode.yPos -18}];
+                    }
+                }
+            }
+            else{
+                var anode = aNodes[aNodeIndexes.indexOf(element.outgoing[i]+"")];
+                var abDiffX = Math.abs(element.xPos - anode.xPos);
+                if(element.xPos >= anode.xPos ){
                     if(abDiffX > 40){ //node is not directly underneath selected node
                         var fromToS = [{x:element.xPos - 3,y:element.yPos -25},{x:anode.xPos ,y:anode.yPos +18}];
                     }
