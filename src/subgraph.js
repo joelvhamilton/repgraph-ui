@@ -479,18 +479,18 @@ sNodes.forEach(element => {
                 var abDiffX = Math.abs(element.xPos - snode.xPos);
                 if(element.xPos >= snode.xPos ){
                     if(abDiffX > 40){ //node is not directly underneath selected node
-                        var fromToS = [{x:element.xPos - 3,y:element.yPos +25},{x:anode.xPos ,y:anode.yPos -18}];
+                        var fromToS = [{x:element.xPos - 3,y:element.yPos -25},{x:anode.xPos ,y:anode.yPos +18}];
                     }
                     else{
-                        var fromToS = [{x:element.xPos ,y:element.yPos +25},{x:anode.xPos,y:anode.yPos-18}];
+                        var fromToS = [{x:element.xPos ,y:element.yPos -25},{x:anode.xPos,y:anode.yPos+18}];
                     }
                 }
                 else{
                     if(abDiffX > 40){ //node is not directly underneath selected node
-                        var fromToS = [{x:element.xPos +3,y:element.yPos + 25},{x:anode.xPos ,y:anode.yPos -18}];
+                        var fromToS = [{x:element.xPos +3,y:element.yPos - 25},{x:anode.xPos ,y:anode.yPos +18}];
                     }
                     else{
-                        var fromToS = [{x:element.xPos ,y:element.yPos + 25},{x:anode.xPos,y:anode.yPos -18}];
+                        var fromToS = [{x:element.xPos ,y:element.yPos - 25},{x:anode.xPos,y:anode.yPos +18}];
                     }
                 }
             }
