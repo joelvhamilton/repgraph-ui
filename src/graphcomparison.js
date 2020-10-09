@@ -137,8 +137,8 @@ var comparisonOutput ={
 
 function makeGraphComparison(comparisonOutput){
    var matchingNodes = [];
-   var mnodesb=[];
-   var mnodese=[];
+   var mNodesBegin=[];
+   var mNodesEnd=[];
    var matchingEdges = [];
    var g1id;
    var g1Nodes = [];
@@ -153,8 +153,21 @@ function makeGraphComparison(comparisonOutput){
       //READING IN THE DATA.
       if(output == "matching"){
          data = comparisonOutput[output];
-         matchingNodes = Object.entries(data.nodes);
-         matchingEdges = Object.entries(data.edges);
+          matchingNodes= Object.entries(data.nodes);
+          matchingEdges= Object.entries(data.edges); //TODO REMOVE THIS
+
+         //TODO REWORK THIS
+         // var temp1= Object.entries(data.nodes);
+         // var temp2= Object.entries(data.edges);
+         // console.log(temp1);
+         // temp1.forEach(element => {
+         //    matchingNodes.push({id: element[0], label: element[1].label});
+         //    console.log(element[1].key);
+
+         // });
+         // console.log(matchingNodes);
+         // matchingNodes;
+         // matchingEdges;
       }
       else{
          data = comparisonOutput[output];
@@ -173,7 +186,23 @@ function makeGraphComparison(comparisonOutput){
          });
       }
    }
+   console.log(g2Nodes); // should be good
 
+   // matchingEdges.forEach(element => {
+   //    mNodesBegin.push({pos:element[1].src, label:"none"});
+   //    mNodesEnd.push({pos:element[1].trg, label:"none"});
+   // });
+   // matchingNodes.forEach(element => {
+   //    console.log(element)
+   //    mNodesBegin.forEach(element2 => {
+   //       // if(element[0] == element2.pos){
+   //       //    element2.label = element[1].label;
+   //       //    console.log(element[1]);
+
+   //       // }
+   //    });
+      
+   // });
 
    //SVG STUFF:
    var height = 100;
@@ -243,12 +272,19 @@ function makeGraphComparison(comparisonOutput){
          .attr("y",function(d,i){return textPos[i].pos;})
          .attr("font-size","15")
          .attr("text-anchor","start")
-         .attr("dominant-baseline","end")
+         .attr("dominant-baseline","middle")
          .attr("fill","black")
          .attr("font-family","Arial");
-
-   console.log(matchingNodes);
-   console.log(g2Nodes);
+   
+   zoomGroup.selectAll("line.layers").data(textPos).enter().append("line")
+         .attr("class","layers")
+         .attr("x1","0")
+         .attr("y1",function(d,i){return d.pos -9;})
+         .attr("x2",width.toString())
+         .attr("y2",function(d,i){return d.pos -9;})
+         .attr("stroke","gray")
+         .attr("stroke-width","2");
+         
    //drawing matching nodes
    // zoomGroup.selectAll("circle.matchingnodes").data(matchingNodes).enter().append("circle")
    //       .attr("class","matchingnodes")

@@ -1,158 +1,165 @@
 
 
-<<<<<<< HEAD
 // TEST DATA
-var data = {
-    "20004010": {
-        "edges": [
-            {
-                "src": 3,
-                "trg": 5,
-                "label": "ARG2/NEQ"
-            },
-            {
-                "src": 5,
-                "trg": 4,
-                "label": "RSTR/H"
-            }
-        ],
-        "a_nodes": {
-            "4": {
-                "label": "udef_q",
-                "anchors": [
-                    4
-                ]
-            }
-        },
-        "s_nodes": {
-            "5": {
-                "label": "_yield_n_1",
-                "anchors": [
-                    4
-                ]
-            },
-            "3": {
-                "label": "_in_p",
-                "anchors": [
-                    3
-                ]
-            }
-        },
-        "tokens": {
-            "3": {
-                "form": "in",
-                "lemma": "in"
-            },
-            "4": {
-                "form": "yields,",
-                "lemma": "yield"
-            }
-        },
-        "tops": "5"
-    }
-
-  }
-
-makeSubgraph(data);
-
-function makeSubgraph(data){
-=======
-// // TEST DATA
-// var data = {"20004017": {
+// var data = {"20003019": {
 //     "edges": [
 //         {
-//             "src": 0,
-//             "trg": 5,
-//             "label": "RSTR/H"
+//             "src": 9,
+//             "trg": 10,
+//             "label": "ARG1/H"
 //         },
 //         {
-//             "src": 6,
-//             "trg": 5,
+//             "src": 19,
+//             "trg": 10,
 //             "label": "ARG1/EQ"
 //         },
 //         {
-//             "src": 4,
-//             "trg": 5,
-//             "label": "ARG1/EQ"
+//             "src": 37,
+//             "trg": 10,
+//             "label": "MOD/EQ"
 //         },
 //         {
-//             "src": 7,
-//             "trg": 5,
+//             "src": 10,
+//             "trg": 8,
 //             "label": "ARG1/NEQ"
+//         },
+//         {
+//             "src": 10,
+//             "trg": 12,
+//             "label": "ARG2/NEQ"
 //         }
 //     ],
 //     "a_nodes": {
-//         "6": {
-//             "label": "compound",
+//         "37": {
+//             "label": "appos",
 //             "anchors": [
-//                 1,
-//                 2,
-//                 3,
-//                 4
+//                 22,
+//                 23,
+//                 24,
+//                 25,
+//                 26,
+//                 27,
+//                 28,
+//                 29,
+//                 30,
+//                 31,
+//                 32,
+//                 33,
+//                 34
+//             ]
+//         },
+//         "8": {
+//             "label": "named_n",
+//             "anchors": [
+//                 10
 //             ]
 //         }
 //     },
 //     "s_nodes": {
-//         "5": {
-//             "label": "_yield_n_1",
+//         "10": {
+//             "label": "_regulate_v_1",
 //             "anchors": [
-//                 4
+//                 12
 //             ]
 //         },
-//         "0": {
-//             "label": "_the_q",
+//         "9": {
+//             "label": "_should_v_modal",
 //             "anchors": [
-//                 0
+//                 11
 //             ]
 //         },
-//         "4": {
-//             "label": "_simple_a_for",
+//         "19": {
+//             "label": "_stringently_u_unknown",
 //             "anchors": [
-//                 3
+//                 20
 //             ]
 //         },
-//         "7": {
-//             "label": "_fall_v_1",
+//         "12": {
+//             "label": "_class_n_of",
 //             "anchors": [
-//                 5
+//                 14
 //             ]
 //         }
 //     },
 //     "tokens": {
-//         "0": {
+//         "32": {
+//             "form": "and",
+//             "lemma": "and"
+//         },
+//         "33": {
+//             "form": "other",
+//             "lemma": "other"
+//         },
+//         "34": {
+//             "form": "buildings,",
+//             "lemma": "building"
+//         },
+//         "10": {
+//             "form": "u.s.",
+//             "lemma": "US",
+//             "carg": "US"
+//         },
+//         "11": {
+//             "form": "should",
+//             "lemma": "should"
+//         },
+//         "14": {
+//             "form": "class",
+//             "lemma": "class"
+//         },
+//         "20": {
+//             "form": "stringently",
+//             "lemma": "stringently"
+//         },
+//         "22": {
 //             "form": "the",
 //             "lemma": "the"
 //         },
-//         "1": {
-//             "form": "30-",
-//             "lemma": "30-"
+//         "23": {
+//             "form": "common",
+//             "lemma": "common"
 //         },
-//         "2": {
-//             "form": "day",
-//             "lemma": "day",
-//             "carg": "30-"
+//         "24": {
+//             "form": "kind",
+//             "lemma": "kind"
 //         },
-//         "3": {
-//             "form": "simple",
-//             "lemma": "simple"
+//         "25": {
+//             "form": "of",
+//             "lemma": "of"
 //         },
-//         "4": {
-//             "form": "yield",
-//             "lemma": "yield"
+//         "26": {
+//             "form": "asbestos,",
+//             "lemma": "asbestos"
 //         },
-//         "5": {
-//             "form": "fell",
-//             "lemma": "fall"
+//         "27": {
+//             "form": "chrysotile,",
+//             "lemma": "chrysotile"
+//         },
+//         "28": {
+//             "form": "found",
+//             "lemma": "find"
+//         },
+//         "29": {
+//             "form": "in",
+//             "lemma": "in"
+//         },
+//         "30": {
+//             "form": "most",
+//             "lemma": "most"
+//         },
+//         "31": {
+//             "form": "schools",
+//             "lemma": "school"
 //         }
 //     },
-//     "tops": "5"
+//     "tops": "10"
 // }
 // }
 
-// makeSubgraph(data);
+// makeSubgraph(data,"body");
 
-export const makeSubgraph = function (data, elementId){
->>>>>>> master
+ export const makeSubgraph = function (data, elementId){
+// function makeSubgraph(data,elementId){
         //remove above
 
 for(var boog in data){
@@ -385,11 +392,11 @@ zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
 
 //SELECTED NODE
 zoomGroup.selectAll("circle.selectedNodes").data(selectedNode).enter().append("circle")
-.attr("class","selectedNodes")
-.attr("cx",function(d,i){return d.xPos;})
-.attr("cy",function(d,i){return d.yPos;})
-.attr("r","20")
-.attr("fill", function(d,i){return d.colour;})
+    .attr("class","selectedNodes")
+    .attr("cx",function(d,i){return d.xPos;})
+    .attr("cy",function(d,i){return d.yPos;})
+    .attr("r","20")
+    .attr("fill", function(d,i){return d.colour;})
 
 //ABSTRACT NODE LABEL
 zoomGroup.selectAll("rect.alabels")
@@ -482,18 +489,18 @@ sNodes.forEach(element => {
             var scaleX = abDiffX/40;
             if(element.xPos >= selectedNode[0].xPos ){
                 if(abDiffX > 40){ //node is not directly underneath selected node
-                    var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos -3,y:selectedNode[0].yPos - 32}];
+                    var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos +abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
                 }
                 else{
-                    var fromToS = [{x:element.xPos,y:element.yPos +15},{x:selectedNode[0].xPos -3,y:selectedNode[0].yPos - 32}];
+                    var fromToS = [{x:element.xPos,y:element.yPos +15},{x:selectedNode[0].xPos +abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
                 }
             }
             else{
                 if(abDiffX > 40){ //node is not directly underneath selected node
-                    var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos +3,y:selectedNode[0].yPos - 32}];
+                    var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos -abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
                 }
                 else{
-                    var fromToS = [{x:element.xPos,y:element.yPos +15 },{x:selectedNode[0].xPos +3,y:selectedNode[0].yPos - 32}];
+                    var fromToS = [{x:element.xPos,y:element.yPos +15 },{x:selectedNode[0].xPos -abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
                 }
             }
         
@@ -520,9 +527,10 @@ sNodes.forEach(element => {
             if(isSNode){
                 var snode = sNodes[sNodeIndexes.indexOf(element.outgoing[i]+"")];
                 var abDiffX = Math.abs(element.xPos - snode.xPos);
+                var scaleX = abDiffX/40;
                 if(element.xPos >= snode.xPos ){
                     if(abDiffX > 40){ //node is not directly underneath selected node
-                        var fromToS = [{x:element.xPos - 3,y:element.yPos +25},{x:snode.xPos ,y:snode.yPos -18}];
+                        var fromToS = [{x:element.xPos -3,y:element.yPos +25},{x:snode.xPos ,y:snode.yPos -18}];
                     }
                     else{
                         var fromToS = [{x:element.xPos ,y:element.yPos +25},{x:snode.xPos,y:snode.yPos-18}];
@@ -540,20 +548,21 @@ sNodes.forEach(element => {
             else{
                 var anode = aNodes[aNodeIndexes.indexOf(element.outgoing[i]+"")];
                 var abDiffX = Math.abs(element.xPos - anode.xPos);
+                var scaleX = abDiffX/40;
                 if(element.xPos >= anode.xPos ){
                     if(abDiffX > 40){ //node is not directly underneath selected node
-                        var fromToS = [{x:element.xPos - 3,y:element.yPos -25},{x:anode.xPos ,y:anode.yPos +18}];
+                        var fromToS = [{x:element.xPos - 3,y:element.yPos -32},{x:anode.xPos ,y:anode.yPos +18}];
                     }
                     else{
-                        var fromToS = [{x:element.xPos ,y:element.yPos -25},{x:anode.xPos,y:anode.yPos+18}];
+                        var fromToS = [{x:element.xPos ,y:element.yPos -32},{x:anode.xPos,y:anode.yPos+18}];
                     }
                 }
                 else{
                     if(abDiffX > 40){ //node is not directly underneath selected node
-                        var fromToS = [{x:element.xPos +3,y:element.yPos - 25},{x:anode.xPos ,y:anode.yPos +18}];
+                        var fromToS = [{x:element.xPos +3,y:element.yPos - 32},{x:anode.xPos ,y:anode.yPos +18}];
                     }
                     else{
-                        var fromToS = [{x:element.xPos ,y:element.yPos - 25},{x:anode.xPos,y:anode.yPos +18}];
+                        var fromToS = [{x:element.xPos ,y:element.yPos - 32},{x:anode.xPos,y:anode.yPos +18}];
                     }
                 }
             }
