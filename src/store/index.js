@@ -8,12 +8,12 @@ export const store = new Vuex.Store({
         subsetToDisplay: {}, // functionality to display a node and its neighbours
         currentGraphProperties: {}, // functionality to display the properties for which a graph holds
         resultsOfGraphComparison: {}, // functionality to compare two graphs
-        graphSearchResults: [], // functionality to search for a node label or subgraph
+        subgraphSearchResults: [], // functionality to search for a node label or subgraph
         currentPageOfGraphs: 0,
         individualGraphToDisplay: {},
         displayTokens: true,
         nodeSearchResults: [],
-        nodeLabelToSearchFor: "",
+        nodeLabelToSearchFor: ""
     },
 
     getters: {
@@ -21,7 +21,7 @@ export const store = new Vuex.Store({
         getSubsetToDisplay: state => state.subsetToDisplay,
         getCurrentGraphProperties: state => state.currentGraphProperties,
         getResultsOfGraphComparison: state => state.resultsOfGraphComparison,
-        getGraphSearchResults: state => state.graphSearchResults,
+        getSubgraphSearchResults: state => state.subgraphSearchResults,
         getCurrentPageOfGraphs: state => state.currentPageOfGraphs,
         getIndividualGraphToDisplay: state => state.individualGraphToDisplay,
         displayTokens: state => state.displayTokens,
@@ -51,8 +51,8 @@ export const store = new Vuex.Store({
             state.subsetToDisplay = subsetToDisplay;
         },
 
-        newGraphSearchResults(state, searchResults){
-            state.graphSearchResults = searchResults;
+        newSubgraphSearchResults(state, searchResults){
+            state.subgraphSearchResults = searchResults;
         },
         
         graphResponse(state, data){
@@ -139,7 +139,7 @@ export const store = new Vuex.Store({
         },
 
         setNewGraphProperties({commit}, graphId){
-            axios.get(
+            return axios.get(
                 `http://localhost:8000/graph_properties/${graphId}`).then((res) => {
                     console.log(res.data)
                     let graphProperties = res.data.output
@@ -162,14 +162,16 @@ export const store = new Vuex.Store({
 
         },
 
-        setNewGraphSearchResults({commit}, graphSearchResults){
-            commit("newGraphSearchResults", graphSearchResults);
+        setNewSubgraphSearchResults({commit}, subgraphToSearchFor){
+            console.log(subgraphToSearchFor);
+            axios.post(`http://localhost:8000/search_subgraph`, subgraphToSearchFor).then((res) => {
+                let graphSearchResults = res.data;
+                commit("newSubgraphSearchResults", graphSearchResults);
+            })
         },
 
         setNewNodeSearchResults({commit}, nodeLabel){
-            let formData = new FormData();
-            formData.append('node_labels', "[nodeLabel]");
-            axios.get(`http://localhost:8000/node_search/${nodeLabel}`) 
+            return axios.get(`http://localhost:8000/node_search/${nodeLabel}`) 
             .then((response) => {
                 let newResults = response.data.graph_ids;
                 commit("updateNodeSearchResults", newResults);

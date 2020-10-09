@@ -16,6 +16,9 @@
     <modal name="subsetModal" height="auto">
       <subset-modal id="subsetModalId" :subset="getSubset" :elementId="subsetModalId"/>
     </modal>
+    <modal name="subgraphSearchModal" height="auto">
+      <subgraph-modal :results="getSubgraphResults"/>
+    </modal>
     <paging-bar/>
     <div class="col align-content-center">
       <graph-visual v-for="(v,i) in data" :key="i" :graph="v" :elementId="body"></graph-visual>
@@ -37,7 +40,7 @@ export default {
       tempArray: [{num:1}, {num:2}, {num:3}, {num:4}],
       graphToDisplayIndividually: null,
       body: "body",
-      subsetModalId: "subsetModalId"
+      subsetModalId: "subsetModalId",
     }
   },
   computed: {
@@ -48,7 +51,8 @@ export default {
       getCurrentGraphProperties: 'getCurrentGraphProperties',
       getNodeSearchResults: 'getNodeSearchResults',
       getNodeSearchedFor: 'getNodeLabelToSearchFor',
-      getSubset: 'getSubsetToDisplay'
+      getSubset: 'getSubsetToDisplay',
+      getSubgraphResults: 'getSubgraphSearchResults'
     })
   },
   watch: {
@@ -68,6 +72,9 @@ export default {
     },
     getSubset(val){
       this.$modal.show('subsetModal');
+    },
+    getSubgraphResults(val){
+      this.$modal.show('subgraphSearchModal')
     }
 
   },
@@ -80,6 +87,7 @@ export default {
     'properties-modal': () => import("./modals/GraphPropertiesModal"),
     'node-search-results-modal': () => import("./modals/NodeLabelSearchResultsModal"),
     'subset-modal': () => import("./modals/GraphSubsetModal"),
+    'subgraph-modal': () => import("./modals/SubgraphSearchResultsModal"),
     [Upload.name]: Upload,
     [Button.name]: Button
   },

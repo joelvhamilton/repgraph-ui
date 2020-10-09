@@ -9,11 +9,17 @@
             <button type="button" class="btn btn-info ml-2 mr-3">Compare Graphs</button>
             
             <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Node label" aria-label="Search" v-model="nodeLabelToSearchFor">
-                <button class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="searchForNodeLabel()">Search for node label</button>
+                <button class="btn btn-info my-2 my-sm-0" type="submit" @click.prevent="toggleNodeLabelSearchButton()">Search for node label</button>
+                <input v-if="nodeLabelSearchClicked" class="form-control mr-sm-2" type="search" placeholder="e.g. time_n " aria-label="Search" v-model="nodeLabelToSearchFor">
+                <button v-if="nodeLabelSearchClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="searchForNodeLabel()" type="submit"> Search </button>
             </form>
-                <input type="checkbox" id="toDisplayTokens" v-model="mustDisplayTokens">
-                <label for="toDisplayTokens"> Display Tokens </label>
+            <form class="form-inline">
+                <button class="btn btn-info my-2 my-sm-0" type="submit" @click.prevent="toggleSubgraphSearchButton()">Search for Subgraph</button>
+                <input v-if="subgraphSearchClicked" class="form-control mr-sm-2" type="search" placeholder="e.g. time_n " aria-label="Search" v-model="subgraphToSearchFor">
+                <button v-if="subgraphSearchClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="searchForSubgraphPattern()" type="submit"> Search </button>
+            </form>
+            <input type="checkbox" id="toDisplayTokens" v-model="mustDisplayTokens">
+            <label for="toDisplayTokens"> Display Tokens </label>
         </ul>
     </div>
 
@@ -31,13 +37,39 @@
             ...mapActions({
                 setGraphProperties: 'setNewGraphProperties',
                 updateDisplayTokens: 'updateDisplayTokens',
-                searchForNode: 'setNewNodeSearchResults'
+                searchForNode: 'setNewNodeSearchResults',
+                searchForSubgraph: 'setNewSubgraphSearchResults'
             }),
             togglePropertiesButton() {
                 this.propertiesButtonClicked = ! this.propertiesButtonClicked;
+                this.nodeLabelSearchClicked = false;
+                this.subgraphSearchClicked = false;
+            },
+            toggleNodeLabelSearchButton(){
+                this.nodeLabelSearchClicked = ! this.nodeLabelSearchClicked;
+                this.propertiesButtonClicked = false;
+                this.subgraphSearchClicked = false;
+            },
+            toggleSubgraphSearchButton(){
+                this.subgraphSearchClicked = ! this.subgraphSearchClicked;
+                this.propertiesButtonClicked = false;
+                this.nodeLabelSearchClicked = false;
             },
             searchForNodeLabel(){
-                this.searchForNode(this.nodeLabelToSearchFor);
+                this.searchForNode(this.nodeLabelToSearchFor).then(() => {
+                    this.toggleNodeLabelSearchButton();
+                    this.nodeLabelToSearchFor = "";
+                })
+            },
+            searchForSubgraphPattern(){
+                console.log(this.subgraphToSearchFor.split(", "));
+                let payload = {
+                    links: this.subgraphToSearchFor.split(", ")
+                }
+                this.searchForSubgraph(payload).then(() => {
+                    this.toggleSubgraphSearchButton();
+                    this.subgraphToSearchFor = "";
+                })
             }
         },
         computed: {
@@ -50,7 +82,10 @@
                 propertiesButtonClicked: false,
                 graphId: 0,
                 mustDisplayTokens: true,
-                nodeLabelToSearchFor: ""
+                nodeLabelToSearchFor: "",
+                nodeLabelSearchClicked: false,
+                subgraphSearchClicked: false,
+                subgraphToSearchFor: ""
             }
         },
         watch: {
