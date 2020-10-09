@@ -94,7 +94,7 @@ var data = {"20004017": {
 
 makeSubgraph(data);
 
-function makeSubgraph(data){
+export const makeSubgraph = function (data, elementId){
         //remove above
 
 for(var boog in data){
@@ -198,7 +198,7 @@ selectedNode.forEach(element => {
 });
 
 //SVG definitions.
-var svg = d3.select("body").append("svg").attr("id", "viewSvg").attr("class", "d3-subgraph")
+var svg = d3.select(elementId).append("svg").attr("id", "viewSvg").attr("class", "d3-subgraph")
 .attr("height", "500px").attr("width", "700px")
 .attr("viewBox","0,0,700,500")
 var group = svg.append("g").attr("id", "group");

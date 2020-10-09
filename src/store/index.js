@@ -156,7 +156,7 @@ export const store = new Vuex.Store({
             let nodeId = subsetDetails.nodeId;
             console.log(`node ID in store before request is made: ${nodeId}`);
             axios.get(`http://localhost:8000/display_node_neighbours/${graphId}_${nodeId}`).then((res)=> {
-                let newSubset = res.data;
+                let newSubset = res.data.output;
                 commit("newSubsetToDisplay", newSubset);
             })
 
