@@ -317,7 +317,7 @@ zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
         }
         return "12";})
     .attr("fill", function(d,i){return d.colour;})
-    .on("click", function(d,i){ console.log("Hello from graph: " + id + " and node: " + d.label);})
+    .on("click", function(d,i){ store.dispatch("setNewSubsetToDisplay", {graphId: id, nodeId: d.index});})
     .on("mouseover", function(d,i){mouseHover(d.colour,d.tokens)})
     .on("mouseout", mouseOut); 
 

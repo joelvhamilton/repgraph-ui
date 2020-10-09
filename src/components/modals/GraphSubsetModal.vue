@@ -1,5 +1,5 @@
 <template>
-    
+    <p> {{subset.id}} </p>
 </template>
 
 <script>
@@ -11,11 +11,11 @@ export default {
     
     watch: {
         subset(val){
-            this.makeSubgraph(val, this.elementId);
+            makeSubgraph(val, this.elementId);
         }
     },
     mounted(){
-        this.makeSubgraph(val, this.elementId);
+        makeSubgraph(this.subset, this.elementId);
     }
 }
 

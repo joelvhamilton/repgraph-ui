@@ -14,7 +14,7 @@
       <properties-modal/>
     </modal>
     <modal name="subsetModal" height="auto">
-      <subset-modal id="subsetModal" :subset="getSubset" :elementId="subsetModal"/>
+      <subset-modal id="subsetModalId" :subset="getSubset" :elementId="subsetModalId"/>
     </modal>
     <paging-bar/>
     <div class="col align-content-center">
@@ -36,7 +36,8 @@ export default {
       key: 0,
       tempArray: [{num:1}, {num:2}, {num:3}, {num:4}],
       graphToDisplayIndividually: null,
-      body: "body"
+      body: "body",
+      subsetModalId: "subsetModalId"
     }
   },
   computed: {
