@@ -137,6 +137,8 @@ var comparisonOutput ={
 
 function makeGraphComparison(comparisonOutput){
    var matchingNodes = [];
+   var mnodesb=[];
+   var mnodese=[];
    var matchingEdges = [];
    var g1id;
    var g1Nodes = [];

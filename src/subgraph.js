@@ -1,5 +1,6 @@
 
 
+<<<<<<< HEAD
 // TEST DATA
 var data = {
     "20004010": {
@@ -55,6 +56,103 @@ var data = {
 makeSubgraph(data);
 
 function makeSubgraph(data){
+=======
+// // TEST DATA
+// var data = {"20004017": {
+//     "edges": [
+//         {
+//             "src": 0,
+//             "trg": 5,
+//             "label": "RSTR/H"
+//         },
+//         {
+//             "src": 6,
+//             "trg": 5,
+//             "label": "ARG1/EQ"
+//         },
+//         {
+//             "src": 4,
+//             "trg": 5,
+//             "label": "ARG1/EQ"
+//         },
+//         {
+//             "src": 7,
+//             "trg": 5,
+//             "label": "ARG1/NEQ"
+//         }
+//     ],
+//     "a_nodes": {
+//         "6": {
+//             "label": "compound",
+//             "anchors": [
+//                 1,
+//                 2,
+//                 3,
+//                 4
+//             ]
+//         }
+//     },
+//     "s_nodes": {
+//         "5": {
+//             "label": "_yield_n_1",
+//             "anchors": [
+//                 4
+//             ]
+//         },
+//         "0": {
+//             "label": "_the_q",
+//             "anchors": [
+//                 0
+//             ]
+//         },
+//         "4": {
+//             "label": "_simple_a_for",
+//             "anchors": [
+//                 3
+//             ]
+//         },
+//         "7": {
+//             "label": "_fall_v_1",
+//             "anchors": [
+//                 5
+//             ]
+//         }
+//     },
+//     "tokens": {
+//         "0": {
+//             "form": "the",
+//             "lemma": "the"
+//         },
+//         "1": {
+//             "form": "30-",
+//             "lemma": "30-"
+//         },
+//         "2": {
+//             "form": "day",
+//             "lemma": "day",
+//             "carg": "30-"
+//         },
+//         "3": {
+//             "form": "simple",
+//             "lemma": "simple"
+//         },
+//         "4": {
+//             "form": "yield",
+//             "lemma": "yield"
+//         },
+//         "5": {
+//             "form": "fell",
+//             "lemma": "fall"
+//         }
+//     },
+//     "tops": "5"
+// }
+// }
+
+// makeSubgraph(data);
+
+export const makeSubgraph = function (data, elementId){
+>>>>>>> master
         //remove above
 
 for(var boog in data){
@@ -157,8 +255,12 @@ selectedNode.forEach(element => {
     }
 });
 
+
+if (elementId !== "body"){
+    elementId = `#${elementId}`;
+}
 //SVG definitions.
-var svg = d3.select("body").append("svg").attr("id", "viewSvg").attr("class", "d3-subgraph")
+var svg = d3.select(elementId).append("svg").attr("id", "viewSvg").attr("class", "d3-subgraph")
 .attr("height", "500px").attr("width", "700px")
 .attr("viewBox","0,0,700,500")
 var group = svg.append("g").attr("id", "group");
