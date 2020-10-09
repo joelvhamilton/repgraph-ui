@@ -1,5 +1,6 @@
 <template>
-    <div class="d-flex">
+    <div>
+        <p style="text-align:center;"> Graph: {{graph.id}} </p>
     </div>
 </template>
 <!-- all d3 logic will be here -->
@@ -10,18 +11,32 @@
 <script>
     import {Progress} from "element-ui"
     import {makeGraph} from "../graph.js"
+    import {mapGetters} from "vuex"
+
     export default {
-        props: ["data"],
+        props: ["graph", "elementId"],
         components: {
             [Progress.name]: Progress
         },
-        mounted () {
-            makeGraph(this.data)
-        },
         watch: {
-            data (val) {
-                makeGraph(this.data)
+            graph (val) {
+                makeGraph(this.graph, this.displayTokens, this.elementId);
+            },
+            displayTokens(val){
+                makeGraph(this.graph, this.displayTokens, this.elementId);
+            },
+            elementId (val){
+                this.idOfElementToAppendTo = val;
+                makeGraph(this.graph, this.displayTokens, this.elementId);
             }
+        },
+        mounted () {
+            makeGraph(this.graph, this.displayTokens, this.elementId);
+        },
+        computed: {
+            ...mapGetters({
+                displayTokens: 'displayTokens'
+            })
         }
     }
 </script>
@@ -30,8 +45,9 @@
 #viewSvg {
     margin-left: auto;
     margin-right: auto;
-    display: block;
+    display: flex;
     border: 3px solid lightgray;
-    border-radius: 30px;
+    border-radius: 4px;
+    margin-top: 12px;
 }
 </style>

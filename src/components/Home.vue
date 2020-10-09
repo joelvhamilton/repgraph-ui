@@ -2,9 +2,23 @@
   <div>
     <nav-bar/>
     <sub-menu-card/>
+    <div>
+      <modal name="individualGraph" height="auto" >
+        <graph-modal :graph="graphToDisplayIndividually" id="individualDisplayModal"></graph-modal>
+      </modal>
+    </div>
+    <modal name="nodeLabelSearchModal" height="auto">
+      <node-search-results-modal :nodeLabel="getNodeSearchedFor" :results="getNodeSearchResults"></node-search-results-modal>
+    </modal>
+    <modal name="propertiesModal" height="auto">
+      <properties-modal/>
+    </modal>
+    <modal name="subsetModal" height="auto">
+      <subset-modal id="subsetModalId" :subset="getSubset" :elementId="subsetModalId"/>
+    </modal>
+    <paging-bar/>
     <div class="col align-content-center">
-      <graph-visual v-for="(v,i) in data" :key="key" :data="v"></graph-visual>
-      <i class="fa fa-arrow-right" style="colour: black" @click="nextPage">Next Page</i>
+      <graph-visual v-for="(v,i) in data" :key="i" :graph="v" :elementId="body"></graph-visual>
     </div>
   </div>
 </template>
@@ -20,30 +34,52 @@ export default {
     return {
       data: [],
       key: 0,
-      tempArray: [{num:1}, {num:2}, {num:3}, {num:4}]
+      tempArray: [{num:1}, {num:2}, {num:3}, {num:4}],
+      graphToDisplayIndividually: null,
+      body: "body",
+      subsetModalId: "subsetModalId"
     }
   },
   computed: {
     ...mapGetters({
-      getGraphsToDisplay: 'getGraphsToDisplayOnPage'
-    }),
-  },
-  methods: {
-    ...mapActions({
-      nextPage: 'updateGraphsBeingDisplayed'
+      getGraphsToDisplay: 'getGraphsToDisplayOnPage',
+      getCurrentPage: 'getCurrentPageOfGraphs',
+      getIndividualGraphToDisplay: 'getIndividualGraphToDisplay',
+      getCurrentGraphProperties: 'getCurrentGraphProperties',
+      getNodeSearchResults: 'getNodeSearchResults',
+      getNodeSearchedFor: 'getNodeLabelToSearchFor',
+      getSubset: 'getSubsetToDisplay'
     })
   },
   watch: {
     getGraphsToDisplay (val) {
-      this.data = []
       this.data = val
       this.key += 1
+  },
+    getIndividualGraphToDisplay(val){
+      this.graphToDisplayIndividually = val;
+      this.$modal.show('individualGraph');
+    },
+    getCurrentGraphProperties(val){
+      this.$modal.show('propertiesModal');
+    },
+    getNodeSearchResults(val){
+      this.$modal.show('nodeLabelSearchModal');
+    },
+    getSubset(val){
+      this.$modal.show('subsetModal');
     }
+
   },
   components: {
     'graph-visual': () => import("./GraphVisual"),
     'nav-bar': () => import("./NavBar"),
     'sub-menu-card': () => import("./SubMenuCard"),
+    'paging-bar': () => import("./PagingBar"),
+    'graph-modal': () => import("./modals/IndividualGraphDisplayModal"),
+    'properties-modal': () => import("./modals/GraphPropertiesModal"),
+    'node-search-results-modal': () => import("./modals/NodeLabelSearchResultsModal"),
+    'subset-modal': () => import("./modals/GraphSubsetModal"),
     [Upload.name]: Upload,
     [Button.name]: Button
   },
@@ -51,6 +87,7 @@ export default {
     msg: String
   }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

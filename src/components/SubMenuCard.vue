@@ -8,33 +8,54 @@
                 </form>
             <button type="button" class="btn btn-info ml-2 mr-3">Compare Graphs</button>
             
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Node label or subgraph" aria-label="Search">
-                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-                </form>
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" type="search" placeholder="Node label" aria-label="Search" v-model="nodeLabelToSearchFor">
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="searchForNodeLabel()">Search for node label</button>
+            </form>
+                <input type="checkbox" id="toDisplayTokens" v-model="mustDisplayTokens">
+                <label for="toDisplayTokens"> Display Tokens </label>
         </ul>
     </div>
 
 </template>
-
 <script>
     import axios from "axios"
+    import {mapActions, mapGetters} from "vuex"
     export default {
         methods: {
             checkProperties(graphId) {
-                axios.get(
-                `http://localhost:8000/graph_properties/${graphId}`).then(() => {
+                this.setGraphProperties(graphId).then(() => {
                     this.togglePropertiesButton();
                 })
             },
+            ...mapActions({
+                setGraphProperties: 'setNewGraphProperties',
+                updateDisplayTokens: 'updateDisplayTokens',
+                searchForNode: 'setNewNodeSearchResults'
+            }),
             togglePropertiesButton() {
                 this.propertiesButtonClicked = ! this.propertiesButtonClicked;
+            },
+            searchForNodeLabel(){
+                this.searchForNode(this.nodeLabelToSearchFor);
             }
+        },
+        computed: {
+            ...mapGetters({
+                displayTokens: 'displayTokens'
+            })
         },
         data() {
             return {
                 propertiesButtonClicked: false,
-                graphId: 0
+                graphId: 0,
+                mustDisplayTokens: true,
+                nodeLabelToSearchFor: ""
+            }
+        },
+        watch: {
+            mustDisplayTokens(val){
+                this.updateDisplayTokens(val);
             }
         }
     }
