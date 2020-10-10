@@ -1,13 +1,120 @@
-import {store} from './store';
+// import {store} from './store';
 
-export const makeGraph = function (data, showTokens, elementId) {
-    
+// var data = {"output": {
+//     "id": "20013015",
+//         "a_nodes": {
+//             "0": {
+//                 "label": "generic_entity",
+//                 "anchors": [
+//                     0
+//                 ],
+//                 "incoming": [],
+//                 "outgoing": [
+//                     1
+//                 ]
+//             },
+//             "3": {
+//                 "label": "udef_q",
+//                 "anchors": [
+//                     2
+//                 ],
+//                 "incoming": [],
+//                 "outgoing": [
+//                     4
+//                 ]
+//             }
+//         },
+//         "s_nodes": {
+//             "1": {
+//                 "label": "_that_q_dem",
+//                 "anchors": [
+//                     0
+//                 ],
+//                 "incoming": [
+//                     0
+//                 ],
+//                 "outgoing": []
+//             },
+//             "2": {
+//                 "label": "_attract_v_1",
+//                 "anchors": [
+//                     1
+//                 ],
+//                 "incoming": [],
+//                 "outgoing": []
+//             },
+//             "4": {
+//                 "label": "_attention_n_to",
+//                 "anchors": [
+//                     2
+//                 ],
+//                 "incoming": [
+//                     3
+//                 ],
+//                 "outgoing": []
+//             }
+//         },
+//         "edges": [
+//             {
+//                 "src": 0,
+//                 "trg": 1,
+//                 "label": "RSTR/H"
+//             },
+//             {
+//                 "src": 3,
+//                 "trg": 4,
+//                 "label": "RSTR/H"
+//             }
+//         ],
+//         "tokens": {
+//             "0": {
+//                 "form": "\u201cthat",
+//                 "lemma": "that"
+//             },
+//             "1": {
+//                 "form": "attracts",
+//                 "lemma": "attract"
+//             },
+//             "2": {
+//                 "form": "attention",
+//                 "lemma": "attention"
+//             },
+//             "3": {
+//                 "form": "\u2026",
+//                 "lemma": "\u2026"
+//             }
+//         },
+//         "tops": {
+//             "2": {
+//                 "label": "_attract_v_1",
+//                 "anchors": [
+//                     1
+//                 ],
+//                 "incoming": [],
+//                 "outgoing": []
+//             }
+//         },
+//         "sentence": [
+//             "\u201cthat",
+//             "attracts",
+//             "attention",
+//             "\u2026"
+//         ]
+//     }}
+
+// makeGraph(data, true,"body")
+    // function makeGraph(data,showTokens,elementId){
+        
+ export const makeGraph = function (data, showTokens, elementId) {
     var start = performance.now();
     var layers = {bottom:0,token:0,surface:0,top:10};
     var sNodes =[];
     var aNodes =[];
     var tokenList =[];
-    // debugger
+
+    for(var boog in data){
+        var data = data[boog];
+    }    // debugger
     var id = data.id;
     var a_nodes = Object.entries(data.a_nodes);
     var s_nodes = Object.entries(data.s_nodes);
@@ -481,7 +588,7 @@ aNodes.forEach(element => {
 });
 
 var end = performance.now();
-console.log("Making the graph took " + (end - start) + " milliseconds.") //REMOVE THIS=================================================================================
+console.log("Making the graph took " + (end - start) + " milliseconds.") 
 }
 
 function mouseHover(colour, anchors){
