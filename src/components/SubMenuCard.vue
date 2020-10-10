@@ -9,7 +9,7 @@
             <button type="button" class="btn btn-info ml-2 mr-3">Compare Graphs</button>
             
             <form class="form-inline">
-                <button class="btn btn-info my-2 my-sm-0" type="submit" @click.prevent="toggleNodeLabelSearchButton()">Search for node label</button>
+                <button class="btn btn-info my-sm-0 mr-3" type="submit" @click.prevent="toggleNodeLabelSearchButton()">Search for node label</button>
                 <input v-if="nodeLabelSearchClicked" class="form-control mr-sm-2" type="search" placeholder="e.g. time_n " aria-label="Search" v-model="nodeLabelToSearchFor">
                 <button v-if="nodeLabelSearchClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="searchForNodeLabel()" type="submit"> Search </button>
             </form>
