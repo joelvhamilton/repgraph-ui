@@ -1,165 +1,70 @@
 
 
 // TEST DATA
-// var data = {"20003019": {
-//     "edges": [
-//         {
-//             "src": 9,
-//             "trg": 10,
-//             "label": "ARG1/H"
-//         },
-//         {
-//             "src": 19,
-//             "trg": 10,
-//             "label": "ARG1/EQ"
-//         },
-//         {
-//             "src": 37,
-//             "trg": 10,
-//             "label": "MOD/EQ"
-//         },
-//         {
-//             "src": 10,
-//             "trg": 8,
-//             "label": "ARG1/NEQ"
-//         },
-//         {
-//             "src": 10,
-//             "trg": 12,
-//             "label": "ARG2/NEQ"
-//         }
-//     ],
-//     "a_nodes": {
-//         "37": {
-//             "label": "appos",
-//             "anchors": [
-//                 22,
-//                 23,
-//                 24,
-//                 25,
-//                 26,
-//                 27,
-//                 28,
-//                 29,
-//                 30,
-//                 31,
-//                 32,
-//                 33,
-//                 34
-//             ]
-//         },
-//         "8": {
-//             "label": "named_n",
-//             "anchors": [
-//                 10
-//             ]
-//         }
-//     },
-//     "s_nodes": {
-//         "10": {
-//             "label": "_regulate_v_1",
-//             "anchors": [
-//                 12
-//             ]
-//         },
-//         "9": {
-//             "label": "_should_v_modal",
-//             "anchors": [
-//                 11
-//             ]
-//         },
-//         "19": {
-//             "label": "_stringently_u_unknown",
-//             "anchors": [
-//                 20
-//             ]
-//         },
-//         "12": {
-//             "label": "_class_n_of",
-//             "anchors": [
-//                 14
-//             ]
-//         }
-//     },
-//     "tokens": {
-//         "32": {
-//             "form": "and",
-//             "lemma": "and"
-//         },
-//         "33": {
-//             "form": "other",
-//             "lemma": "other"
-//         },
-//         "34": {
-//             "form": "buildings,",
-//             "lemma": "building"
-//         },
-//         "10": {
-//             "form": "u.s.",
-//             "lemma": "US",
-//             "carg": "US"
-//         },
-//         "11": {
-//             "form": "should",
-//             "lemma": "should"
-//         },
-//         "14": {
-//             "form": "class",
-//             "lemma": "class"
-//         },
-//         "20": {
-//             "form": "stringently",
-//             "lemma": "stringently"
-//         },
-//         "22": {
-//             "form": "the",
-//             "lemma": "the"
-//         },
-//         "23": {
-//             "form": "common",
-//             "lemma": "common"
-//         },
-//         "24": {
-//             "form": "kind",
-//             "lemma": "kind"
-//         },
-//         "25": {
-//             "form": "of",
-//             "lemma": "of"
-//         },
-//         "26": {
-//             "form": "asbestos,",
-//             "lemma": "asbestos"
-//         },
-//         "27": {
-//             "form": "chrysotile,",
-//             "lemma": "chrysotile"
-//         },
-//         "28": {
-//             "form": "found",
-//             "lemma": "find"
-//         },
-//         "29": {
-//             "form": "in",
-//             "lemma": "in"
-//         },
-//         "30": {
-//             "form": "most",
-//             "lemma": "most"
-//         },
-//         "31": {
-//             "form": "schools",
-//             "lemma": "school"
-//         }
-//     },
-//     "tops": "10"
-// }
-// }
+var data = {
+    "20008006": {
+        "edges": [
+            {
+                "src": 17,
+                "trg": 18,
+                "label": "ARG2/NEQ"
+            },
+            {
+                "src": 19,
+                "trg": 18,
+                "label": "RSTR/H"
+            },
+            {
+                "src": 20,
+                "trg": 18,
+                "label": "ARG1/EQ"
+            }
+        ],
+        "a_nodes": {
+            "18": {
+                "label": "time_n",
+                "anchors": [
+                    15
+                ]
+            },
+            "19": {
+                "label": "def_implicit_q",
+                "anchors": [
+                    15
+                ]
+            }
+        },
+        "s_nodes": {
+            "17": {
+                "label": "_by_p_temp",
+                "anchors": [
+                    14
+                ]
+            },
+            "20": {
+                "label": "_then_p_temp",
+                "anchors": [
+                    15
+                ]
+            }
+        },
+        "tokens": {
+            "14": {
+                "form": "by",
+                "lemma": "by"
+            },
+            "15": {
+                "form": "then.",
+                "lemma": "then"
+            }
+        },
+        "tops": "18"
+    }}
 
-// makeSubgraph(data,"body");
+makeSubgraph(data,"body");
 
- export const makeSubgraph = function (data, elementId){
-// function makeSubgraph(data,elementId){
+//  export const makeSubgraph = function (data, elementId){
+function makeSubgraph(data,elementId){
         //remove above
 
 for(var boog in data){
@@ -218,6 +123,8 @@ dataEdges.forEach(element => {
         selectedNode[0].outgoing.push(element[1].trg);
     }
 });
+console.log(sNodes);
+console.log(aNodes);
 
 var abstractColourScale = d3.scaleLinear().domain([0,Math.max(...aNodeIndexes)]).range(["yellow", "red"]);
 var surfaceColourScale =  d3.scaleSequential().domain([0,Math.max(...sNodeIndexes)]).interpolator(d3.interpolateCool);
@@ -237,19 +144,19 @@ var aNodeHeight = height -430;
 var sNodeHeight = height -70;
 var aNodeInterval = width/aNodes.length;
 var sNodeInterval = width/sNodes.length;
-var allNodes = sNodes.concat(aNodes.concat(selectedNode));
-
 
 var ai =0;
 aNodes.forEach(element => {
     element.yPos = aNodeHeight;
     element.xPos = aNodeInterval/2 + (aNodeInterval*ai);
+    console.log(element.xPos);
     ai++;
 });
 var si=0;
 sNodes.forEach(element => {
     element.yPos = sNodeHeight;
     element.xPos = sNodeInterval/2 + (sNodeInterval*si);
+    console.log(element.xPos);
     si++;
 });
 selectedNode.forEach(element => {
@@ -260,12 +167,16 @@ selectedNode.forEach(element => {
     else{
         element.yPos = height/2 +25;
     }
+    console.log(element.xPos);
+
 });
 
 
 if (elementId !== "body"){
     elementId = `#${elementId}`;
 }
+var allNodes = sNodes.concat(aNodes.concat(selectedNode));
+
 //SVG definitions.
 var svg = d3.select(elementId).append("svg").attr("id", "viewSvg").attr("class", "d3-subgraph")
 .attr("height", "500px").attr("width", "700px")
@@ -292,21 +203,6 @@ zoomGroup.append("defs").selectAll("marker.s").data(allNodes).enter().append("ma
     .append('path')
         .attr('d', d3.line()(arrowPoints))
         .attr("fill", function(d,i){return d.colour;});
-        
-// zoomGroup.select("defs").selectAll("marker.a").data(aNodes).enter().append("marker")
-//         .attr("class","a")
-//         .attr('id', function(d,i){return "arrow-"+d.index;})
-//         .attr('viewBox', [0, 0, 7, 7])
-//         .attr('refX', 3.5)
-//         .attr('refY', 3.5)
-//         .attr('markerWidth', 6)
-//         .attr('markerHeight', 6)
-//         .attr('orient', 'auto')
-//     .append('path')
-//         .attr('d', d3.line()(arrowPoints))
-//         .attr("fill", function(d,i){return d.colour;});
-
-
 
 function drawLine(colour, data, index){
     var line = d3.line()
@@ -492,7 +388,7 @@ sNodes.forEach(element => {
                     var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos +abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
                 }
                 else{
-                    var fromToS = [{x:element.xPos,y:element.yPos +15},{x:selectedNode[0].xPos +abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
+                    var fromToS = [{x:element.xPos,y:element.yPos +15},{x:selectedNode[0].xPos,y:selectedNode[0].yPos - 32}];
                 }
             }
             else{
@@ -500,10 +396,9 @@ sNodes.forEach(element => {
                     var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos -abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
                 }
                 else{
-                    var fromToS = [{x:element.xPos,y:element.yPos +15 },{x:selectedNode[0].xPos -abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
+                    var fromToS = [{x:element.xPos,y:element.yPos +15 },{x:selectedNode[0].xPos,y:selectedNode[0].yPos - 32}];
                 }
             }
-        
             drawLine(element.colour,fromToS, element.index);
  // LABEL
     var labelX = (fromToS[0].x+fromToS[1].x)/2 + 10;
