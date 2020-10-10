@@ -141,14 +141,17 @@ export const store = new Vuex.Store({
         setNewGraphProperties({commit}, graphId){
             return axios.get(
                 `http://localhost:8000/graph_properties/${graphId}`).then((res) => {
-                    console.log(res.data)
-                    let graphProperties = res.data.output
+                    let graphProperties = res.data.output;
                     commit("newGraphProperties", graphProperties);  
                 })
         },
 
-        setNewGraphComparisonResults({commit}, newComparisonResults){
-            commit("newGraphComparisonResults", newComparisonResults);
+        makeNewGraphComparison({commit}, idsSeparatedByUnderscore){
+            return axios.get(`http://localhost:8000/compare/${idsSeparatedByUnderscore}`).then((res) => {
+                console.log(res.data);
+                let newComparisonResults = res.data.output;
+                commit("newGraphComparisonResults", newComparisonResults);
+            })
         },
 
         setNewSubsetToDisplay( {commit}, subsetDetails){
@@ -165,7 +168,7 @@ export const store = new Vuex.Store({
         setNewSubgraphSearchResults({commit}, subgraphToSearchFor){
             console.log(subgraphToSearchFor);
             axios.post(`http://localhost:8000/search_subgraph`, subgraphToSearchFor).then((res) => {
-                let graphSearchResults = res.data;
+                let graphSearchResults = res.data.graph_ids;
                 commit("newSubgraphSearchResults", graphSearchResults);
             })
         },

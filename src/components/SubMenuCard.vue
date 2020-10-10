@@ -6,7 +6,6 @@
                     <input v-model="graphId" class="form-control mr-sm-2" type="search" placeholder="graph id" aria-label="Search">
                     <button class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="checkProperties(graphId)">Check</button>
                 </form>
-            <button type="button" class="btn btn-info ml-2 mr-3">Compare Graphs</button>
             
             <form class="form-inline">
                 <button class="btn btn-info my-sm-0 mr-3" type="submit" @click.prevent="toggleNodeLabelSearchButton()">Search for node label</button>
@@ -14,9 +13,14 @@
                 <button v-if="nodeLabelSearchClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="searchForNodeLabel()" type="submit"> Search </button>
             </form>
             <form class="form-inline">
-                <button class="btn btn-info my-2 my-sm-0" type="submit" @click.prevent="toggleSubgraphSearchButton()">Search for Subgraph</button>
+                <button class="btn btn-info mr-3 my-2 my-sm-0" type="submit" @click.prevent="toggleSubgraphSearchButton()">Search for Subgraph</button>
                 <input v-if="subgraphSearchClicked" class="form-control mr-sm-2" type="search" placeholder="e.g. time_n " aria-label="Search" v-model="subgraphToSearchFor">
                 <button v-if="subgraphSearchClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="searchForSubgraphPattern()" type="submit"> Search </button>
+            </form>
+            <form class="form-inline">
+                <button class="btn btn-info my-2 my-sm-0" type="submit" @click.prevent="toggleGraphComparison()">Compare Graphs</button>
+                <input v-if="graphComparisonClicked" class="form-control mr-sm-2" type="search" placeholder="id1, id2" aria-label="Search" v-model="graphsToCompare">
+                <button v-if="graphComparisonClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="compareGraphs()" type="submit"> Compare </button>
             </form>
             <input type="checkbox" id="toDisplayTokens" v-model="mustDisplayTokens">
             <label for="toDisplayTokens"> Display Tokens </label>
@@ -38,22 +42,34 @@
                 setGraphProperties: 'setNewGraphProperties',
                 updateDisplayTokens: 'updateDisplayTokens',
                 searchForNode: 'setNewNodeSearchResults',
-                searchForSubgraph: 'setNewSubgraphSearchResults'
+                searchForSubgraph: 'setNewSubgraphSearchResults',
+                compareTwoGraphs: 'makeNewGraphComparison'
             }),
+
             togglePropertiesButton() {
                 this.propertiesButtonClicked = ! this.propertiesButtonClicked;
                 this.nodeLabelSearchClicked = false;
                 this.subgraphSearchClicked = false;
+                this.graphComparisonClicked = false;
+            },
+
+            toggleGraphComparison() {
+                this.graphComparisonClicked = ! this.graphComparisonClicked;
+                this.nodeLabelSearchClicked = false;
+                this.subgraphSearchClicked = false;
+                this.propertiesButtonClicked = false;
             },
             toggleNodeLabelSearchButton(){
                 this.nodeLabelSearchClicked = ! this.nodeLabelSearchClicked;
                 this.propertiesButtonClicked = false;
                 this.subgraphSearchClicked = false;
+                this.graphComparisonClicked = false;
             },
             toggleSubgraphSearchButton(){
                 this.subgraphSearchClicked = ! this.subgraphSearchClicked;
                 this.propertiesButtonClicked = false;
                 this.nodeLabelSearchClicked = false;
+                this.graphComparisonClicked = false;
             },
             searchForNodeLabel(){
                 this.searchForNode(this.nodeLabelToSearchFor).then(() => {
@@ -62,7 +78,6 @@
                 })
             },
             searchForSubgraphPattern(){
-                console.log(this.subgraphToSearchFor.split(", "));
                 let payload = {
                     links: this.subgraphToSearchFor.split(", ")
                 }
@@ -70,6 +85,14 @@
                     this.toggleSubgraphSearchButton();
                     this.subgraphToSearchFor = "";
                 })
+            },
+            compareGraphs(){
+                let idsToCompare = this.graphsToCompare.split(", ");
+                let argumentForComparisonAPICall = `${idsToCompare[0]}_${idsToCompare[1]}`;
+                this.compareTwoGraphs(argumentForComparisonAPICall).then(() => {
+                    this.toggleGraphComparison();
+                    this.graphsToCompare = "";
+                });
             }
         },
         computed: {
@@ -85,7 +108,9 @@
                 nodeLabelToSearchFor: "",
                 nodeLabelSearchClicked: false,
                 subgraphSearchClicked: false,
-                subgraphToSearchFor: ""
+                subgraphToSearchFor: "",
+                graphComparisonClicked: false,
+                graphsToCompare: ""
             }
         },
         watch: {

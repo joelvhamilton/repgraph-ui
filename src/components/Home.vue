@@ -2,22 +2,23 @@
   <div>
     <nav-bar/>
     <sub-menu-card/>
-    <div>
-      <modal name="individualGraph" height="auto" >
-        <graph-modal :graph="graphToDisplayIndividually" id="individualDisplayModal"></graph-modal>
-      </modal>
-    </div>
-    <modal name="nodeLabelSearchModal" height="auto">
+    <modal name="nodeLabelSearchModal" :height="auto" :scrollable="true">
       <node-search-results-modal :nodeLabel="getNodeSearchedFor" :results="getNodeSearchResults"></node-search-results-modal>
     </modal>
-    <modal name="propertiesModal" height="auto">
+    <modal name="subgraphSearchModal" :height="auto" :scrollable="true">
+      <subgraph-modal :results="getSubgraphResults"/>
+    </modal>
+    <modal name="individualGraph" :height="auto" :scrollable="true">
+      <graph-modal :graph="graphToDisplayIndividually" id="individualDisplayModal"></graph-modal>
+    </modal>
+    <modal name="propertiesModal" :height="auto" :scrollable="true">
       <properties-modal/>
     </modal>
-    <modal name="subsetModal" height="auto">
+    <modal name="subsetModal" :height="auto" :scrollable="true">
       <subset-modal id="subsetModalId" :subset="getSubset" :elementId="subsetModalId"/>
     </modal>
-    <modal name="subgraphSearchModal" height="auto">
-      <subgraph-modal :results="getSubgraphResults"/>
+    <modal name="comparisonModal" :height="auto" :scrollable="true">
+      <comparison-modal id="comparison" :graphComparisonResults="getComparisonResults" :elementId="comparison"/>
     </modal>
     <paging-bar/>
     <div class="col align-content-center">
@@ -41,6 +42,8 @@ export default {
       graphToDisplayIndividually: null,
       body: "body",
       subsetModalId: "subsetModalId",
+      comparison: "comparison",
+      auto: "auto"
     }
   },
   computed: {
@@ -52,7 +55,8 @@ export default {
       getNodeSearchResults: 'getNodeSearchResults',
       getNodeSearchedFor: 'getNodeLabelToSearchFor',
       getSubset: 'getSubsetToDisplay',
-      getSubgraphResults: 'getSubgraphSearchResults'
+      getSubgraphResults: 'getSubgraphSearchResults',
+      getComparisonResults: 'getResultsOfGraphComparison'
     })
   },
   watch: {
@@ -74,7 +78,10 @@ export default {
       this.$modal.show('subsetModal');
     },
     getSubgraphResults(val){
-      this.$modal.show('subgraphSearchModal')
+      this.$modal.show('subgraphSearchModal');
+    },
+    getComparisonResults(val){
+      this.$modal.show('comparisonModal');
     }
 
   },
@@ -88,6 +95,7 @@ export default {
     'node-search-results-modal': () => import("./modals/NodeLabelSearchResultsModal"),
     'subset-modal': () => import("./modals/GraphSubsetModal"),
     'subgraph-modal': () => import("./modals/SubgraphSearchResultsModal"),
+    'comparison-modal': () => import("./modals/GraphComparisonModal"),
     [Upload.name]: Upload,
     [Button.name]: Button
   },

@@ -1,4 +1,4 @@
-// import {store} from './store';
+import {store} from './store';
 
 // var data = {"output": {
 //     "id": "20013015",
@@ -106,15 +106,13 @@
     // function makeGraph(data,showTokens,elementId){
         
  export const makeGraph = function (data, showTokens, elementId) {
+    console.log(data);
     var start = performance.now();
     var layers = {bottom:0,token:0,surface:0,top:10};
     var sNodes =[];
     var aNodes =[];
     var tokenList =[];
-
-    for(var boog in data){
-        var data = data[boog];
-    }    // debugger
+ // debugger
     var id = data.id;
     var a_nodes = Object.entries(data.a_nodes);
     var s_nodes = Object.entries(data.s_nodes);

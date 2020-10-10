@@ -8,7 +8,7 @@
     <ul class="navbar-nav">
       <li>
         <input type="file" id="file" ref="file" @change="handleFileUpload()"/>
-        <button v-on:click="postGraphs()">Submit</button>
+        <button class="btn btn-outline-info mr-2 " v-on:click="postGraphs()">Submit</button>
       </li>
       <li>
           <form class="form-inline">
