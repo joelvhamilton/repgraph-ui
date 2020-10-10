@@ -8,16 +8,6 @@ var comparisonOutput ={
                "label": "ARG1/NEQ"
            },
            {
-               "src": "_attract_v_1",
-               "trg": "_attention_n_to",
-               "label": "ARG2/NEQ"
-           },
-           {
-               "src": "_that_q_dem",
-               "trg": "generic_entity",
-               "label": "RSTR/H"
-           },
-           {
                "src": "udef_q",
                "trg": "_attention_n_to",
                "label": "RSTR/H"
@@ -26,12 +16,34 @@ var comparisonOutput ={
    },
    "graph_1": {
        "20013011": {
-           "edges": []
+           "edges": [
+               {
+                   "src": "_attract_v_1",
+                   "trg": "_attention_n_to",
+                   "label": "ARG2/NEQ"
+               },
+               {
+                   "src": "_that_q_dem",
+                   "trg": "generic_entity",
+                   "label": "RSTR/H"
+               }
+           ]
        }
    },
    "graph_2": {
-       "20013021": {
-           "edges": []
+       "20013014": {
+           "edges": [
+               {
+                   "src": "generic_entity",
+                   "trg": "_that_q_dem",
+                   "label": "RSTR/H"
+               },
+               {
+                   "src": "_that_q_dem",
+                   "trg": "_attract_v_1",
+                   "label": "RSTR/H"
+               }
+           ]
        }
    }
 };
@@ -55,28 +67,67 @@ function makeGraphComparison(comparisonOutput){
          g1Nodes = temp[0];
          g1id = g1Nodes[0];
          g1Nodes = g1Nodes[1];
+         g1Nodes = g1Nodes["edges"];
             }
       else{
          g2Nodes =temp[0];
          g2id = g2Nodes[0];
          g2Nodes = g2Nodes[1];
+         g2Nodes = g2Nodes["edges"];
       }
    }
 
    //SVG STUFF:
    var height = 100;
-   if(g2Nodes.length> 0){
-   height = height + g2Nodes.length*75;
-   }
-   if(g1Nodes.length> 0){
-   height = height + g1Nodes.length*75;
-   }
-   if(matchingNodes.length> 0){
-   height = height + matchingNodes.length*75;
-   }
-
    var width = 600;
    var workingHeight = 10;
+
+   //height of text
+   var matchingTextPos =0;
+   var g1TextPos=0;
+   var g2TextPos=0;
+   var textPos =[]
+   if(matchingNodes.length > 0){
+      matchingTextPos = workingHeight;
+      // workingHeight = workingHeight + 30 + matchingNodes.length*75;
+      textPos.push({t:"Matching nodes and edges:", pos:matchingTextPos});
+      matchingNodes.forEach(element => {
+         matchingTextPos = matchingTextPos + 75;
+         element.xpos = matchingTextPos;
+         workingHeight = element.xpos + 30;
+      });
+      
+   }
+   if(g1Nodes.length > 0){
+      g1TextPos = workingHeight +60;
+      // workingHeight = workingHeight + 30 + g1Nodes.length*75;
+      textPos.push({t:"Exclusive to graph " + g1id + ":", pos:g1TextPos});
+      g1Nodes.forEach(element => {
+         g1TextPos = g1TextPos + 75;
+         element.xpos = g1TextPos;
+         workingHeight = element.xpos + 30;
+
+      });
+   }
+   if(g2Nodes.length > 0){
+      g2TextPos = workingHeight +60;
+      // workingHeight = workingHeight + 30 + g2Nodes.length+75;
+      textPos.push({t:"Exclusive to graph " + g2id + ":", pos:g2TextPos});
+      g2Nodes.forEach(element => {
+         g2TextPos = g2TextPos + 75;
+         element.xpos = g2TextPos;
+         workingHeight = element.xpos + 30;
+      });
+   }
+   height = workingHeight + 20;
+
+   for(var i =0; i<textPos.length; i++){
+      if(textPos[i].pos == 0){
+         textPos[i].t= "";
+      }
+   }
+   var text = textPos.map(x => x.t);
+
    var svg = d3.select("body").append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
    .attr("height", height).attr("width", width +8).attr("id", "comparison")
    .attr("viewBox","0,0,700,500")
@@ -96,51 +147,6 @@ function makeGraphComparison(comparisonOutput){
    .attr("x","0")
    .attr("y","0")
    .attr("fill","#f2f0f0");
-
-   //height of text
-   var matchingTextPos =0;
-   var g1TextPos=0;
-   var g2TextPos=0;
-   if(matchingNodes.length > 0){
-      matchingTextPos = workingHeight;
-      workingHeight = workingHeight + 30 + matchingNodes.length*75;
-   }
-   if(g1Nodes.length > 0){
-      g1TextPos = workingHeight;
-      workingHeight = workingHeight + 30 + g1Nodes.length*75;
-   }
-   if(g2Nodes.length > 0){
-      g2TextPos = workingHeight;
-      workingHeight = workingHeight + 30 + g2Nodes.length+75;
-   }
-    
-   var textPos = [{t:"Matching nodes and edges:", pos:matchingTextPos},
-               {t:"Exclusive to graph " + g1id + ":", pos:g1TextPos},
-               {t:"Exclusive to graph " + g2id + ":", pos:g2TextPos}];
-   for(var i =0; i<textPos.length; i++){
-      if(textPos[i].pos == 0){
-         textPos[i].t= "";
-      }
-   }
-   var text = textPos.map(x => x.t);
-   if(matchingNodes.length > 0){
-      matchingNodes.forEach(element => {
-         matchingTextPos = matchingTextPos + 75;
-         element.xpos = matchingTextPos;
-      });
-   }
-   if(g1Nodes.length > 0){
-      g1Nodes.forEach(element => {
-         g1TextPos = g1TextPos + 75;
-         element.xpos = g1TextPos;
-      });
-   }
-   if(g2Nodes.length > 0){
-      g2Nodes.forEach(element => {
-         g2TextPos = g2TextPos + 75;
-         element.xpos = g2TextPos;
-      });
-   }
    //ARROWHEAD DEFINITION
    var arrowPoints = [[0, 0], [0, 6], [6, 3]];
 zoomGroup.append("defs").selectAll("marker.s").data([1]).enter().append("marker")
@@ -173,10 +179,11 @@ zoomGroup.append("path")
    //drawing text
    zoomGroup.append("text").selectAll("text.layers").data(text).enter().append("tspan").text(d => d)
          .attr("class","layers")
-         .attr("x",function(d,i){return 5;})
-         .attr("y",function(d,i){return textPos[i].pos;})
+         .attr("x",function(d,i){return width/2;})
+         .attr("y",function(d,i){return textPos[i].pos + 3;})
          .attr("font-size","15")
-         .attr("text-anchor","start")
+         .attr("font-weight", "900")
+         .attr("text-anchor","middle")
          .attr("dominant-baseline","middle")
          .attr("fill","black")
          .attr("font-family","Arial");
@@ -194,9 +201,10 @@ zoomGroup.append("path")
          })
          .attr("stroke-width","2");
 
-   console.log(matchingNodes);
+         console.log(g1Nodes);
    var alles = [{id:mid, data:matchingNodes},{id:g1id, data:g1Nodes},{id:g2id,data:g2Nodes}];
    alles.forEach(element => {
+      console.log(element.id);
             
       //drawing begin nodes
       zoomGroup.selectAll("circle"+element.id+"b").data(element.data).enter().append("circle")
