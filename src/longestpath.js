@@ -1,29 +1,19 @@
 var data = {
-    "id": "20013014",
-    "connected": "False",
-    "acyclic": "False",
+    "id": "20013011",
+    "connected": "True",
+    "acyclic": "True",
     "longest_directed_path": {
-        "[0, 1, 2]": {
+        "[1, 0]": {
             "edges": [
                 {
-                    "src": "generic_entity",
-                    "trg": "_that_q_dem",
-                    "label": "RSTR/H"
-                },
-                {
                     "src": "_that_q_dem",
-                    "trg": "_attract_v_1",
+                    "trg": "generic_entity",
                     "label": "RSTR/H"
                 }
             ]
         },
-        "[1, 2, 0]": {
+        "[2, 0]": {
             "edges": [
-                {
-                    "src": "_that_q_dem",
-                    "trg": "_attract_v_1",
-                    "label": "RSTR/H"
-                },
                 {
                     "src": "_attract_v_1",
                     "trg": "generic_entity",
@@ -31,46 +21,41 @@ var data = {
                 }
             ]
         },
-        "[2, 0, 1]": {
+        "[2, 4]": {
             "edges": [
                 {
                     "src": "_attract_v_1",
-                    "trg": "generic_entity",
-                    "label": "ARG1/NEQ"
-                },
+                    "trg": "_attention_n_to",
+                    "label": "ARG2/NEQ"
+                }
+            ]
+        },
+        "[3, 4]": {
+            "edges": [
                 {
-                    "src": "generic_entity",
-                    "trg": "_that_q_dem",
+                    "src": "udef_q",
+                    "trg": "_attention_n_to",
                     "label": "RSTR/H"
                 }
             ]
         }
     },
     "longest_undirected_path": {
-        "[0, 1, 2]": {
+        "[0, 2, 4, 3]": {
             "edges": [
                 {
                     "src": "generic_entity",
-                    "trg": "_that_q_dem",
-                    "label": "RSTR/H"
-                },
-                {
-                    "src": "_that_q_dem",
                     "trg": "_attract_v_1",
-                    "label": "RSTR/H"
-                }
-            ]
-        },
-        "[0, 2, 1]": {
-            "edges": [
-                {
-                    "src": "_attract_v_1",
-                    "trg": "generic_entity",
                     "label": "ARG1/NEQ"
                 },
                 {
                     "src": "_attract_v_1",
-                    "trg": "_that_q_dem",
+                    "trg": "_attention_n_to",
+                    "label": "ARG2/NEQ"
+                },
+                {
+                    "src": "_attention_n_to",
+                    "trg": "udef_q",
                     "label": "RSTR/H"
                 }
             ]
@@ -127,7 +112,6 @@ zoomGroup.append("rect")
 
 for(var i=0; i<directedPaths.length;i++){
     // console.log(directedPaths[i][1].edges);
-    console.log(directedPaths.length);
     var dColour =  d3.scaleSequential().domain([0,directedPaths[i][1].edges.length +1 + directedPaths.length]).interpolator(d3.interpolateCool);
     for(var j=0;j<directedPaths[i][1].edges.length;j++){
         directedPaths[i][1].edges[j].srcColour = dColour(j+i);// TODO TEST AN MAYBE ADD i HERE
@@ -144,18 +128,26 @@ for(var i=0; i<undirectedPaths.length;i++){
 
 // ARROW DEFINITIONS
 const arrowPoints = [[0, 0], [0, 6], [6, 3]];
-function drawLine(colour, data, arrow){
+function drawLine(colour, data, arrow,info){
     var line = d3.line()
     .x(function(d){return d.x;})
     .y(function(d){return d.y;})
     .curve(d3.curveBundle);
-    zoomGroup.append("path")
+    if(arrow){
+        zoomGroup.append("path")
         .attr("d",line(data))
         .attr("stroke", colour)
         .attr("stroke-width","2")
-        // .attr("marker-end", "url(#arrow-"+colour+")")
+        .attr("marker-end", "url(#arrow-"+info[0]+info[1]+")")
         .attr("fill", "none");
-    
+    }
+    else{
+        zoomGroup.append("path")
+        .attr("d",line(data))
+        .attr("stroke", colour)
+        .attr("stroke-width","2")
+        .attr("fill", "none");
+    }    
 };
 
 //text data
@@ -175,6 +167,24 @@ var textPos =  [{text:connectedText, pos:40,width:400},
                 {text:ludp, pos: 115 + directedPaths.length*55,width:400}];
 var text = textPos.map(x=> x.text);
 var headerText = {text:header, pos:15,width:900};
+var defs = zoomGroup.append("defs.yo").attr("class","yo");
+
+directedPaths.forEach(element => {
+    for(var i=0; i<element[1].edges.length;i++ ){
+        defs.selectAll("marker"+i).data([element[1].edges[i]]).enter().append("marker")
+            .attr("class", i+"")
+            .attr('id', function(d,i){return "arrow-" + d.src+d.trg;})
+            .attr('viewBox', [0, 0, 7, 7]+"")
+            .attr('refX', 3.5+"")
+            .attr('refY', 3.5+"")
+            .attr('markerWidth', 6+"")
+            .attr('markerHeight', 6+"")
+            .attr('orient', 'auto')
+            .append('path')
+            .attr('d', d3.line()(arrowPoints))
+            .attr("fill", function(d,i){return d.srcColour;});
+    }
+});
 
 zoomGroup.append("text").selectAll("text.layers").data(text).enter().append("tspan").text(d => d)
 .attr("class","layers")
@@ -238,7 +248,7 @@ directedPaths.forEach(element => {
                 .attr("fill","black")
                 .attr("font-family","Arial");
             var fromTo = [{x:bNodePos+15,y:pathPos},{x:eNodePos-15,y:pathPos}];
-            drawLine(element[1].edges[i].srcColour,fromTo,false);//change to true when arrows are resolved.
+            drawLine(element[1].edges[i].srcColour,fromTo,true,[element[1].edges[i].src,element[1].edges[i].trg]);//change to true when arrows are resolved.
             zoomGroup.selectAll("text"+count+"-"+i+"b").data([element[1].edges[i].label]).enter().append("text")
                 .text(d=> d)
                 .attr("class",count+"-"+i+"b")
@@ -278,7 +288,7 @@ directedPaths.forEach(element => {
         .attr("font-family","Arial");
         if(i!= 0){
             var fromTo = [{x:eNodePos-140+15,y:pathPos},{x:eNodePos-15,y:pathPos}];
-            drawLine(element[1].edges[i].srcColour,fromTo,false);//change to true when arrows are resolved.
+            drawLine(element[1].edges[i].srcColour,fromTo,false,[]);//change to true when arrows are resolved.
             zoomGroup.selectAll("text"+count+"-"+i+"d").data([element[1].edges[i].label]).enter().append("text")
                 .text(d=> d)
                 .attr("class",count+"-"+i+"d")
