@@ -1,19 +1,29 @@
 <template>
-    <div class=" card card-header text-center col-md-7 mt-4" style="margin: 0 auto; float: none; margin-bottom: 10px;">
+    <div class=" card card-header text-center col-md-11 mt-4" style="margin: 0 auto; float: none; margin-bottom: 10px;">
         <ul class=" ml-10 nav nav-pills card-header-pills text-center align-items-center" style="margin: 0 auto; float: none">
-            <button type="button" class="btn btn-info ml-2 mr-2" @click="togglePropertiesButton()">Test Graph Properties</button>
+            <button type="button" class="btn btn-info ml-1 mr-2" @click="togglePropertiesButton()">Test Graph Properties</button>
                 <form v-if="this.propertiesButtonClicked" class="form-inline">
                     <input v-model="graphId" class="form-control mr-sm-2" type="search" placeholder="graph id" aria-label="Search">
                     <button class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="checkProperties(graphId)">Check</button>
                 </form>
-            <button type="button" class="btn btn-info ml-2 mr-3">Compare Graphs</button>
             
             <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Node label" aria-label="Search" v-model="nodeLabelToSearchFor">
-                <button class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="searchForNodeLabel()">Search for node label</button>
+                <button class="btn btn-info my-sm-0 ml-1 mr-2" type="submit" @click.prevent="toggleNodeLabelSearchButton()">Search for node labels</button>
+                <input v-if="nodeLabelSearchClicked" class="form-control mr-sm-2" type="search" placeholder="e.g. time_n " aria-label="Search" v-model="nodeLabelsToSearchFor">
+                <button v-if="nodeLabelSearchClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="searchForNodeLabel()" type="submit"> Search </button>
             </form>
-                <input type="checkbox" id="toDisplayTokens" v-model="mustDisplayTokens">
-                <label for="toDisplayTokens"> Display Tokens </label>
+            <form class="form-inline">
+                <button class="btn btn-info ml-1 mr-2 my-2 my-sm-0" type="submit" @click.prevent="toggleSubgraphSearchButton()">Search for Subgraph</button>
+                <input v-if="subgraphSearchClicked" class="form-control mr-sm-2" type="search" placeholder="e.g. time_n " aria-label="Search" v-model="subgraphToSearchFor">
+                <button v-if="subgraphSearchClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="searchForSubgraphPattern()" type="submit"> Search </button>
+            </form>
+            <form class="form-inline">
+                <button class="btn btn-info my-2 ml-1 mr-2 my-sm-0" type="submit" @click.prevent="toggleGraphComparison()">Compare Graphs</button>
+                <input v-if="graphComparisonClicked" class="form-control mr-sm-2" type="search" placeholder="id1, id2" aria-label="Search" v-model="graphsToCompare">
+                <button v-if="graphComparisonClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="compareGraphs()" type="submit"> Compare </button>
+            </form>
+            <input type="checkbox" id="toDisplayTokens" v-model="mustDisplayTokens">
+            <label for="toDisplayTokens"> Display Tokens </label>
         </ul>
     </div>
 
@@ -31,13 +41,59 @@
             ...mapActions({
                 setGraphProperties: 'setNewGraphProperties',
                 updateDisplayTokens: 'updateDisplayTokens',
-                searchForNode: 'setNewNodeSearchResults'
+                searchForNode: 'setNewNodeSearchResults',
+                searchForSubgraph: 'setNewSubgraphSearchResults',
+                compareTwoGraphs: 'makeNewGraphComparison'
             }),
+
             togglePropertiesButton() {
                 this.propertiesButtonClicked = ! this.propertiesButtonClicked;
+                this.nodeLabelSearchClicked = false;
+                this.subgraphSearchClicked = false;
+                this.graphComparisonClicked = false;
+            },
+
+            toggleGraphComparison() {
+                this.graphComparisonClicked = ! this.graphComparisonClicked;
+                this.nodeLabelSearchClicked = false;
+                this.subgraphSearchClicked = false;
+                this.propertiesButtonClicked = false;
+            },
+            toggleNodeLabelSearchButton(){
+                this.nodeLabelSearchClicked = ! this.nodeLabelSearchClicked;
+                this.propertiesButtonClicked = false;
+                this.subgraphSearchClicked = false;
+                this.graphComparisonClicked = false;
+            },
+            toggleSubgraphSearchButton(){
+                this.subgraphSearchClicked = ! this.subgraphSearchClicked;
+                this.propertiesButtonClicked = false;
+                this.nodeLabelSearchClicked = false;
+                this.graphComparisonClicked = false;
             },
             searchForNodeLabel(){
-                this.searchForNode(this.nodeLabelToSearchFor);
+                let labelsToSearchFor = this.nodeLabelsToSearchFor.split(", ");
+                this.searchForNode(labelsToSearchFor).then(() => {
+                    this.toggleNodeLabelSearchButton();
+                    this.nodeLabelsToSearchFor = "";
+                })
+            },
+            searchForSubgraphPattern(){
+                let payload = {
+                    links: this.subgraphToSearchFor.split(", ")
+                }
+                this.searchForSubgraph(payload).then(() => {
+                    this.toggleSubgraphSearchButton();
+                    this.subgraphToSearchFor = "";
+                })
+            },
+            compareGraphs(){
+                let idsToCompare = this.graphsToCompare.split(", ");
+                let argumentForComparisonAPICall = `${idsToCompare[0]}_${idsToCompare[1]}`;
+                this.compareTwoGraphs(argumentForComparisonAPICall).then(() => {
+                    this.toggleGraphComparison();
+                    this.graphsToCompare = "";
+                });
             }
         },
         computed: {
@@ -50,7 +106,12 @@
                 propertiesButtonClicked: false,
                 graphId: 0,
                 mustDisplayTokens: true,
-                nodeLabelToSearchFor: ""
+                nodeLabelsToSearchFor: "",
+                nodeLabelSearchClicked: false,
+                subgraphSearchClicked: false,
+                subgraphToSearchFor: "",
+                graphComparisonClicked: false,
+                graphsToCompare: ""
             }
         },
         watch: {

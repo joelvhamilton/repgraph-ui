@@ -2,19 +2,23 @@
   <div>
     <nav-bar/>
     <sub-menu-card/>
-    <div>
-      <modal name="individualGraph" height="auto" >
-        <graph-modal :graph="graphToDisplayIndividually" id="individualDisplayModal"></graph-modal>
-      </modal>
-    </div>
-    <modal name="nodeLabelSearchModal" height="auto">
-      <node-search-results-modal :nodeLabel="getNodeSearchedFor" :results="getNodeSearchResults"></node-search-results-modal>
+    <modal name="nodeLabelSearchModal" :height="auto" :scrollable="true">
+      <node-search-results-modal :nodeLabels="getNodesSearchedFor" :results="getNodeSearchResults"></node-search-results-modal>
     </modal>
-    <modal name="propertiesModal" height="auto">
+    <modal name="subgraphSearchModal" :height="auto" :scrollable="true">
+      <subgraph-modal :results="getSubgraphResults"/>
+    </modal>
+    <modal name="individualGraph" :height="auto" :scrollable="true">
+      <graph-modal :graph="graphToDisplayIndividually" id="individualDisplayModal"></graph-modal>
+    </modal>
+    <modal name="propertiesModal" :height="auto" :scrollable="true">
       <properties-modal/>
     </modal>
-    <modal name="subsetModal" height="auto">
+    <modal name="subsetModal" :height="auto" :scrollable="true">
       <subset-modal id="subsetModalId" :subset="getSubset" :elementId="subsetModalId"/>
+    </modal>
+    <modal name="comparisonModal" :height="auto" :scrollable="true">
+      <comparison-modal id="comparison" :graphComparisonResults="getComparisonResults" :elementId="comparison"/>
     </modal>
     <paging-bar/>
     <div class="col align-content-center">
@@ -37,7 +41,9 @@ export default {
       tempArray: [{num:1}, {num:2}, {num:3}, {num:4}],
       graphToDisplayIndividually: null,
       body: "body",
-      subsetModalId: "subsetModalId"
+      subsetModalId: "subsetModalId",
+      comparison: "comparison",
+      auto: "auto"
     }
   },
   computed: {
@@ -47,8 +53,10 @@ export default {
       getIndividualGraphToDisplay: 'getIndividualGraphToDisplay',
       getCurrentGraphProperties: 'getCurrentGraphProperties',
       getNodeSearchResults: 'getNodeSearchResults',
-      getNodeSearchedFor: 'getNodeLabelToSearchFor',
-      getSubset: 'getSubsetToDisplay'
+      getNodesSearchedFor: 'getNodeLabelsToSearchFor',
+      getSubset: 'getSubsetToDisplay',
+      getSubgraphResults: 'getSubgraphSearchResults',
+      getComparisonResults: 'getResultsOfGraphComparison'
     })
   },
   watch: {
@@ -68,6 +76,12 @@ export default {
     },
     getSubset(val){
       this.$modal.show('subsetModal');
+    },
+    getSubgraphResults(val){
+      this.$modal.show('subgraphSearchModal');
+    },
+    getComparisonResults(val){
+      this.$modal.show('comparisonModal');
     }
 
   },
@@ -80,6 +94,8 @@ export default {
     'properties-modal': () => import("./modals/GraphPropertiesModal"),
     'node-search-results-modal': () => import("./modals/NodeLabelSearchResultsModal"),
     'subset-modal': () => import("./modals/GraphSubsetModal"),
+    'subgraph-modal': () => import("./modals/SubgraphSearchResultsModal"),
+    'comparison-modal': () => import("./modals/GraphComparisonModal"),
     [Upload.name]: Upload,
     [Button.name]: Button
   },
