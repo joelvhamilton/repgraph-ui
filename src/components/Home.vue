@@ -3,7 +3,7 @@
     <nav-bar/>
     <sub-menu-card/>
     <modal name="nodeLabelSearchModal" :height="auto" :scrollable="true">
-      <node-search-results-modal :nodeLabel="getNodeSearchedFor" :results="getNodeSearchResults"></node-search-results-modal>
+      <node-search-results-modal :nodeLabels="getNodesSearchedFor" :results="getNodeSearchResults"></node-search-results-modal>
     </modal>
     <modal name="subgraphSearchModal" :height="auto" :scrollable="true">
       <subgraph-modal :results="getSubgraphResults"/>
@@ -53,7 +53,7 @@ export default {
       getIndividualGraphToDisplay: 'getIndividualGraphToDisplay',
       getCurrentGraphProperties: 'getCurrentGraphProperties',
       getNodeSearchResults: 'getNodeSearchResults',
-      getNodeSearchedFor: 'getNodeLabelToSearchFor',
+      getNodesSearchedFor: 'getNodeLabelsToSearchFor',
       getSubset: 'getSubsetToDisplay',
       getSubgraphResults: 'getSubgraphSearchResults',
       getComparisonResults: 'getResultsOfGraphComparison'

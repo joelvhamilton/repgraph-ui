@@ -13,7 +13,7 @@ export const store = new Vuex.Store({
         individualGraphToDisplay: {},
         displayTokens: true,
         nodeSearchResults: [],
-        nodeLabelToSearchFor: ""
+        nodeLabelsToSearchFor: ""
     },
 
     getters: {
@@ -26,7 +26,7 @@ export const store = new Vuex.Store({
         getIndividualGraphToDisplay: state => state.individualGraphToDisplay,
         displayTokens: state => state.displayTokens,
         getNodeSearchResults: state => state.nodeSearchResults,
-        getNodeLabelToSearchFor: state => state.nodeLabelToSearchFor
+        getNodeLabelsToSearchFor: state => state.nodeLabelsToSearchFor
     },
 
     mutations: {
@@ -63,8 +63,8 @@ export const store = new Vuex.Store({
             state.individualGraphToDisplay = graph;
         },
 
-        changeNodeLabelToSearchFor(state, label){
-            state.nodeLabelToSearchFor = label;
+        changeNodeLabelsToSearchFor(state, labels){
+            state.nodeLabelsToSearchFor = labels;
         },
 
         changeDisplayTokens(state, updated_status){
@@ -173,12 +173,14 @@ export const store = new Vuex.Store({
             })
         },
 
-        setNewNodeSearchResults({commit}, nodeLabel){
-            return axios.get(`http://localhost:8000/node_search/${nodeLabel}`) 
+        setNewNodeSearchResults({commit}, nodeLabels){
+            let payload = {"labels": nodeLabels};
+            console.log(payload);
+            axios.post(`http://localhost:8000/node_search`, payload) 
             .then((response) => {
                 let newResults = response.data.graph_ids;
                 commit("updateNodeSearchResults", newResults);
-                commit("changeNodeLabelToSearchFor", nodeLabel);
+                commit("changeNodeLabelsToSearchFor", nodeLabels);
             })
         }
 
