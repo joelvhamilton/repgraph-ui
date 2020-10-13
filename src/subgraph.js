@@ -112,7 +112,7 @@ dataEdges.forEach(element => {
     if(sNodeIndexes.includes(element[1].src.toString())){
         sNodes[sNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
         sNodes[sNodeIndexes.indexOf(element[1].src.toString())].outgoing.push(element[1].trg);
-            }
+    }
     else if (aNodeIndexes.includes(element[1].src.toString())){
         aNodes[aNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
         aNodes[aNodeIndexes.indexOf(element[1].src.toString())].outgoing.push(element[1].trg);
@@ -180,15 +180,18 @@ var allNodes = sNodes.concat(aNodes.concat(selectedNode));
 var svg = d3.select(elementId).append("svg").attr("id", "viewSvg").attr("class", "d3-subgraph")
 .attr("height", "500px").attr("width", "700px")
 .attr("viewBox","0,0,700,500")
+
 var group = svg.append("g").attr("id", "group");
+
 var zoomGroup = group.append("g");
+
 group.call(d3.zoom()
     .scaleExtent([0.5, 10])    
     .on("zoom",function(){
     zoomGroup.attr("transform", d3.event.transform);
 }));
 
-// ARROW DEFINITIONS
+// ARROW HEAD DEFINITIONS
 const arrowPoints = [[0, 0], [0, 6], [6, 3]];
 zoomGroup.append("defs").selectAll("marker.s").data(allNodes).enter().append("marker")
         .attr("class","s")
@@ -254,7 +257,7 @@ zoomGroup.selectAll("circle.nodes").data(sNodes).enter().append("circle")
     .attr("r","12")
     .attr("fill", function(d,i){return d.colour;})
 
-    //LABELLING NODES.
+//LABELLING NODES.
 zoomGroup.selectAll("rect.labels")
     .data(sNodes)
     .enter().append("rect")
