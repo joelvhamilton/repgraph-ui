@@ -71,7 +71,6 @@ for(var boog in data){
     var data = data[boog];
     id = boog;
 }
-console.log(id);
 
 var sNodes =[];
 var aNodes =[];
@@ -125,8 +124,6 @@ dataEdges.forEach(element => {
         selectedNode[0].outgoing.push(element[1].trg);
     }
 });
-console.log(sNodes);
-console.log(aNodes);
 
 var abstractColourScale = d3.scaleLinear().domain([0,Math.max(...aNodeIndexes)]).range(["yellow", "red"]);
 var surfaceColourScale =  d3.scaleSequential().domain([0,Math.max(...sNodeIndexes)]).interpolator(d3.interpolateCool);
@@ -151,14 +148,12 @@ var ai =0;
 aNodes.forEach(element => {
     element.yPos = aNodeHeight;
     element.xPos = aNodeInterval/2 + (aNodeInterval*ai);
-    console.log(element.xPos);
     ai++;
 });
 var si=0;
 sNodes.forEach(element => {
     element.yPos = sNodeHeight;
     element.xPos = sNodeInterval/2 + (sNodeInterval*si);
-    console.log(element.xPos);
     si++;
 });
 selectedNode.forEach(element => {
@@ -169,8 +164,6 @@ selectedNode.forEach(element => {
     else{
         element.yPos = height/2 +25;
     }
-    console.log(element.xPos);
-
 });
 
 
