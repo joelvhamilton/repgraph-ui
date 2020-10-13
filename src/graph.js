@@ -1,111 +1,817 @@
 // import {store} from './store';
 
-// var data = {"output": {
-//     "id": "20013015",
-//         "a_nodes": {
-//             "0": {
-//                 "label": "generic_entity",
-//                 "anchors": [
-//                     0
-//                 ],
-//                 "incoming": [],
-//                 "outgoing": [
-//                     1
-//                 ]
-//             },
-//             "3": {
-//                 "label": "udef_q",
-//                 "anchors": [
-//                     2
-//                 ],
-//                 "incoming": [],
-//                 "outgoing": [
-//                     4
-//                 ]
-//             }
-//         },
-//         "s_nodes": {
-//             "1": {
-//                 "label": "_that_q_dem",
-//                 "anchors": [
-//                     0
-//                 ],
-//                 "incoming": [
-//                     0
-//                 ],
-//                 "outgoing": []
-//             },
-//             "2": {
-//                 "label": "_attract_v_1",
-//                 "anchors": [
-//                     1
-//                 ],
-//                 "incoming": [],
-//                 "outgoing": []
-//             },
-//             "4": {
-//                 "label": "_attention_n_to",
-//                 "anchors": [
-//                     2
-//                 ],
-//                 "incoming": [
-//                     3
-//                 ],
-//                 "outgoing": []
-//             }
-//         },
-//         "edges": [
-//             {
-//                 "src": 0,
-//                 "trg": 1,
-//                 "label": "RSTR/H"
-//             },
-//             {
-//                 "src": 3,
-//                 "trg": 4,
-//                 "label": "RSTR/H"
-//             }
-//         ],
-//         "tokens": {
-//             "0": {
-//                 "form": "\u201cthat",
-//                 "lemma": "that"
-//             },
-//             "1": {
-//                 "form": "attracts",
-//                 "lemma": "attract"
-//             },
-//             "2": {
-//                 "form": "attention",
-//                 "lemma": "attention"
-//             },
-//             "3": {
-//                 "form": "\u2026",
-//                 "lemma": "\u2026"
-//             }
-//         },
-//         "tops": {
-//             "2": {
-//                 "label": "_attract_v_1",
-//                 "anchors": [
-//                     1
-//                 ],
-//                 "incoming": [],
-//                 "outgoing": []
-//             }
-//         },
-//         "sentence": [
-//             "\u201cthat",
-//             "attracts",
-//             "attention",
-//             "\u2026"
-//         ]
-//     }}
+var data = {"output": {
+    "id": "20003009",
+    "a_nodes": {
+        "0": {
+            "label": "pron",
+            "anchors": [
+                0
+            ],
+            "incoming": [
+                1,
+                2
+            ],
+            "outgoing": []
+        },
+        "1": {
+            "label": "pronoun_q",
+            "anchors": [
+                0
+            ],
+            "incoming": [],
+            "outgoing": [
+                0
+            ]
+        },
+        "6": {
+            "label": "udef_q",
+            "anchors": [
+                7
+            ],
+            "incoming": [],
+            "outgoing": [
+                7
+            ]
+        },
+        "9": {
+            "label": "udef_q",
+            "anchors": [
+                10
+            ],
+            "incoming": [],
+            "outgoing": [
+                10
+            ]
+        },
+        "11": {
+            "label": "udef_q",
+            "anchors": [
+                6,
+                7,
+                8,
+                9,
+                10
+            ],
+            "incoming": [],
+            "outgoing": [
+                12
+            ]
+        },
+        "12": {
+            "label": "nominalization",
+            "anchors": [
+                6,
+                7,
+                8,
+                9,
+                10
+            ],
+            "incoming": [
+                5,
+                11
+            ],
+            "outgoing": [
+                8
+            ]
+        },
+        "14": {
+            "label": "proper_q",
+            "anchors": [
+                12
+            ],
+            "incoming": [],
+            "outgoing": [
+                15
+            ]
+        },
+        "15": {
+            "label": "named",
+            "anchors": [
+                12
+            ],
+            "incoming": [
+                18,
+                14
+            ],
+            "outgoing": []
+        },
+        "16": {
+            "label": "named",
+            "anchors": [
+                13
+            ],
+            "incoming": [
+                20,
+                17,
+                18
+            ],
+            "outgoing": []
+        },
+        "17": {
+            "label": "proper_q",
+            "anchors": [
+                12,
+                13
+            ],
+            "incoming": [],
+            "outgoing": [
+                16
+            ]
+        },
+        "18": {
+            "label": "compound",
+            "anchors": [
+                12,
+                13
+            ],
+            "incoming": [],
+            "outgoing": [
+                16,
+                15
+            ]
+        },
+        "19": {
+            "label": "named",
+            "anchors": [
+                14
+            ],
+            "incoming": [
+                13,
+                36,
+                20,
+                21
+            ],
+            "outgoing": []
+        },
+        "20": {
+            "label": "compound",
+            "anchors": [
+                12,
+                13,
+                14
+            ],
+            "incoming": [],
+            "outgoing": [
+                19,
+                16
+            ]
+        },
+        "22": {
+            "label": "proper_q",
+            "anchors": [
+                16
+            ],
+            "incoming": [],
+            "outgoing": [
+                23
+            ]
+        },
+        "23": {
+            "label": "named",
+            "anchors": [
+                16
+            ],
+            "incoming": [
+                22,
+                25
+            ],
+            "outgoing": []
+        },
+        "24": {
+            "label": "def_explicit_q",
+            "anchors": [
+                17
+            ],
+            "incoming": [],
+            "outgoing": [
+                33
+            ]
+        },
+        "25": {
+            "label": "poss",
+            "anchors": [
+                17
+            ],
+            "incoming": [],
+            "outgoing": [
+                33,
+                23
+            ]
+        },
+        "26": {
+            "label": "named",
+            "anchors": [
+                18
+            ],
+            "incoming": [
+                30,
+                27
+            ],
+            "outgoing": []
+        },
+        "27": {
+            "label": "proper_q",
+            "anchors": [
+                18
+            ],
+            "incoming": [],
+            "outgoing": [
+                26
+            ]
+        },
+        "28": {
+            "label": "named",
+            "anchors": [
+                19
+            ],
+            "incoming": [
+                35,
+                29,
+                30
+            ],
+            "outgoing": []
+        },
+        "29": {
+            "label": "proper_q",
+            "anchors": [
+                19
+            ],
+            "incoming": [],
+            "outgoing": [
+                28
+            ]
+        },
+        "30": {
+            "label": "compound",
+            "anchors": [
+                18,
+                19
+            ],
+            "incoming": [],
+            "outgoing": [
+                28,
+                26
+            ]
+        },
+        "31": {
+            "label": "proper_q",
+            "anchors": [
+                20
+            ],
+            "incoming": [],
+            "outgoing": [
+                32
+            ]
+        },
+        "32": {
+            "label": "named",
+            "anchors": [
+                20
+            ],
+            "incoming": [
+                34,
+                31
+            ],
+            "outgoing": []
+        },
+        "33": {
+            "label": "named",
+            "anchors": [
+                21
+            ],
+            "incoming": [
+                21,
+                24,
+                25,
+                35,
+                34
+            ],
+            "outgoing": []
+        },
+        "34": {
+            "label": "compound",
+            "anchors": [
+                20,
+                21
+            ],
+            "incoming": [],
+            "outgoing": [
+                33,
+                32
+            ]
+        },
+        "35": {
+            "label": "compound",
+            "anchors": [
+                18,
+                19,
+                20,
+                21
+            ],
+            "incoming": [],
+            "outgoing": [
+                33,
+                28
+            ]
+        },
+        "36": {
+            "label": "proper_q",
+            "anchors": [
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21
+            ],
+            "incoming": [],
+            "outgoing": [
+                19
+            ]
+        },
+        "37": {
+            "label": "focus_d",
+            "anchors": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21
+            ],
+            "incoming": [],
+            "outgoing": [
+                13,
+                2
+            ]
+        }
+    },
+    "s_nodes": {
+        "2": {
+            "label": "_have_v_1",
+            "anchors": [
+                1
+            ],
+            "incoming": [
+                37,
+                13
+            ],
+            "outgoing": [
+                0,
+                5
+            ]
+        },
+        "3": {
+            "label": "_no_q",
+            "anchors": [
+                2
+            ],
+            "incoming": [],
+            "outgoing": [
+                5
+            ]
+        },
+        "4": {
+            "label": "_useful_a_for",
+            "anchors": [
+                3
+            ],
+            "incoming": [],
+            "outgoing": [
+                5
+            ]
+        },
+        "5": {
+            "label": "_information_n_on-about",
+            "anchors": [
+                4
+            ],
+            "incoming": [
+                2,
+                3,
+                4
+            ],
+            "outgoing": [
+                12
+            ]
+        },
+        "7": {
+            "label": "_user_n_of",
+            "anchors": [
+                7
+            ],
+            "incoming": [
+                6,
+                8
+            ],
+            "outgoing": []
+        },
+        "8": {
+            "label": "_at_p",
+            "anchors": [
+                9
+            ],
+            "incoming": [
+                12
+            ],
+            "outgoing": [
+                7,
+                10
+            ]
+        },
+        "10": {
+            "label": "_risk_n_of",
+            "anchors": [
+                10
+            ],
+            "incoming": [
+                8,
+                9
+            ],
+            "outgoing": []
+        },
+        "13": {
+            "label": "_say_v_to",
+            "anchors": [
+                11
+            ],
+            "incoming": [
+                37
+            ],
+            "outgoing": [
+                19,
+                2
+            ]
+        },
+        "21": {
+            "label": "_of_p",
+            "anchors": [
+                15
+            ],
+            "incoming": [],
+            "outgoing": [
+                19,
+                33
+            ]
+        }
+    },
+    "edges": [
+        {
+            "src": 37,
+            "trg": 13,
+            "label": "ARG1/EQ"
+        },
+        {
+            "src": 37,
+            "trg": 2,
+            "label": "ARG2/NEQ"
+        },
+        {
+            "src": 1,
+            "trg": 0,
+            "label": "RSTR/H"
+        },
+        {
+            "src": 2,
+            "trg": 0,
+            "label": "ARG1/NEQ"
+        },
+        {
+            "src": 2,
+            "trg": 5,
+            "label": "ARG2/NEQ"
+        },
+        {
+            "src": 3,
+            "trg": 5,
+            "label": "RSTR/H"
+        },
+        {
+            "src": 4,
+            "trg": 5,
+            "label": "ARG1/EQ"
+        },
+        {
+            "src": 5,
+            "trg": 12,
+            "label": "ARG1/NEQ"
+        },
+        {
+            "src": 11,
+            "trg": 12,
+            "label": "RSTR/H"
+        },
+        {
+            "src": 12,
+            "trg": 8,
+            "label": "ARG1/HEQ"
+        },
+        {
+            "src": 6,
+            "trg": 7,
+            "label": "RSTR/H"
+        },
+        {
+            "src": 8,
+            "trg": 7,
+            "label": "ARG1/NEQ"
+        },
+        {
+            "src": 8,
+            "trg": 10,
+            "label": "ARG2/NEQ"
+        },
+        {
+            "src": 9,
+            "trg": 10,
+            "label": "RSTR/H"
+        },
+        {
+            "src": 13,
+            "trg": 19,
+            "label": "ARG1/NEQ"
+        },
+        {
+            "src": 13,
+            "trg": 2,
+            "label": "ARG2/H"
+        },
+        {
+            "src": 36,
+            "trg": 19,
+            "label": "RSTR/H"
+        },
+        {
+            "src": 17,
+            "trg": 16,
+            "label": "RSTR/H"
+        },
+        {
+            "src": 14,
+            "trg": 15,
+            "label": "RSTR/H"
+        },
+        {
+            "src": 22,
+            "trg": 23,
+            "label": "RSTR/H"
+        },
+        {
+            "src": 29,
+            "trg": 28,
+            "label": "RSTR/H"
+        },
+        {
+            "src": 27,
+            "trg": 26,
+            "label": "RSTR/H"
+        },
+        {
+            "src": 31,
+            "trg": 32,
+            "label": "RSTR/H"
+        },
+        {
+            "src": 20,
+            "trg": 19,
+            "label": "ARG1/EQ"
+        },
+        {
+            "src": 18,
+            "trg": 16,
+            "label": "ARG1/EQ"
+        },
+        {
+            "src": 35,
+            "trg": 33,
+            "label": "ARG1/EQ"
+        },
+        {
+            "src": 30,
+            "trg": 28,
+            "label": "ARG1/EQ"
+        },
+        {
+            "src": 34,
+            "trg": 33,
+            "label": "ARG1/EQ"
+        },
+        {
+            "src": 20,
+            "trg": 16,
+            "label": "ARG2/NEQ"
+        },
+        {
+            "src": 18,
+            "trg": 15,
+            "label": "ARG2/NEQ"
+        },
+        {
+            "src": 35,
+            "trg": 28,
+            "label": "ARG2/NEQ"
+        },
+        {
+            "src": 30,
+            "trg": 26,
+            "label": "ARG2/NEQ"
+        },
+        {
+            "src": 34,
+            "trg": 32,
+            "label": "ARG2/NEQ"
+        },
+        {
+            "src": 21,
+            "trg": 19,
+            "label": "ARG1/EQ"
+        },
+        {
+            "src": 21,
+            "trg": 33,
+            "label": "ARG2/NEQ"
+        },
+        {
+            "src": 24,
+            "trg": 33,
+            "label": "RSTR/H"
+        },
+        {
+            "src": 25,
+            "trg": 33,
+            "label": "ARG1/EQ"
+        },
+        {
+            "src": 25,
+            "trg": 23,
+            "label": "ARG2/NEQ"
+        }
+    ],
+    "tokens": {
+        "0": {
+            "form": "\u201cwe",
+            "lemma": "\u201cwe"
+        },
+        "1": {
+            "form": "have",
+            "lemma": "have"
+        },
+        "2": {
+            "form": "no",
+            "lemma": "no"
+        },
+        "3": {
+            "form": "useful",
+            "lemma": "useful"
+        },
+        "4": {
+            "form": "information",
+            "lemma": "information"
+        },
+        "5": {
+            "form": "on",
+            "lemma": "on"
+        },
+        "6": {
+            "form": "whether",
+            "lemma": "whether"
+        },
+        "7": {
+            "form": "users",
+            "lemma": "user"
+        },
+        "8": {
+            "form": "are",
+            "lemma": "are"
+        },
+        "9": {
+            "form": "at",
+            "lemma": "at"
+        },
+        "10": {
+            "form": "risk,\u201d",
+            "lemma": "risk"
+        },
+        "11": {
+            "form": "said",
+            "lemma": "say"
+        },
+        "12": {
+            "form": "james",
+            "lemma": "James",
+            "carg": "James"
+        },
+        "13": {
+            "form": "a.",
+            "lemma": "A",
+            "carg": "A"
+        },
+        "14": {
+            "form": "Talcott",
+            "lemma": "Talcott",
+            "carg": "Talcott"
+        },
+        "15": {
+            "form": "of",
+            "lemma": "of"
+        },
+        "16": {
+            "form": "boston",
+            "lemma": "Boston",
+            "carg": "Boston"
+        },
+        "17": {
+            "form": "\u2019s",
+            "lemma": "\u2019s"
+        },
+        "18": {
+            "form": "dana-",
+            "lemma": "Dana",
+            "carg": "Dana"
+        },
+        "19": {
+            "form": "Farber",
+            "lemma": "Farber",
+            "carg": "Farber"
+        },
+        "20": {
+            "form": "Cancer",
+            "lemma": "Cancer",
+            "carg": "Cancer"
+        },
+        "21": {
+            "form": "Institute.",
+            "lemma": "Institute",
+            "carg": "Institute"
+        }
+    },
+    "tops": {
+        "13": {
+            "label": "_say_v_to",
+            "anchors": [
+                11
+            ],
+            "incoming": [
+                37
+            ],
+            "outgoing": [
+                19,
+                2
+            ]
+        }
+    },
+    "sentence": [
+        "\u201cwe",
+        "have",
+        "no",
+        "useful",
+        "information",
+        "on",
+        "whether",
+        "users",
+        "are",
+        "at",
+        "risk,\u201d",
+        "said",
+        "james",
+        "a.",
+        "Talcott",
+        "of",
+        "boston",
+        "\u2019s",
+        "dana-",
+        "Farber",
+        "Cancer",
+        "Institute."
+    ]
+}
+}
 
-// makeGraph(data, true,"body")
-    // function makeGraph(data,showTokens,elementId){
+makeGraph(data, true,"body")
+    function makeGraph(data,showTokens,elementId){
         
- export const makeGraph = function (data, showTokens, elementId) {
+//  export const makeGraph = function (data, showTokens, elementId) {
     var start = performance.now();
     var layers = {bottom:0,token:0,surface:0,top:10};
     var sNodes =[];
@@ -114,7 +820,8 @@
 
     for(var boog in data){
         var data = data[boog];
-    }    // debugger
+    }
+
     var id = data.id;
     var a_nodes = Object.entries(data.a_nodes);
     var s_nodes = Object.entries(data.s_nodes);
@@ -140,6 +847,7 @@
     var aNodeIndexes = aNodes.map(x => x.index);
     var sNodeLabels = sNodes.map(x => x.label);
     var aNodeLabels = aNodes.map(x => x.label);
+    var anchorArray =[{aLength:1, height:50}];
     
     var maxIndex = Math.max(Math.max(...aNodeIndexes),Math.max(...sNodeIndexes));
     
@@ -156,29 +864,39 @@
         aNodeLabels.push("TOP");
         aNodeIndexes.push(dummyNodeA.index);
     });
-    
-    
-    
     dataEdges.forEach(element => {
         if(sNodeIndexes.includes(element[1].src.toString())){
             sNodes[sNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
-                }
-                else{
-                    aNodes[aNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
+        }
+        else{
+            aNodes[aNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
         }
     });
+
+    // DEFINING A COLOUR SCALE TO THE NODES.
     var abstractColourScale = d3.scaleLinear().domain([0,aNodeIndexes.length]).range(["yellow", "red"]);
     var surfaceColourScale =  d3.scaleSequential().domain([0,sNodeIndexes.length]).interpolator(d3.interpolateCool);
     
-    // determining the colour of each node.
+    //DETERMINING THE COLOUR OF EACH NODE and determinging max anchor.
     for(var i=0; i<sNodes.length; i++){
         sNodes[i].colour = surfaceColourScale(i);
     }
     for(var i=0; i<aNodes.length; i++){
+        if(!(anchorArray.map(x=>x.aLength).includes(aNodes[i].tokens.length))){
+            anchorArray.push({aLength:aNodes[i].tokens.length, height:0});
+        }
         aNodes[i].colour = abstractColourScale(i);
     }
+    anchorArray = anchorArray.sort((a, b) => (a.aLength > b.aLength) ? 1 : -1)
+    for(var i=0; i<anchorArray.length; i++){
+        anchorArray[i].height = 85*(i+1);
+    }
+    aMap = anchorArray.map(x=> x.aLength);
+    console.log(aMap);
+
+    // for a in anchorarry booga booga add 50
     
-    // GRAPH SIZE DEFINITIONS
+    // GRAPH SIZE DEFINITIONS.
     var width = tokenList.length*200;
     var offset = width/(tokenList.length*2);
     var maxSNodeHeight=0;
@@ -205,7 +923,7 @@ aNodes.forEach(element => {
         TopNodeHeight = element.yPos;
     }
     else{
-        element.yPos = 50*(element.tokens.length);
+        element.yPos = anchorArray[aMap.indexOf(element.tokens.length)].height;
         maxANodeHeight = Math.max(maxANodeHeight,element.yPos);
     }
 });
@@ -216,17 +934,17 @@ aNodes.forEach(element =>{
         element.yPos = layers.surface - element.yPos -25;
     }
 })
-for(var j=0;j<aNodes.length;j++){//this is expensive af
+//RESOLVING CLASHES
+for(var j=0;j<aNodes.length;j++){
     if(aNodes[j].label != "TOP"){
-        for(var i =0; i< aNodes.length; i++) { //NESTED FOR-LOOP, CAN PROBABLY BE DONE BETTER.
+        for(var i =0; i< aNodes.length; i++) {
             if(aNodes[j].xPos == aNodes[i].xPos && aNodes[j].yPos == aNodes[i].yPos && aNodes[j].index != aNodes[i].index){
-                aNodes[j].xPos = aNodes[j].xPos -75;
-                aNodes[i].xPos = aNodes[i].xPos +75;
+                aNodes[j].xPos = aNodes[j].xPos -45;
+                aNodes[i].xPos = aNodes[i].xPos +45;
                 j=0;
             }
         }
     }
-    
 }
 sNodes.forEach(element => {
     element.yPos = layers.surface + 100 + maxSNodeHeight - element.yPos;
@@ -234,7 +952,7 @@ sNodes.forEach(element => {
 });
 layers.token = minSNode + 100;
 layers.bottom = layers.token + 100;
-let height=layers.bottom +10;
+var height=layers.bottom +10;
 
 //  AT THIS POINT NODE HEIGHTS AND LAYER HEIGHTS HAVE BEEN DETERMINED.
 var layerVals = Object.values(layers);
@@ -265,7 +983,7 @@ group.call(d3.zoom()
 //ARROWHEAD DEFINITION
 zoomGroup.append("defs").selectAll("marker.s").data(sNodes).enter().append("marker")
         .attr("class","s")
-        .attr('id', function(d,i){return "arrow-"+d.index;})
+        .attr('id', function(d,i){return "arrow-"+id+d.index;})
         .attr('viewBox', [0, 0, 7, 7])
         .attr('refX', 3.5)
         .attr('refY', 3.5)
@@ -279,7 +997,7 @@ zoomGroup.append("defs").selectAll("marker.s").data(sNodes).enter().append("mark
         zoomGroup.select("defs").selectAll("marker.a").data(aNodes).enter().append("marker")
         
         .attr("class","a")
-        .attr('id', function(d,i){return "arrow-"+d.index;})
+        .attr('id', function(d,i){return "arrow-"+id+d.index;})
         .attr('viewBox', [0, 0, 7, 7])
         .attr('refX', 3.5)
         .attr('refY', 3.5)
@@ -299,7 +1017,7 @@ zoomGroup.append("defs").selectAll("marker.s").data(sNodes).enter().append("mark
     .attr("d",line(data))
     .attr("stroke", colour)
     .attr("stroke-width","2")
-    .attr("marker-end", "url(#arrow-"+index+")")
+    .attr("marker-end", "url(#arrow-"+id+index+")")
     .attr("fill", "none");
 };
 
@@ -396,8 +1114,8 @@ zoomGroup.selectAll("rect.labels")
     .enter().append("rect")
     .attr("class","labels")
     .attr("height","20")
-    .attr("width","70") //changes with length of the label.
-    .attr("x",function(d,i){return d.xPos-35;})
+    .attr("width",function(d,i){return d.label.length*8 + "";}) //changes with length of the label.
+    .attr("x",function(d,i){return d.xPos- d.label.length*4;})
     .attr("y",function(d,i){return d.yPos + 33;})
     .attr("stroke", function(d,i){return d.colour;})
     .attr("stroke-width", "2")
@@ -434,21 +1152,16 @@ zoomGroup.selectAll("rect.alabels")
     .enter().append("rect")
     .attr("class","alabels")
     .attr("height","20")
-    .attr("width",function(d,i){if(d.label=="TOP"){
-        return "30";
-    }return "60";})
-    .attr("x",function(d,i){if(d.label=="TOP"){
-        return d.xPos-15;
-     }
-      return d.xPos-30;})
-    .attr("y",function(d,i){return d.yPos + 30;})
+    .attr("width",function(d,i){return d.label.length*8 + 4 + "" ;})
+    .attr("x",function(d,i){return d.xPos - d.label.length*4 -2 + "";})
+    .attr("y",function(d,i){return d.yPos + 20;})
     .attr("stroke", function(d,i){return d.colour;})
     .attr("stroke-width", "2")
     .attr("fill", "#f2f0f0");
 zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter().append("tspan").text(d => d)
     .attr("class","anodeLabels")
     .attr("x",function(d,i){return aNodes[i].xPos;})
-    .attr("y",function(d,i){return aNodes[i].yPos + 43;})
+    .attr("y",function(d,i){return aNodes[i].yPos + 33;})
     .attr("font-size","12px")
     .attr("text-anchor","middle")
     .attr("font-weight", "900")
