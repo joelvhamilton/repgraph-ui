@@ -20,9 +20,9 @@ var data = {
                 "label": "ARG1/EQ"
             }
         ],
-        "a_nodes": {
+        "s_nodes": {
             "18": {
-                "label": "time_n",
+                "label": "normallabel",
                 "anchors": [
                     15
                 ]
@@ -34,7 +34,7 @@ var data = {
                 ]
             }
         },
-        "s_nodes": {
+        "a_nodes": {
             "17": {
                 "label": "_by_p_temp",
                 "anchors": [
@@ -66,10 +66,12 @@ makeSubgraph(data,"body");
 //  export const makeSubgraph = function (data, elementId){
 function makeSubgraph(data,elementId){
         //remove above
-
+var id;
 for(var boog in data){
     var data = data[boog];
+    id = boog;
 }
+console.log(id);
 
 var sNodes =[];
 var aNodes =[];
@@ -264,8 +266,8 @@ zoomGroup.selectAll("rect.labels")
     .enter().append("rect")
     .attr("class","labels")
     .attr("height","20")
-    .attr("width","70") //changes with length of the label.
-    .attr("x",function(d,i){return d.xPos-35;})
+    .attr("width",function(d,i){return d.label.length*9;}) //changes with length of the label.
+    .attr("x",function(d,i){return d.xPos-d.label.length*9/2;})
     .attr("y",function(d,i){return d.yPos + 15;})
     .attr("stroke", function(d,i){return d.colour;})
     .attr("stroke-width", "2")
@@ -303,8 +305,8 @@ zoomGroup.selectAll("rect.alabels")
     .enter().append("rect")
     .attr("class","alabels")
     .attr("height","20")
-    .attr("width","60")
-    .attr("x",function(d,i){ return d.xPos-30;})
+    .attr("width",function(d,i){return d.label.length*9;})
+    .attr("x",function(d,i){ return d.xPos-d.label.length*9/2;})
     .attr("y",function(d,i){return d.yPos - 45;})
     .attr("stroke", function(d,i){return d.colour;})
     .attr("stroke-width", "2")
@@ -326,15 +328,15 @@ zoomGroup.selectAll("rect.selectedlabels")
     .enter().append("rect")
     .attr("class","selectedlabels")
     .attr("height","20")
-    .attr("width","60")
-    .attr("x",function(d,i){ return d.xPos+30;})
+    .attr("width",function(d,i){return d.label.length*9;})
+    .attr("x",function(d,i){ return d.xPos + 50 - d.label.length*9/2 + d.label.length*4;})
     .attr("y",function(d,i){return d.yPos - 10;})
     .attr("stroke", function(d,i){return d.colour;})
     .attr("stroke-width", "2")
     .attr("fill", "#f2f0f0");
 zoomGroup.append("text").selectAll("text.selectedLabels").data([selectedNode[0].label]).enter().append("tspan").text(d => d)
     .attr("class","selectedLabels")
-    .attr("x",function(d,i){return selectedNode[i].xPos + 60;})
+    .attr("x",function(d,i){return selectedNode[i].xPos + 50 + d.length*4;})
     .attr("y",function(d,i){return selectedNode[i].yPos + 2;})
     .attr("font-size","12px")
     .attr("text-anchor","middle")
@@ -347,7 +349,7 @@ zoomGroup.append("text").selectAll("text.selectedLabels").data([selectedNode[0].
 sNodes.forEach(element => {
         for(var i=0; i<element.outgoing.length ;i++){
             var abDiffX = Math.abs(element.xPos - selectedNode[0].xPos);
-            var scaleX = abDiffX/40;
+            var scaleX = abDiffX/20;
             if(element.xPos >= selectedNode[0].xPos ){
                 if(abDiffX > 40){ //node is not directly underneath selected node
                     var fromToS = [{x:element.xPos,y:element.yPos - 15},{x:selectedNode[0].xPos + abDiffX/scaleX,y:selectedNode[0].yPos + 25}];
@@ -385,7 +387,7 @@ sNodes.forEach(element => {
     aNodes.forEach(element => {
         for(var i=0; i<element.outgoing.length ;i++){
             var abDiffX = Math.abs(element.xPos - selectedNode[0].xPos);
-            var scaleX = abDiffX/40;
+            var scaleX = abDiffX/20;
             if(element.xPos >= selectedNode[0].xPos ){
                 if(abDiffX > 40){ //node is not directly underneath selected node
                     var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos +abDiffX/scaleX,y:selectedNode[0].yPos - 32}];

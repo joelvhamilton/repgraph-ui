@@ -308,6 +308,8 @@ directedPaths.forEach(element => {
     count++; //for creating unique ids for nodes.
     // console.log(element[1].edges);
 });
+var lemon = [];
+console.log(lemon.length);
 pathPosUn = 145 + directedPaths.length*55;
 undirectedPaths.forEach(element => {
     //iterate through all the directed paths (may be more than 1)
