@@ -130,79 +130,7 @@ function makeGraphComparison(comparisonOutput, elementId){
       }
    }
    var text = textPos.map(x => x.t);
-
-   var svg = d3.select(elementId).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
-   .attr("height", height).attr("width", width).attr("id", "comparison")
-   .attr("viewBox","0,0,"+width+","+height)
-   var group = svg.append("g").attr("id", "group");
-   var zoomGroup = group.append("g");
-   group.call(d3.zoom()
-      .scaleExtent([0.5, 10])    
-      .on("zoom",function(){
-      zoomGroup.attr("transform", d3.event.transform);
-   }));
-
-   //BACKGROUND RECTANGLE
-   zoomGroup.append("rect")
-   .attr("class","back")
-   .attr("height",height)
-   .attr("width",width)
-   .attr("x","0")
-   .attr("y","0")
-   .attr("fill","#f2f0f0");
-   //ARROWHEAD DEFINITION
-   var arrowPoints = [[0, 0], [0, 6], [6, 3]];
-zoomGroup.append("defs").selectAll("marker.s").data([1]).enter().append("marker")
-.attr("class","s")
-.attr('id', function(d,i){return "arrow"})
-.attr('viewBox', [0, 0, 7, 7])
-.attr('refX', 3.5)
-.attr('refY', 3.5)
-.attr('markerWidth', 6)
-.attr('markerHeight', 6)
-.attr('orient', 'auto')
-.append('path')
-.attr('d', d3.line()(arrowPoints))
-.attr("fill", "black");
-
-function drawLine(colour, data){
-    var line = d3.line()
-.x(function(d){return d.x;})
-.y(function(d){return d.y;})
-.curve(d3.curveBundle);
-zoomGroup.append("path")
-.attr("d",line(data))
-.attr("stroke", colour)
-.attr("stroke-width","2")
-.attr("marker-end", "url(#arrow)")
-.attr("fill", "none");
-};
-
-   //drawing text
-   zoomGroup.append("text").selectAll("text.layers").data(text).enter().append("tspan").text(d => d)
-         .attr("class","layers")
-         .attr("x",function(d,i){return width/2;})
-         .attr("y",function(d,i){return textPos[i].pos + 3;})
-         .attr("font-size","15")
-         .attr("font-weight", "900")
-         .attr("text-anchor","middle")
-         .attr("dominant-baseline","middle")
-         .attr("fill","black")
-         .attr("font-family","Arial");
    
-   zoomGroup.selectAll("line.layers").data(textPos).enter().append("line")
-         .attr("class","layers")
-         .attr("x1","0")
-         .attr("y1",function(d,i){return d.pos -9;})
-         .attr("x2",(width).toString())
-         .attr("y2",function(d,i){return d.pos -9;})
-         .attr("stroke",function(d,i){if(d.t ==""){
-            return "none"
-         }
-            return "gray"
-         })
-         .attr("stroke-width","2");
-
    let uniqueLabels = [];
    matchingNodes.forEach(element => {
       if(!(uniqueLabels.includes(element.src))){
@@ -234,7 +162,77 @@ zoomGroup.append("path")
       uniqueLabels[i] = {label: uniqueLabels[i], colour:colourScale(i)};
    }
 
-   // var surfaceColourScale =  d3.scaleSequential().domain([0,]).interpolator(d3.interpolateCool);
+   var svg = d3.select(elementId).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
+   .attr("height", height).attr("width", width).attr("id", "comparison")
+   .attr("viewBox","0,0,"+width+","+height)
+   var group = svg.append("g").attr("id", "group");
+   var zoomGroup = group.append("g");
+   group.call(d3.zoom()
+      .scaleExtent([0.5, 10])    
+      .on("zoom",function(){
+      zoomGroup.attr("transform", d3.event.transform);
+   }));
+
+   //BACKGROUND RECTANGLE
+   zoomGroup.append("rect")
+   .attr("class","back")
+   .attr("height",height)
+   .attr("width",width)
+   .attr("x","0")
+   .attr("y","0")
+   .attr("fill","#f2f0f0");
+   //ARROWHEAD DEFINITION
+   var arrowPoints = [[0, 0], [0, 6], [6, 3]];
+   zoomGroup.append("defs").selectAll("marker.s").data(uniqueLabels).enter().append("marker")
+      .attr("class","s")
+      .attr('id', function(d,i){console.log(d.label);return "arrow"+d.label})
+      .attr('viewBox', [0, 0, 7, 7])
+      .attr('refX', 3.5)
+      .attr('refY', 3.5)
+      .attr('markerWidth', 6)
+      .attr('markerHeight', 6)
+      .attr('orient', 'auto')
+      .append('path')
+      .attr('d', d3.line()(arrowPoints))
+      .attr("fill", function(d,i){return colourScale(i);});
+
+function drawLine(colour, data,url){
+    var line = d3.line()
+.x(function(d){return d.x;})
+.y(function(d){return d.y;})
+.curve(d3.curveBundle);
+zoomGroup.append("path")
+.attr("d",line(data))
+.attr("stroke", colour)
+.attr("stroke-width","2")
+.attr("marker-end", "url(#arrow"+url+")")
+.attr("fill", "none");
+};
+
+   //drawing text
+   zoomGroup.append("text").selectAll("text.layers").data(text).enter().append("tspan").text(d => d)
+         .attr("class","layers")
+         .attr("x",function(d,i){return width/2;})
+         .attr("y",function(d,i){return textPos[i].pos + 3;})
+         .attr("font-size","15")
+         .attr("font-weight", "900")
+         .attr("text-anchor","middle")
+         .attr("dominant-baseline","middle")
+         .attr("fill","black")
+         .attr("font-family","Arial");
+   
+   zoomGroup.selectAll("line.layers").data(textPos).enter().append("line")
+         .attr("class","layers")
+         .attr("x1","0")
+         .attr("y1",function(d,i){return d.pos -9;})
+         .attr("x2",(width).toString())
+         .attr("y2",function(d,i){return d.pos -9;})
+         .attr("stroke",function(d,i){if(d.t ==""){
+            return "none"
+         }
+            return "gray"
+         })
+         .attr("stroke-width","2");
 
    alles.forEach(element => {
       //drawing begin nodes
@@ -301,7 +299,7 @@ zoomGroup.append("path")
             .attr("font-family","Arial");
          element.data.forEach(element2 => {
                var fromTo = [{x:120,y:element2.xpos},{x:width-124,y:element2.xpos}];
-               drawLine(findColour(uniqueLabels,element2.src),fromTo);
+               drawLine(findColour(uniqueLabels,element2.src),fromTo,element2.src);
                var labelX = (fromTo[0].x+fromTo[1].x)/2;
                var labelY = (fromTo[0].y+fromTo[1].y)/2 + 10;
                zoomGroup.selectAll("text"+element.id+"edge").data([element2.label]).enter().append("text")
