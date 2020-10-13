@@ -13,7 +13,8 @@ export const store = new Vuex.Store({
         individualGraphToDisplay: {},
         displayTokens: true,
         nodeSearchResults: [],
-        nodeLabelsToSearchFor: ""
+        nodeLabelsToSearchFor: "",
+        numberOfPages: 0
     },
 
     getters: {
@@ -26,7 +27,8 @@ export const store = new Vuex.Store({
         getIndividualGraphToDisplay: state => state.individualGraphToDisplay,
         displayTokens: state => state.displayTokens,
         getNodeSearchResults: state => state.nodeSearchResults,
-        getNodeLabelsToSearchFor: state => state.nodeLabelsToSearchFor
+        getNodeLabelsToSearchFor: state => state.nodeLabelsToSearchFor,
+        getTotalNumberOfPages: state => state.numberOfPages
     },
 
     mutations: {
@@ -101,7 +103,8 @@ export const store = new Vuex.Store({
                 if (res.data.status != 404){
                     let newGraphs = res.data.graphs
                     commit("changeGraphsBeingDisplayed", newGraphs);
-                    commit("changeCurrentPageOfGraphs", (Number(state.currentPageOfGraphs)+1))
+                    commit("changeCurrentPageOfGraphs", (Number(state.currentPageOfGraphs)+1));
+                    // state.numberOfPages = res.data.
                 }
                 else {
                     // TODO: MAKE A MODAL POP UP SAYING "SORRY THERE ARE NO MORE GRAPHS TO BE SEEN."" AND AUTOMATICALLY SHOW THEM THE LAST PAGE.

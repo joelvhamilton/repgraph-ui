@@ -1,70 +1,69 @@
 
 
-// TEST DATA
-var data = {
-    "20008006": {
-        "edges": [
-            {
-                "src": 17,
-                "trg": 18,
-                "label": "ARG2/NEQ"
-            },
-            {
-                "src": 19,
-                "trg": 18,
-                "label": "RSTR/H"
-            },
-            {
-                "src": 20,
-                "trg": 18,
-                "label": "ARG1/EQ"
-            }
-        ],
-        "a_nodes": {
-            "18": {
-                "label": "time_n",
-                "anchors": [
-                    15
-                ]
-            },
-            "19": {
-                "label": "def_implicit_q",
-                "anchors": [
-                    15
-                ]
-            }
-        },
-        "s_nodes": {
-            "17": {
-                "label": "_by_p_temp",
-                "anchors": [
-                    14
-                ]
-            },
-            "20": {
-                "label": "_then_p_temp",
-                "anchors": [
-                    15
-                ]
-            }
-        },
-        "tokens": {
-            "14": {
-                "form": "by",
-                "lemma": "by"
-            },
-            "15": {
-                "form": "then.",
-                "lemma": "then"
-            }
-        },
-        "tops": "18"
-    }}
+// // TEST DATA
+// var data = {
+//     "20008006": {
+//         "edges": [
+//             {
+//                 "src": 17,
+//                 "trg": 18,
+//                 "label": "ARG2/NEQ"
+//             },
+//             {
+//                 "src": 19,
+//                 "trg": 18,
+//                 "label": "RSTR/H"
+//             },
+//             {
+//                 "src": 20,
+//                 "trg": 18,
+//                 "label": "ARG1/EQ"
+//             }
+//         ],
+//         "a_nodes": {
+//             "18": {
+//                 "label": "time_n",
+//                 "anchors": [
+//                     15
+//                 ]
+//             },
+//             "19": {
+//                 "label": "def_implicit_q",
+//                 "anchors": [
+//                     15
+//                 ]
+//             }
+//         },
+//         "s_nodes": {
+//             "17": {
+//                 "label": "_by_p_temp",
+//                 "anchors": [
+//                     14
+//                 ]
+//             },
+//             "20": {
+//                 "label": "_then_p_temp",
+//                 "anchors": [
+//                     15
+//                 ]
+//             }
+//         },
+//         "tokens": {
+//             "14": {
+//                 "form": "by",
+//                 "lemma": "by"
+//             },
+//             "15": {
+//                 "form": "then.",
+//                 "lemma": "then"
+//             }
+//         },
+//         "tops": "18"
+//     }}
 
-makeSubgraph(data,"body");
+// makeSubgraph(data,"body");
 
-//  export const makeSubgraph = function (data, elementId){
-function makeSubgraph(data,elementId){
+  export const makeSubgraph = function (data, elementId){
         //remove above
 
 for(var boog in data){

@@ -14,16 +14,16 @@
             </form>
             <form class="form-inline">
                 <button class="btn btn-info ml-1 mr-2 my-2 my-sm-0" type="submit" @click.prevent="toggleSubgraphSearchButton()">Search for Subgraph</button>
-                <input v-if="subgraphSearchClicked" class="form-control mr-sm-2" type="search" placeholder="e.g. time_n " aria-label="Search" v-model="subgraphToSearchFor">
+                <input v-if="subgraphSearchClicked" class="form-control mr-sm-2" type="search" placeholder="node-edge-node, etc " aria-label="Search" v-model="subgraphToSearchFor">
                 <button v-if="subgraphSearchClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="searchForSubgraphPattern()" type="submit"> Search </button>
             </form>
             <form class="form-inline">
                 <button class="btn btn-info my-2 ml-1 mr-2 my-sm-0" type="submit" @click.prevent="toggleGraphComparison()">Compare Graphs</button>
-                <input v-if="graphComparisonClicked" class="form-control mr-sm-2" type="search" placeholder="id1, id2" aria-label="Search" v-model="graphsToCompare">
+                <input v-if="graphComparisonClicked" class="form-control my-1 mr-sm-2" type="search" placeholder="id1, id2" aria-label="Search" v-model="graphsToCompare">
                 <button v-if="graphComparisonClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="compareGraphs()" type="submit"> Compare </button>
             </form>
-            <input type="checkbox" id="toDisplayTokens" v-model="mustDisplayTokens">
-            <label for="toDisplayTokens"> Display Tokens </label>
+            <input class="mr-1" type="checkbox" id="toDisplayTokens" v-model="mustDisplayTokens">
+            Display Tokens
         </ul>
     </div>
 
