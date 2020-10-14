@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p style="text-align:center;"> Graph: {{graph.id}} </p>
+        Graph Id: {{graph.id}}
     </div>
 </template>
 <!-- all d3 logic will be here -->
@@ -14,7 +14,7 @@
     import {mapGetters} from "vuex"
 
     export default {
-        props: ["graph", "elementId"],
+        props: ["graph", "elementId", "word"],
         components: {
             [Progress.name]: Progress
         },
@@ -26,12 +26,13 @@
                 makeGraph(this.graph, this.displayTokens, this.elementId);
             },
             elementId (val){
-                this.idOfElementToAppendTo = val;
                 makeGraph(this.graph, this.displayTokens, this.elementId);
             }
         },
         mounted () {
-            makeGraph(this.graph, this.displayTokens, this.elementId);
+            if(this.graph !== null && this.graph !== undefined && this.graph.status !== "Failed"){
+                makeGraph(this.graph, this.displayTokens, this.elementId);
+            }
         },
         computed: {
             ...mapGetters({

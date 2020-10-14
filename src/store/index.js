@@ -13,7 +13,10 @@ export const store = new Vuex.Store({
         individualGraphToDisplay: {},
         displayTokens: true,
         nodeSearchResults: [],
-        nodeLabelsToSearchFor: ""
+        nodeLabelsToSearchFor: "",
+        numberOfPages: 0,
+        graphsToDisplayIndividually: [],
+        stringSearchedFor: ""
     },
 
     getters: {
@@ -26,7 +29,10 @@ export const store = new Vuex.Store({
         getIndividualGraphToDisplay: state => state.individualGraphToDisplay,
         displayTokens: state => state.displayTokens,
         getNodeSearchResults: state => state.nodeSearchResults,
-        getNodeLabelsToSearchFor: state => state.nodeLabelsToSearchFor
+        getNodeLabelsToSearchFor: state => state.nodeLabelsToSearchFor,
+        getTotalNumberOfPages: state => state.numberOfPages,
+        getGraphsToDisplayIndividually: state => state.graphsToDisplayIndividually,
+        getStringSearchedFor: state => state.stringSearchedFor
     },
 
     mutations: {
@@ -63,6 +69,10 @@ export const store = new Vuex.Store({
             state.individualGraphToDisplay = graph;
         },
 
+        changeGraphsToDisplayIndividually(state, graphs){
+            state.graphsToDisplayIndividually = graphs;
+        },
+
         changeNodeLabelsToSearchFor(state, labels){
             state.nodeLabelsToSearchFor = labels;
         },
@@ -73,6 +83,10 @@ export const store = new Vuex.Store({
         
         updateNodeSearchResults(state, newResults){
             state.nodeSearchResults = newResults;
+        },
+        
+        updateStringSearchedFor(state, string){
+            state.stringSearchedFor = string;
         }
     },
 
@@ -101,7 +115,8 @@ export const store = new Vuex.Store({
                 if (res.data.status != 404){
                     let newGraphs = res.data.graphs
                     commit("changeGraphsBeingDisplayed", newGraphs);
-                    commit("changeCurrentPageOfGraphs", (Number(state.currentPageOfGraphs)+1))
+                    commit("changeCurrentPageOfGraphs", (Number(state.currentPageOfGraphs)+1));
+                    // state.numberOfPages = res.data.
                 }
                 else {
                     // TODO: MAKE A MODAL POP UP SAYING "SORRY THERE ARE NO MORE GRAPHS TO BE SEEN."" AND AUTOMATICALLY SHOW THEM THE LAST PAGE.
@@ -117,10 +132,11 @@ export const store = new Vuex.Store({
 
         updateIndividualGraphToDisplay({commit}, graphId){
             axios.get(`http://localhost:8000/graphs/${graphId}`).then((res) => {
-                if (res.data.status != 404){
-                    let newGraph = res.data.output;
-                    commit("setIndividualGraphToDisplay", newGraph)
-                }
+                let newGraph = res.data.output;
+                commit("setIndividualGraphToDisplay", newGraph);
+            }).catch((error) => {
+                let newGraph = {status: "Failed", id: graphId}
+                commit("setIndividualGraphToDisplay", newGraph);
             })
         },
 
@@ -143,6 +159,8 @@ export const store = new Vuex.Store({
                 `http://localhost:8000/graph_properties/${graphId}`).then((res) => {
                     let graphProperties = res.data.output;
                     commit("newGraphProperties", graphProperties);  
+                }).catch((error) => {
+                    commit("newGraphProperties", {status: "Failed", id: graphId});
                 })
         },
 
@@ -151,6 +169,8 @@ export const store = new Vuex.Store({
                 console.log(res.data);
                 let newComparisonResults = res.data.output;
                 commit("newGraphComparisonResults", newComparisonResults);
+            }).catch( (error) => {
+                commit("newGraphComparisonResults", {status: "Failed"});
             })
         },
 
@@ -168,8 +188,10 @@ export const store = new Vuex.Store({
         setNewSubgraphSearchResults({commit}, subgraphToSearchFor){
             console.log(subgraphToSearchFor);
             axios.post(`http://localhost:8000/search_subgraph`, subgraphToSearchFor).then((res) => {
-                let graphSearchResults = res.data.graph_ids;
+                let graphSearchResults = res.data.output.sentences;
                 commit("newSubgraphSearchResults", graphSearchResults);
+            }).catch((error) => {
+                commit("newSubgraphSearchResults", {status: "Failed"});
             })
         },
 
@@ -178,11 +200,28 @@ export const store = new Vuex.Store({
             console.log(payload);
             axios.post(`http://localhost:8000/node_search`, payload) 
             .then((response) => {
-                let newResults = response.data.graph_ids;
+                let newResults = response.data.output.sentences;
                 commit("updateNodeSearchResults", newResults);
                 commit("changeNodeLabelsToSearchFor", nodeLabels);
+            }).catch((error) => {
+                commit("updateNodeSearchResults", {status: "Failed"});
+                commit("changeNodeLabelsToSearchFor", nodeLabels);
+            })
+        },
+
+        getGraphsBySentence({commit}, sentence){
+            let payload = {"sentence": sentence};
+            axios.post(`http://localhost:8000/sentence`, payload).then((res) => {
+                let graphsOutput = res.data.output.sentence;
+                commit("changeGraphsToDisplayIndividually", graphsOutput);
+                commit("updateStringSearchedFor", sentence);
+            }).catch((error) => {
+                commit("changeGraphsToDisplayIndividually", {status: "Failed"});
+                commit("updateStringSearchedFor", sentence);
             })
         }
 
     }
 })
+
+

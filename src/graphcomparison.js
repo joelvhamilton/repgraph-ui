@@ -48,7 +48,7 @@ var comparisonOutput ={
 };
 makeGraphComparison(comparisonOutput, "body");
 
-function makeGraphComparison(comparisonOutput, elementId){
+export const makeGraphComparison = function (comparisonOutput, elementId){
    var start = performance.now();
 
 // export const makeGraphComparison = function (comparisonOutput, elementId){
@@ -186,9 +186,10 @@ function makeGraphComparison(comparisonOutput, elementId){
       uniqueLabels[i] = {label: uniqueLabels[i], colour:colourScale(i)};
    }
 
-   var svg = d3.select(elementId).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
-   .attr("height", height).attr("width", width-70).attr("id", "comparison")
-   .attr("viewBox","0,0,"+(width) +","+ (height))
+   let elementIdToAppendTo = `#${elementId}`
+   var svg = d3.select(elementIdToAppendTo).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
+   .attr("height", height).attr("width", width).attr("id", "comparison")
+   .attr("viewBox","0,0,"+width+","+height)
    var group = svg.append("g").attr("id", "group");
    var zoomGroup = group.append("g");
    group.call(d3.zoom()

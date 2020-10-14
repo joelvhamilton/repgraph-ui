@@ -12,9 +12,15 @@
       </li>
       <li>
           <form class="form-inline">
-              <input v-model="graphId" class="form-control mr-sm-2" type="search" placeholder="e.g. 20001001" aria-label="Search">
+              <input v-model="graphId" class="form-control ml-5 mr-sm-2" type="search" placeholder="e.g. 20001001" aria-label="Search">
               <button class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="findGraph()">Find graph by ID</button>
           </form>
+      </li>
+      <li>
+        <form class="form-inline">
+            <input v-model="sentenceInput" class="form-control ml-5 mr-sm-2" type="search" placeholder="e.g. pierre vinken" aria-label="Search">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="getGraphBySentence()">Search for tokens</button>
+        </form>
       </li>
     </ul>
   </div>
@@ -34,7 +40,8 @@
         data() {
             return {
                 file: null,
-                graphId: 0
+                graphId: 0,
+                sentenceInput: ""
             }
         },
         methods: {
@@ -47,13 +54,17 @@
               })
           },
           ...mapActions ({
-            findGraphById: 'updateIndividualGraphToDisplay'
+            findGraphById: 'updateIndividualGraphToDisplay',
+            findGraphBySentence: 'getGraphsBySentence'
           }),
           handleFileUpload(){
             this.file = this.$refs.file.files[0];
           },
           findGraph(){
             this.findGraphById(this.graphId);
+          },
+          getGraphBySentence(){
+            this.findGraphBySentence(this.sentenceInput);
           }
         }
     }
