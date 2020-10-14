@@ -1,22 +1,42 @@
 <template>
   <div>
-    <p> Graph Id: {{getProperties.id}} </p>
-    <p> Acyclic: {{getProperties.acyclic}} </p>
-    <p> Connected: {{getProperties.connected}} </p>
-    <p> Longest Directed Paths: {{getProperties.longest_directed_path.max_paths}} </p>
-    <p> Longest Undirected Paths: {{getProperties.longest_undirected_path.max_paths}} </p>
+    <h3 v-if="propertyCheckWorked===false"> There is no graph with id '{{properties.id}}'.</h3>
   </div>
 </template>
 
 <script>
 
-import {mapGetters} from "vuex"
+import {longestPath} from "../../longestpath.js"
+
 export default {
 
-  computed: {
-    ...mapGetters({
-      getProperties: 'getCurrentGraphProperties'
-    })
+  props: ["properties", "elementId"],
+
+  watch: {
+    properties(val) {
+      if (this.properties.status !== "Failed"){
+        longestPath(this.properties, this.elementId);
+        this.propertyCheckWorked = true;
+      }
+      else {
+        this.propertyCheckWorked = false;
+      }
+    }
+  },
+  mounted() {
+    if (this.properties.status !== "Failed"){
+      longestPath(this.properties, this.elementId);
+      this.propertyCheckWorked = true;
+    }
+    else {
+      this.propertyCheckWorked = false;
+    }
+  },
+  
+  data() {
+    return {
+      propertyCheckWorked: true
+    }
   }
 }
 

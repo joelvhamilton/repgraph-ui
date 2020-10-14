@@ -1,29 +1,38 @@
 <template>
     <div class=" card card-header text-center col-md-11 mt-4" style="margin: 0 auto; float: none; margin-bottom: 10px;">
         <ul class=" ml-10 nav nav-pills card-header-pills text-center align-items-center" style="margin: 0 auto; float: none">
-            <button type="button" class="btn btn-info ml-1 mr-2" @click="togglePropertiesButton()">Test Graph Properties</button>
-                <form v-if="this.propertiesButtonClicked" class="form-inline">
-                    <input v-model="graphId" class="form-control mr-sm-2" type="search" placeholder="graph id" aria-label="Search">
-                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="checkProperties(graphId)">Check</button>
+            <li>
+                <form class="form-inline" v-on:submit.prevent="checkProperties()">
+                    <button type="button" class="btn btn-info ml-1 mr-2" @click="togglePropertiesButton()">Test Graph Properties</button>
+                    <input v-if="this.propertiesButtonClicked" v-model="graphId" class="form-control mr-sm-2" type="search" placeholder="graph id" aria-label="Search">
+                    <button v-if="this.propertiesButtonClicked" class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="checkProperties()">Check</button>
                 </form>
-            
-            <form class="form-inline">
-                <button class="btn btn-info my-sm-0 ml-1 mr-2" type="submit" @click.prevent="toggleNodeLabelSearchButton()">Search for node labels</button>
-                <input v-if="nodeLabelSearchClicked" class="form-control mr-sm-2" type="search" placeholder="e.g. time_n " aria-label="Search" v-model="nodeLabelsToSearchFor">
-                <button v-if="nodeLabelSearchClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="searchForNodeLabel()" type="submit"> Search </button>
-            </form>
-            <form class="form-inline">
-                <button class="btn btn-info ml-1 mr-2 my-2 my-sm-0" type="submit" @click.prevent="toggleSubgraphSearchButton()">Search for Subgraph</button>
-                <input v-if="subgraphSearchClicked" class="form-control mr-sm-2" type="search" placeholder="node-edge-node, etc " aria-label="Search" v-model="subgraphToSearchFor">
-                <button v-if="subgraphSearchClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="searchForSubgraphPattern()" type="submit"> Search </button>
-            </form>
-            <form class="form-inline">
-                <button class="btn btn-info my-2 ml-1 mr-2 my-sm-0" type="submit" @click.prevent="toggleGraphComparison()">Compare Graphs</button>
-                <input v-if="graphComparisonClicked" class="form-control my-1 mr-sm-2" type="search" placeholder="id1, id2" aria-label="Search" v-model="graphsToCompare">
-                <button v-if="graphComparisonClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="compareGraphs()" type="submit"> Compare </button>
-            </form>
-            <input class="mr-1" type="checkbox" id="toDisplayTokens" v-model="mustDisplayTokens">
-            Display Tokens
+            </li>
+            <li>
+                <form class="form-inline" v-on:submit.prevent="searchForNodeLabel()">
+                    <button class="btn btn-info my-sm-0 ml-1 mr-2" type="button" @click.prevent="toggleNodeLabelSearchButton()">Search for node labels</button>
+                    <input v-if="nodeLabelSearchClicked" class="form-control mr-sm-2" type="search" placeholder="e.g. time_n " aria-label="Search" v-model="nodeLabelsToSearchFor">
+                    <button v-if="nodeLabelSearchClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="searchForNodeLabel()" type="submit"> Search </button>
+                </form>
+            </li>
+            <li>
+                <form class="form-inline" v-on:submit.prevent="searchForSubgraphPattern()">
+                    <button class="btn btn-info ml-1 mr-2 my-2 my-sm-0" type="button" @click.prevent="toggleSubgraphSearchButton()">Search for Subgraph</button>
+                    <input v-if="subgraphSearchClicked" class="form-control mr-sm-2" type="search" placeholder="node-edge-node, etc " aria-label="Search" v-model="subgraphToSearchFor">
+                    <button v-if="subgraphSearchClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="searchForSubgraphPattern()" type="submit"> Search </button>
+                </form>
+            </li>
+            <li>
+                <form class="form-inline" v-on:submit.prevent="compareGraphs()">
+                    <button class="btn btn-info my-2 ml-1 mr-2 my-sm-0" type="button" @click.prevent="toggleGraphComparison()">Compare Graphs</button>
+                    <input v-if="graphComparisonClicked" class="form-control my-1 mr-sm-2" type="search" placeholder="id1, id2" aria-label="Search" v-model="graphsToCompare">
+                    <button v-if="graphComparisonClicked" class="btn btn-outline-info ml-2 mr-2" @click.prevent="compareGraphs()" type="submit"> Compare </button>
+                </form>
+            </li>
+            <li>
+                <input class="mr-1" type="checkbox" id="toDisplayTokens" v-model="mustDisplayTokens">
+                Display Tokens
+            </li>
         </ul>
     </div>
 
@@ -33,8 +42,8 @@
     import {mapActions, mapGetters} from "vuex"
     export default {
         methods: {
-            checkProperties(graphId) {
-                this.setGraphProperties(graphId).then(() => {
+            checkProperties() {
+                this.setGraphProperties(this.graphId).then(() => {
                     this.togglePropertiesButton();
                 })
             },
