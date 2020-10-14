@@ -10,7 +10,6 @@ var start = performance.now();
     var sNodes =[];
     var aNodes =[];
     var tokenList =[];
- // debugger
     var id = data.id;
     var a_nodes = Object.entries(data.a_nodes);
     var s_nodes = Object.entries(data.s_nodes);
@@ -80,7 +79,11 @@ var start = performance.now();
     for(var i=0; i<anchorArray.length; i++){
         anchorArray[i].height = 85*(i+1);
     }
-    aMap = anchorArray.map(x=> x.aLength);    
+    let aMap = anchorArray.map(x=> x.aLength);
+    console.log(aMap);
+
+    // for a in anchorarry booga booga add 50
+    
     // GRAPH SIZE DEFINITIONS.
     var width = tokenList.length*200;
     var offset = width/(tokenList.length*2);
@@ -154,7 +157,7 @@ if ( elementId == "body" && document.getElementsByClassName("d3-graph").length =
 }
 /// NEED TO CHECK IF elementId = displayModalOrWhatever, then remove element and reappend
 var svg = d3.select(elementId).append("svg").attr("id", "viewSvg").attr("class", "d3-graph")
-.attr("height", 300).attr("width", 700)
+.attr("height", "400px").attr("width", 1000+"px")
 .attr("viewBox","0,0,"+width +","+ height)
 
 var group = svg.append("g").attr("id", "group");

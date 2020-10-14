@@ -64,7 +64,8 @@
 // }
 // longestPath(data);
 
-export const longestPath = function(data){
+export const longestPath = function (data, elementId){
+    // console.log(data);
     var connected = data.connected;
     var acyclic = data.acyclic;
     var graphId = data.id;
@@ -72,11 +73,11 @@ export const longestPath = function(data){
     var undirectedPaths = [];
 
     var temp1 = Object.entries(data.longest_directed_path);
-    for (x in temp1){
+    for (var x in temp1){
         directedPaths.push(temp1[x]);
     }
     var temp2 = Object.entries(data.longest_undirected_path);
-    for (y in temp2){
+    for (var y in temp2){
         undirectedPaths.push(temp2[y]);
     }
     // console.log(undirectedPaths);
@@ -88,7 +89,9 @@ var height = undirectedPaths.length*55 + directedPaths.length*55 + 130;
 var heightDP = 15;
 var heightUDP = directedPaths.length*55 + 45;
 
-var svg = d3.select("body").append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
+let elementIdToAppendTo = `#${elementId}`;
+debugger
+var svg = d3.select(elementIdToAppendTo).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
 .attr("height", height).attr("width", width +8).attr("id", "comparison")
 .attr("viewBox","0,0,"+width+","+height)
 var group = svg.append("g").attr("id", "group");
@@ -308,7 +311,7 @@ directedPaths.forEach(element => {
 });
 var lemon = [];
 console.log(lemon.length);
-pathPosUn = 145 + directedPaths.length*55;
+let pathPosUn = 145 + directedPaths.length*55;
 undirectedPaths.forEach(element => {
     //iterate through all the directed paths (may be more than 1)
     var countun=0;
