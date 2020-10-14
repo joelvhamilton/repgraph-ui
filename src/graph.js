@@ -1,13 +1,11 @@
-import {store} from './store';
-
-// var data = 
+// import {store} from './store';
+// var data = {
 
 // makeGraph(data, true,"body")
-    // function makeGraph(data,showTokens,elementId){
+//     function makeGraph(data,showTokens,elementId){
         
  export const makeGraph = function (data, showTokens, elementId) {
-    console.log(data);
-    var start = performance.now();
+var start = performance.now();
     var layers = {bottom:0,token:0,surface:0,top:10};
     var sNodes =[];
     var aNodes =[];
@@ -82,11 +80,7 @@ import {store} from './store';
     for(var i=0; i<anchorArray.length; i++){
         anchorArray[i].height = 85*(i+1);
     }
-    aMap = anchorArray.map(x=> x.aLength);
-    console.log(aMap);
-
-    // for a in anchorarry booga booga add 50
-    
+    aMap = anchorArray.map(x=> x.aLength);    
     // GRAPH SIZE DEFINITIONS.
     var width = tokenList.length*200;
     var offset = width/(tokenList.length*2);
@@ -130,8 +124,8 @@ for(var j=0;j<aNodes.length;j++){
     if(aNodes[j].label != "TOP"){
         for(var i =0; i< aNodes.length; i++) {
             if(aNodes[j].xPos == aNodes[i].xPos && aNodes[j].yPos == aNodes[i].yPos && aNodes[j].index != aNodes[i].index){
-                aNodes[j].xPos = aNodes[j].xPos -45;
-                aNodes[i].xPos = aNodes[i].xPos +45;
+                aNodes[j].xPos = aNodes[j].xPos -tokenGap/4+17;
+                aNodes[i].xPos = aNodes[i].xPos +tokenGap/4-17;
                 j=0;
             }
         }
@@ -143,30 +137,31 @@ sNodes.forEach(element => {
 });
 layers.token = minSNode + 100;
 layers.bottom = layers.token + 100;
-var height=layers.bottom +10;
+if(showTokens){
+    var height=layers.bottom +100;
+}
+else{
+    var height = layers.bottom;
+}
 
 //  AT THIS POINT NODE HEIGHTS AND LAYER HEIGHTS HAVE BEEN DETERMINED.
 var layerVals = Object.values(layers);
-
-// if (forModal){
-//     let svg = d3.
-// }
 
 if ( elementId == "body" && document.getElementsByClassName("d3-graph").length === 5){
     d3.select("svg").remove();
 } else if (elementId != "body") {
     elementId = `#${elementId}`
 }
-
 /// NEED TO CHECK IF elementId = displayModalOrWhatever, then remove element and reappend
 var svg = d3.select(elementId).append("svg").attr("id", "viewSvg").attr("class", "d3-graph")
-.attr("height", "500px").attr("width", 1000+"px")
+.attr("height", 300).attr("width", 700)
 .attr("viewBox","0,0,"+width +","+ height)
 
 var group = svg.append("g").attr("id", "group");
 var zoomGroup = group.append("g");
 group.call(d3.zoom()
-.scaleExtent([0.5, 10])    
+.scaleExtent([0.5, 6])
+.translateExtent([[-width+500,-height-100],[width+100,height+100]])    
 .on("zoom",function(){
     zoomGroup.attr("transform", d3.event.transform);
 })); //allows for zooming
@@ -212,18 +207,15 @@ zoomGroup.append("defs").selectAll("marker.s").data(sNodes).enter().append("mark
     .attr("fill", "none");
 };
 
-
 //BACKGROUND RECTANGLE
 zoomGroup.append("rect")
 .attr("class","back")
-.attr("height",function(d,i){if(showTokens){
-    return height;
-}
-return height-100;})
+.attr("height","100%")
     .attr("width","100%")
     .attr("x","0")
     .attr("y","0")
-    .attr("fill","#f2f0f0");
+    .attr("fill","#f2f0f0")
+    .lower();
     
     // DRAWING LAYER LINES
     if(!(showTokens)){
@@ -272,6 +264,16 @@ zoomGroup.append("text").selectAll("text.layerText").data(layerText).enter().app
     .attr("font-size","16")
     .attr("fill","gray")
     .attr("font-family","Arial");
+
+//displaying graph label
+zoomGroup.append("text").selectAll("text.graphlabel").data(["Graph number: " + id]).enter().append("tspan").text(d => d)
+.attr("class","graphlabel")
+    .attr("x",width/2)
+    .attr("y",height-40)
+    .attr("font-size","32")
+    .attr("stroke-width", "1400")
+    .attr("fill","black")
+    .attr("font-family","Arial");
     
     
     // DRAWING SURFACE NODES
@@ -282,15 +284,15 @@ zoomGroup.append("text").selectAll("text.layerText").data(layerText).enter().app
     .attr("r","12")
     .attr("fill", function(d,i){return d.colour;})
     .on("click", function(d,i){store.dispatch("setNewSubsetToDisplay", {graphId: id, nodeId: d.index});})
-    .on("mouseover", function(d,i){mouseHover(d.colour,d.tokens)})
-    .on("mouseout", mouseOut);;
+    .on("mouseover", function(d,i){mouseHover(d.colour,d.tokens,id,"s",d.index)})
+    .on("mouseout", function(d,i){return mouseOut("s",d.index,id);});
 
 // HIGHLIGHTING ANCHORS
 if(showTokens){
     zoomGroup.selectAll("rect.highlights")
     .data(tokenList)
     .enter().append("rect")
-    .attr("class",function(d,i){return "highlights rectangle"+i;}) //index of the token
+    .attr("class",function(d,i){return "highlights rectangle"+id+i;}) //index of the token
     .attr("height","35")
     .attr("width",function(d,i){return 200;})
     .attr("x",function(d,i){return offset + i*tokenGap -100;})
@@ -300,10 +302,10 @@ if(showTokens){
 }
 
 //LABELLING NODES.
-zoomGroup.selectAll("rect.labels")
+zoomGroup.selectAll("rect.slabels")
     .data(sNodes)
     .enter().append("rect")
-    .attr("class","labels")
+    .attr("class", function(d,i){return "slabels"+id+d.index ;})
     .attr("height","20")
     .attr("width",function(d,i){return d.label.length*8 + "";}) //changes with length of the label.
     .attr("x",function(d,i){return d.xPos- d.label.length*4;})
@@ -322,44 +324,6 @@ zoomGroup.append("text").selectAll("text.nodeLabels").data(sNodeLabels).enter().
     .attr("fill","black")
     .attr("font-family","Arial");
 
-// ABSTRACT NODES
-zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
-    .attr("class","aNodes")
-    .attr("cx",function(d,i){return d.xPos;})
-    .attr("cy",function(d,i){return d.yPos;})
-    .attr("r",function(d,i){
-        if(d.label=="TOP"){
-            return "18";
-        }
-        return "12";})
-    .attr("fill", function(d,i){return d.colour;})
-    .on("click", function(d,i){ store.dispatch("setNewSubsetToDisplay", {graphId: id, nodeId: d.index});})
-    .on("mouseover", function(d,i){mouseHover(d.colour,d.tokens)})
-    .on("mouseout", mouseOut); 
-
-//ABSTRACT NODE LABELS - redo this so edges dont overwrite?
-zoomGroup.selectAll("rect.alabels")
-    .data(aNodes)
-    .enter().append("rect")
-    .attr("class","alabels")
-    .attr("height","20")
-    .attr("width",function(d,i){return d.label.length*8 + 4 + "" ;})
-    .attr("x",function(d,i){return d.xPos - d.label.length*4 -2 + "";})
-    .attr("y",function(d,i){return d.yPos + 20;})
-    .attr("stroke", function(d,i){return d.colour;})
-    .attr("stroke-width", "2")
-    .attr("fill", "#f2f0f0");
-zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter().append("tspan").text(d => d)
-    .attr("class","anodeLabels")
-    .attr("x",function(d,i){return aNodes[i].xPos;})
-    .attr("y",function(d,i){return aNodes[i].yPos + 33;})
-    .attr("font-size","12px")
-    .attr("text-anchor","middle")
-    .attr("font-weight", "900")
-    .attr("dominant-baseline","middle")
-    .attr("fill","black")
-    .attr("font-family","Arial");
-
 //  SURFACE EDGES
 sNodes.forEach(element => {
     if(element.edges[0] != -1){
@@ -370,47 +334,47 @@ sNodes.forEach(element => {
                 var abDiffX = Math.abs(element.xPos - otherSNode.xPos);
                 if(element.xPos >= otherSNode.xPos ){
                     if(abDiffX < 240){
-                        var fromToS = [{x:element.xPos -17,y:element.yPos},{x:otherSNode.xPos +20,y:otherSNode.yPos}];
+                        var fromToS = [{x:element.xPos -14,y:element.yPos},{x:otherSNode.xPos +17,y:otherSNode.yPos}];
                     }
                     else{
-                        var fromToS = [{x:element.xPos -17,y:element.yPos -14},
+                        var fromToS = [{x:element.xPos -14,y:element.yPos -14},
                             {x:element.xPos -abDiffX/11 ,y:element.yPos - abDiffX/11 },
                             {x:otherSNode.xPos +abDiffX/11,y:otherSNode.yPos -abDiffX/11},
-                            {x:otherSNode.xPos +17,y:otherSNode.yPos -14}]; //needs worku
+                            {x:otherSNode.xPos +14,y:otherSNode.yPos -14}]; //needs worku
                     }
                 }
                 else{
                     if(abDiffX < 240){
-                        var fromToS = [{x:element.xPos +17,y:element.yPos},{x:otherSNode.xPos -20,y:otherSNode.yPos}];
+                        var fromToS = [{x:element.xPos +14,y:element.yPos},{x:otherSNode.xPos -17,y:otherSNode.yPos}];
                     }
                     else{
                         var limitLine = 130;
                         var edgeLineYAxis = Math.min(limitLine, abDiffX/12);
-                        var fromToS = [{x:element.xPos +17,y:element.yPos},
+                        var fromToS = [{x:element.xPos +14,y:element.yPos},
                             {x:element.xPos +edgeLineYAxis,y:element.yPos +edgeLineYAxis},
                             {x:otherSNode.xPos -edgeLineYAxis,y:otherSNode.yPos +edgeLineYAxis},
-                            {x:otherSNode.xPos -20,y:otherSNode.yPos + 8}]; //needs worku
+                            {x:otherSNode.xPos -17,y:otherSNode.yPos + 8}]; //needs worku
                     }
                 }
             }
             else{
                 if(element.xPos > otherANode.xPos){
-                    var fromToS = [{x:element.xPos-10,y:element.yPos -15},
+                    var fromToS = [{x:element.xPos-10.5,y:element.yPos -10.5},
                         {x:element.xPos -83 ,y:element.yPos -80 },
                         {x:otherANode.xPos +89,y:otherANode.yPos -80},
-                        {x:otherANode.xPos +15,y:otherANode.yPos -15}]; //needs worku
+                        {x:otherANode.xPos +12.5,y:otherANode.yPos -12.5}]; //needs worku
                 }
                 else if (element.xPos == otherANode.xPos){
-                    var fromToS = [{x:element.xPos,y:element.yPos -17},
+                    var fromToS = [{x:element.xPos,y:element.yPos -14},
                         {x:element.xPos -83 ,y:element.yPos -80 },
                         {x:otherANode.xPos +89,y:otherANode.yPos -80},
-                        {x:otherANode.xPos ,y:otherANode.yPos -17}]; //needs worku
+                        {x:otherANode.xPos ,y:otherANode.yPos -16}]; //needs worku
                 }
                 else{
-                    var fromToS = [{x:element.xPos + 14,y:element.yPos -14},
+                    var fromToS = [{x:element.xPos + 10.4,y:element.yPos -10.5},
                         {x:element.xPos +87,y:element.yPos -60},
                         {x:otherANode.xPos -83,y:otherANode.yPos -17+80},
-                        {x:otherANode.xPos -19,y:otherANode.yPos + 8}]; //needs worku
+                        {x:otherANode.xPos -12.5,y:otherANode.yPos +12.5}]; //needs worku
                 }
             }
             drawLine(element.colour,fromToS, element.index);
@@ -439,10 +403,10 @@ aNodes.forEach(element => {
         .attr("y1",function(d,i){return d.yPos + 23;})
         .attr("x2",function(d,i){return d.xPos;})
         .attr("y2",function(d,i){if(!(element.abstract)){
-            return sNodes[sNodeLabels.indexOf(d.relation.toString())].yPos -17;
+            return sNodes[sNodeLabels.indexOf(d.relation.toString())].yPos -14;
         }
         else{
-            return aNodes[aNodeLabels.indexOf(d.relation.toString())].yPos -17;
+            return aNodes[aNodeLabels.indexOf(d.relation.toString())].yPos -14;
         }})
         .attr("stroke-dasharray","3,3")
         .attr("stroke",function(d,i){return d.colour;})
@@ -454,22 +418,37 @@ aNodes.forEach(element => {
         var otherANode = aNodes[aNodeIndexes.indexOf(element.edges[i].toString())];
         if(sNodeIndexes.includes(element.edges[i].toString())){
             if(element.xPos > otherSNode.xPos){
-                var fromTo = [{x:element.xPos -8 ,y:element.yPos +15},{x:otherSNode.xPos +8,y:otherSNode.yPos-20}];
+                var fromTo = [{x:element.xPos -10.5 ,y:element.yPos +10.5},{x:otherSNode.xPos +10.5,y:otherSNode.yPos-14.5}];
             }
             else if(element.xPos == otherSNode.xPos){
-                var fromTo = [{x:element.xPos ,y:element.yPos +17},{x:otherSNode.xPos,y:otherSNode.yPos-20}];
+                var fromTo = [{x:element.xPos ,y:element.yPos +14},{x:otherSNode.xPos,y:otherSNode.yPos-17}];
             }
             else{
-                var fromTo = [{x:element.xPos +8 ,y:element.yPos +15},{x:otherSNode.xPos -8,y:otherSNode.yPos-20}];
+                var fromTo = [{x:element.xPos +10.5 ,y:element.yPos +10.5},{x:otherSNode.xPos -10.5,y:otherSNode.yPos-14.5}];
             }
         }
         else{
             if(element.xPos >= otherANode.xPos){
-                var fromTo = [{x:element.xPos -17,y:element.yPos},{x:otherANode.xPos+20,y:otherANode.yPos}];   
-            }else{
-                var fromTo = [{x:element.xPos +17 ,y:element.yPos},{x:otherANode.xPos -20,y:otherANode.yPos}];
-            }
+                if(element.yPos >= otherANode.yPos){
+                    var fromTo = [{x:element.xPos -10.5,y:element.yPos +10.5},{x:otherANode.xPos+12.5,y:otherANode.yPos+12.5}];   
+                }
+                else if(element.yPos == otherANode.yPos){
 
+                }
+                else{
+                    var fromTo = [{x:element.xPos -17,y:element.yPos},{x:otherANode.xPos+20,y:otherANode.yPos}];   
+                }
+            }else{
+                if(element.yPos > otherANode.yPos){ //when Y is LOWER than other.y
+                    var fromTo = [{x:element.xPos +10.5,y:element.yPos -10.5},{x:otherANode.xPos-12.5,y:otherANode.yPos+12.5}];   
+                }
+                else if(element.yPos == otherANode.yPos){
+                    var fromTo = [{x:element.xPos +14,y:element.yPos},{x:otherANode.xPos-16.5,y:otherANode.yPos}];
+                }
+                else{
+                    var fromTo = [{x:element.xPos +10.5,y:element.yPos +10.5},{x:otherANode.xPos-12.5,y:otherANode.yPos-12.5}];
+                }
+            }
         }
         var line = d3.line()
                         .x(function(d){return d.x;})
@@ -484,25 +463,70 @@ aNodes.forEach(element => {
             .attr("x",labelX.toString())
             .attr("y",labelY.toString())
             .attr("font-family","Arial")
-            .attr("font-size","12px")
+            .attr("font-size","14px")
             .attr("fill","#242424")
             .attr("text-anchor","middle");
     }
 
 });
+// ABSTRACT NODES
+zoomGroup.selectAll("circle.aNodes").data(aNodes).enter().append("circle")
+    .attr("class","aNodes")
+    .attr("cx",function(d,i){return d.xPos;})
+    .attr("cy",function(d,i){return d.yPos;})
+    .attr("r",function(d,i){
+        if(d.label=="TOP"){
+            return "18";
+        }
+        return "12";})
+    .attr("fill", function(d,i){return d.colour;})
+    .on("click", function(d,i){ store.dispatch("setNewSubsetToDisplay", {graphId: id, nodeId: d.index});})
+    .on("mouseover", function(d,i){mouseHover(d.colour,d.tokens,id,"a",d.index)})
+    .on("mouseout", function(d,i){return mouseOut("a",d.index,id);}); 
+//ABSTRACT NODE LABELS - redo this so edges dont overwrite?
+zoomGroup.selectAll("rect.alabels")
+    .data(aNodes)
+    .enter().append("rect")
+    .attr("class",function(d,i){return "alabels"+id+d.index;})
+    .attr("height","20")
+    .attr("width",function(d,i){return d.label.length*8 + 4 + "" ;})
+    .attr("x",function(d,i){return d.xPos - d.label.length*4 -2 + "";})
+    .attr("y",function(d,i){return d.yPos + 20;})
+    .attr("stroke", function(d,i){return d.colour;})
+    .attr("stroke-width", "2")
+    .attr("fill", "#f2f0f0");
+zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter().append("tspan").text(d => d)
+    .attr("class","anodeLabels")
+    .attr("x",function(d,i){return aNodes[i].xPos;})
+    .attr("y",function(d,i){return aNodes[i].yPos + 33;})
+    .attr("font-size","12px")
+    .attr("text-anchor","middle")
+    .attr("font-weight", "900")
+    .attr("dominant-baseline","middle")
+    .attr("fill","black")
+    .attr("font-family","Arial");
 
 var end = performance.now();
 console.log("Making the graph took " + (end - start) + " milliseconds.") 
 }
 
-function mouseHover(colour, anchors){
+function mouseHover(colour, anchors, id,type,index){
     // console.log(colour);
     for(var i=0; i<anchors.length; i++){
-        d3.selectAll("rect.rectangle"+anchors[i])
+        d3.selectAll("rect.rectangle"+id+anchors[i])
         .attr("fill", colour);
     }
+    d3.select("rect."+type+"labels"+id+index)
+    // .raise()
+    .attr("fill", colour)
+    .style("opacity","0.7");
 };
-function mouseOut(){
+function mouseOut(type,index,id){
     d3.selectAll("rect.highlights")
     .attr("fill", "none");
+    d3.select("rect."+type+"labels"+id+index)
+    // .lower()
+    .attr("fill", "#f2f0f0")
+    .style("opacity","1");
+
 };

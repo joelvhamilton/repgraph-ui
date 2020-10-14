@@ -1,6 +1,6 @@
 
 
-// // TEST DATA
+// TEST DATA
 // var data = {
 //     "20008006": {
 //         "edges": [
@@ -20,9 +20,9 @@
 //                 "label": "ARG1/EQ"
 //             }
 //         ],
-//         "a_nodes": {
+//         "s_nodes": {
 //             "18": {
-//                 "label": "time_n",
+//                 "label": "normallabel",
 //                 "anchors": [
 //                     15
 //                 ]
@@ -34,7 +34,7 @@
 //                 ]
 //             }
 //         },
-//         "s_nodes": {
+//         "a_nodes": {
 //             "17": {
 //                 "label": "_by_p_temp",
 //                 "anchors": [
@@ -63,12 +63,14 @@
 
 // makeSubgraph(data,"body");
 
-  export const makeSubgraph = function (data, elementId){
-        //remove above
-
+export const makeSubgraph = function (data, elementId){
+// function makeSubgraph(data,elementId){
+var id;
 for(var boog in data){
     var data = data[boog];
-}
+    id = boog;
+} //this stuff might not be necessary depnding on how you read it in @JOEL
+//  but please do make sure a variable called id reads in the id of the graph.
 
 var sNodes =[];
 var aNodes =[];
@@ -122,8 +124,6 @@ dataEdges.forEach(element => {
         selectedNode[0].outgoing.push(element[1].trg);
     }
 });
-console.log(sNodes);
-console.log(aNodes);
 
 var abstractColourScale = d3.scaleLinear().domain([0,Math.max(...aNodeIndexes)]).range(["yellow", "red"]);
 var surfaceColourScale =  d3.scaleSequential().domain([0,Math.max(...sNodeIndexes)]).interpolator(d3.interpolateCool);
@@ -148,14 +148,12 @@ var ai =0;
 aNodes.forEach(element => {
     element.yPos = aNodeHeight;
     element.xPos = aNodeInterval/2 + (aNodeInterval*ai);
-    console.log(element.xPos);
     ai++;
 });
 var si=0;
 sNodes.forEach(element => {
     element.yPos = sNodeHeight;
     element.xPos = sNodeInterval/2 + (sNodeInterval*si);
-    console.log(element.xPos);
     si++;
 });
 selectedNode.forEach(element => {
@@ -166,8 +164,6 @@ selectedNode.forEach(element => {
     else{
         element.yPos = height/2 +25;
     }
-    console.log(element.xPos);
-
 });
 
 
@@ -263,8 +259,8 @@ zoomGroup.selectAll("rect.labels")
     .enter().append("rect")
     .attr("class","labels")
     .attr("height","20")
-    .attr("width","70") //changes with length of the label.
-    .attr("x",function(d,i){return d.xPos-35;})
+    .attr("width",function(d,i){return d.label.length*9;}) //changes with length of the label.
+    .attr("x",function(d,i){return d.xPos-d.label.length*9/2;})
     .attr("y",function(d,i){return d.yPos + 15;})
     .attr("stroke", function(d,i){return d.colour;})
     .attr("stroke-width", "2")
@@ -302,8 +298,8 @@ zoomGroup.selectAll("rect.alabels")
     .enter().append("rect")
     .attr("class","alabels")
     .attr("height","20")
-    .attr("width","60")
-    .attr("x",function(d,i){ return d.xPos-30;})
+    .attr("width",function(d,i){return d.label.length*9;})
+    .attr("x",function(d,i){ return d.xPos-d.label.length*9/2;})
     .attr("y",function(d,i){return d.yPos - 45;})
     .attr("stroke", function(d,i){return d.colour;})
     .attr("stroke-width", "2")
@@ -325,15 +321,15 @@ zoomGroup.selectAll("rect.selectedlabels")
     .enter().append("rect")
     .attr("class","selectedlabels")
     .attr("height","20")
-    .attr("width","60")
-    .attr("x",function(d,i){ return d.xPos+30;})
+    .attr("width",function(d,i){return d.label.length*9;})
+    .attr("x",function(d,i){ return d.xPos + 50 - d.label.length*9/2 + d.label.length*4;})
     .attr("y",function(d,i){return d.yPos - 10;})
     .attr("stroke", function(d,i){return d.colour;})
     .attr("stroke-width", "2")
     .attr("fill", "#f2f0f0");
 zoomGroup.append("text").selectAll("text.selectedLabels").data([selectedNode[0].label]).enter().append("tspan").text(d => d)
     .attr("class","selectedLabels")
-    .attr("x",function(d,i){return selectedNode[i].xPos + 60;})
+    .attr("x",function(d,i){return selectedNode[i].xPos + 50 + d.length*4;})
     .attr("y",function(d,i){return selectedNode[i].yPos + 2;})
     .attr("font-size","12px")
     .attr("text-anchor","middle")
@@ -346,7 +342,7 @@ zoomGroup.append("text").selectAll("text.selectedLabels").data([selectedNode[0].
 sNodes.forEach(element => {
         for(var i=0; i<element.outgoing.length ;i++){
             var abDiffX = Math.abs(element.xPos - selectedNode[0].xPos);
-            var scaleX = abDiffX/40;
+            var scaleX = abDiffX/20;
             if(element.xPos >= selectedNode[0].xPos ){
                 if(abDiffX > 40){ //node is not directly underneath selected node
                     var fromToS = [{x:element.xPos,y:element.yPos - 15},{x:selectedNode[0].xPos + abDiffX/scaleX,y:selectedNode[0].yPos + 25}];
@@ -384,7 +380,7 @@ sNodes.forEach(element => {
     aNodes.forEach(element => {
         for(var i=0; i<element.outgoing.length ;i++){
             var abDiffX = Math.abs(element.xPos - selectedNode[0].xPos);
-            var scaleX = abDiffX/40;
+            var scaleX = abDiffX/20;
             if(element.xPos >= selectedNode[0].xPos ){
                 if(abDiffX > 40){ //node is not directly underneath selected node
                     var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos +abDiffX/scaleX,y:selectedNode[0].yPos - 32}];

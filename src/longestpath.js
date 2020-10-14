@@ -1,77 +1,75 @@
-var data = {
-    "id": "20013011",
-    "connected": "True",
-    "acyclic": "True",
-    "longest_directed_path": {
-        "[1, 0]": {
-            "edges": [
-                {
-                    "src": "_that_q_dem",
-                    "trg": "generic_entity",
-                    "label": "RSTR/H"
-                }
-            ]
-        },
-        "[2, 0]": {
-            "edges": [
-                {
-                    "src": "_attract_v_1",
-                    "trg": "generic_entity",
-                    "label": "ARG1/NEQ"
-                }
-            ]
-        },
-        "[2, 4]": {
-            "edges": [
-                {
-                    "src": "_attract_v_1",
-                    "trg": "_attention_n_to",
-                    "label": "ARG2/NEQ"
-                }
-            ]
-        },
-        "[3, 4]": {
-            "edges": [
-                {
-                    "src": "udef_q",
-                    "trg": "_attention_n_to",
-                    "label": "RSTR/H"
-                }
-            ]
-        }
-    },
-    "longest_undirected_path": {
-        "[0, 2, 4, 3]": {
-            "edges": [
-                {
-                    "src": "generic_entity",
-                    "trg": "_attract_v_1",
-                    "label": "ARG1/NEQ"
-                },
-                {
-                    "src": "_attract_v_1",
-                    "trg": "_attention_n_to",
-                    "label": "ARG2/NEQ"
-                },
-                {
-                    "src": "_attention_n_to",
-                    "trg": "udef_q",
-                    "label": "RSTR/H"
-                }
-            ]
-        }
-    }
-}
-longestPath(data);
+// var data = {
+//     "id": "20013011",
+//     "connected": "True",
+//     "acyclic": "True",
+//     "longest_directed_path": {
+//         "[1, 0]": {
+//             "edges": [
+//                 {
+//                     "src": "_that_q_dem",
+//                     "trg": "generic_entity",
+//                     "label": "RSTR/H"
+//                 }
+//             ]
+//         },
+//         "[2, 0]": {
+//             "edges": [
+//                 {
+//                     "src": "_attract_v_1",
+//                     "trg": "generic_entity",
+//                     "label": "ARG1/NEQ"
+//                 }
+//             ]
+//         },
+//         "[2, 4]": {
+//             "edges": [
+//                 {
+//                     "src": "_attract_v_1",
+//                     "trg": "_attention_n_to",
+//                     "label": "ARG2/NEQ"
+//                 }
+//             ]
+//         },
+//         "[3, 4]": {
+//             "edges": [
+//                 {
+//                     "src": "udef_q",
+//                     "trg": "_attention_n_to",
+//                     "label": "RSTR/H"
+//                 }
+//             ]
+//         }
+//     },
+//     "longest_undirected_path": {
+//         "[0, 2, 4, 3]": {
+//             "edges": [
+//                 {
+//                     "src": "generic_entity",
+//                     "trg": "_attract_v_1",
+//                     "label": "ARG1/NEQ"
+//                 },
+//                 {
+//                     "src": "_attract_v_1",
+//                     "trg": "_attention_n_to",
+//                     "label": "ARG2/NEQ"
+//                 },
+//                 {
+//                     "src": "_attention_n_to",
+//                     "trg": "udef_q",
+//                     "label": "RSTR/H"
+//                 }
+//             ]
+//         }
+//     }
+// }
+// longestPath(data);
 
-function longestPath(data){
-    // console.log(data);
+export const longestPath = function(data){
     var connected = data.connected;
     var acyclic = data.acyclic;
     var graphId = data.id;
     var directedPaths = [];
     var undirectedPaths = [];
-    //label =[0], edges =[1];
 
     var temp1 = Object.entries(data.longest_directed_path);
     for (x in temp1){
@@ -308,6 +306,8 @@ directedPaths.forEach(element => {
     count++; //for creating unique ids for nodes.
     // console.log(element[1].edges);
 });
+var lemon = [];
+console.log(lemon.length);
 pathPosUn = 145 + directedPaths.length*55;
 undirectedPaths.forEach(element => {
     //iterate through all the directed paths (may be more than 1)
