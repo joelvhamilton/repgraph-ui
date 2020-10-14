@@ -1,57 +1,67 @@
 //TEST DATA
-var comparisonOutput ={
-   "matching": {
-       "edges": [
-           {
-               "src": "_attract_v_1",
-               "trg": "generic_entity",
-               "label": "ARG1/NEQ"
-           },
-           {
-               "src": "udef_q",
-               "trg": "_attention_n_to",
-               "label": "RSTR/H"
-           }
-       ],
-       "nodes": [
-           "_attention_n_to",
-           "generic_entity"
-       ]
-   },
-   "graph_1": {
-       "20013011": {
-           "edges": [
-            {
-                "src": "_attract_v_1",
-                "trg": "_attention_n_to",
-                "label": "ARG2/NEQ"
-            }
-         ],
-           "nodes": [
-               "udef_q",
-               "_attract_v_1"
-            ]
-       }
-   },
-   "graph_2": {
-       "20013014": {
-           "edges": [{
-            "src": "_that_q_dem",
-            "trg": "generic_entity",
-            "label": "RSTR/H"
-        }],
-           "nodes": [
-               "_that_q_dem"
-           ]
-       }
-   }
-};
-makeGraphComparison(comparisonOutput, "body");
+// var comparisonOutput ={
+//    "matching": {
+//        "edges": [
+//            {
+//                "src": "_attract_v_1",
+//                "trg": "generic_entity",
+//                "label": "ARG1/NEQ"
+//            },
+//            {
+//                "src": "udef_q",
+//                "trg": "_attention_n_to",
+//                "label": "RSTR/H"
+//            }
+//        ],
+//        "nodes": [
+//            "Greg",
+//            "and",
+//            "Jeol",
+//            "are_primo_ninnies",
+//            "of_the highest",
+//            "degree",
+//            "I",
+//            "cannot",
+//            "express",
+//            "this_enough",
+//            "it is actually",
+//            "criminal"
+//        ]
+//    },
+//    "graph_1": {
+//        "20013011": {
+//            "edges": [
+//             {
+//                 "src": "_attract_v_1",
+//                 "trg": "_attention_n_to",
+//                 "label": "ARG2/NEQ"
+//             }
+//          ],
+//            "nodes": [
+//                "udef_q",
+//                "_attract_v_1"
+//             ]
+//        }
+//    },
+//    "graph_2": {
+//        "20013014": {
+//            "edges": [{
+//             "src": "_that_q_dem",
+//             "trg": "generic_entity",
+//             "label": "RSTR/H"
+//         }],
+//            "nodes": [
+//                "_that_q_dem"
+//            ]
+//        }
+//    }
+// };
+// makeGraphComparison(comparisonOutput, "body");
 
+// function makeGraphComparison(comparisonOutput, elementId){
 export const makeGraphComparison = function (comparisonOutput, elementId){
    var start = performance.now();
 
-// export const makeGraphComparison = function (comparisonOutput, elementId){
    var matchingEdges = [];
    var matchingNodes =[];
    var mnx=0;
@@ -64,7 +74,6 @@ export const makeGraphComparison = function (comparisonOutput, elementId){
    var g2Nodes =[];
    var g2x=0;
    var mid = "matching";
-   // console.log();
 
    for(var output in comparisonOutput){
       var temp = Object.entries((comparisonOutput[output]));
@@ -91,7 +100,7 @@ export const makeGraphComparison = function (comparisonOutput, elementId){
 
    //SVG STUFF:
    var height = 100;
-   var width = 640;
+   var width = 720;
    var workingHeight = 10;
 
    //height of text
@@ -110,8 +119,13 @@ export const makeGraphComparison = function (comparisonOutput, elementId){
          });
       }
       if(matchingNodes.length >0){
-         mnx = matchingTextPos +75;
-         workingHeight = mnx + 40;
+         for(var i=0; i<matchingNodes.length;i++){
+            if(i%5==0){
+               workingHeight = workingHeight +75;
+            }
+            matchingNodes[i] = {l:matchingNodes[i], x:120*((i%5)+1),y: workingHeight} //+Math.floor(i/6)*75}
+         }
+         workingHeight = workingHeight +40;
       }
    }
    if(g1Edges.length > 0|| g1Nodes.length >0){
@@ -125,8 +139,13 @@ export const makeGraphComparison = function (comparisonOutput, elementId){
          });
       }
       if(g1Nodes.length >0){
-         g1x = g1TextPos +75;
-         workingHeight = g1x +40;
+         for(var i=0; i<g1Nodes.length;i++){
+            if(i%5==0){
+               workingHeight = workingHeight +75;
+            }
+            g1Nodes[i] = {l:g1Nodes[i], x:120*((i%5)+1),y: workingHeight} //+ Math.floor(i/6)*75}
+         }
+         workingHeight = workingHeight +40;
       }
    }
    if(g2Edges.length > 0 || g2Nodes.length >0){
@@ -140,10 +159,16 @@ export const makeGraphComparison = function (comparisonOutput, elementId){
          });
       }
       if(g2Nodes.length >0){
-         g2x = g2TextPos +75;
-         workingHeight = g2x + 40;
+         for(var i=0; i<g2Nodes.length;i++){
+            if(i%5==0){
+               workingHeight = workingHeight +75;
+            }
+            g2Nodes[i] = {l:g2Nodes[i], x:120*((i%5)+1),y: workingHeight} //+ Math.floor(i/6)*75}
+         }
+         workingHeight = workingHeight +40;
       }
    }
+   console.log(matchingNodes);
    height = workingHeight + 20;
 
    for(var i =0; i<textPos.length; i++){
@@ -187,8 +212,9 @@ export const makeGraphComparison = function (comparisonOutput, elementId){
    }
 
    let elementIdToAppendTo = `#${elementId}`
-   var svg = d3.select(elementIdToAppendTo).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
-   .attr("height", height).attr("width", width).attr("id", "comparison")
+   var svg = d3.select(elementId //elementIdToAppendTo
+      ).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
+   .attr("height", height-200).attr("width", width).attr("id", "comparison")
    .attr("viewBox","0,0,"+width+","+height)
    var group = svg.append("g").attr("id", "group");
    var zoomGroup = group.append("g");
@@ -210,7 +236,7 @@ export const makeGraphComparison = function (comparisonOutput, elementId){
    var arrowPoints = [[0, 0], [0, 6], [6, 3]];
    zoomGroup.append("defs").selectAll("marker.s").data(uniqueLabels).enter().append("marker")
       .attr("class","s")
-      .attr('id', function(d,i){console.log(d.label);return "arrow"+d.label})
+      .attr('id', function(d,i){return "arrow"+d.label;})
       .attr('viewBox', [0, 0, 7, 7])
       .attr('refX', 3.5)
       .attr('refY', 3.5)
@@ -282,34 +308,34 @@ zoomGroup.append("path")
          .attr("fill", "#f2f0f0");
 
 
-      //    //drawing loose nodes.
-      // zoomGroup.selectAll("circle"+element.id+"bnodes").data(element.nodes).enter().append("circle")
-      //    .attr("class",element.id+"bnodes")
-      //    .attr("cx",function(d,i){
-      //       var tm = 100+tm;
-      //       if(tm < width-99){
-      //          return tm;
-      //       }
-      //       mnx = mnx + 
-      //       tm = 100;
-      //       return tm;})
-      //    .attr("cy",function(d,i){if(){
-
-      //    }
-      //       return d.xpos;})
-      //    .attr("r","18")
-      //    .attr("fill", function(d,i){return findColour(uniqueLabels,d.src);});
-      //    //LABELLING NODES.
-      // zoomGroup.selectAll("rect"+ element.id+"b").data(element.data)
-      //    .enter().append("rect")
-      //    .attr("class",element.id+"b")
-      //    .attr("height","20")
-      //    .attr("width",function(d,i){return d.src.length*8;}) //changes with length of the label.
-      //    .attr("x",function(d,i){return 100 - d.src.length*8/2;})
-      //    .attr("y",function(d,i){return d.xpos + 25;})
-      //    .attr("stroke", function(d,i){return findColour(uniqueLabels,d.src);})
-      //    .attr("stroke-width", "2")
-      //    .attr("fill", "#f2f0f0");
+         //drawing loose nodes.
+      zoomGroup.selectAll("circle"+element.id+"bnodes"+element.x+element.y).data(element.nodes).enter().append("circle")
+         .attr("class",element.id+"bnodes"+element.x+element.y)
+         .attr("cx",function(d,i){return d.x;})
+         .attr("cy",function(d,i){return d.y;})
+         .attr("r","18")
+         .attr("fill", function(d,i){return findColour(uniqueLabels,d.l);});
+         //LABELLING NODES.
+      zoomGroup.selectAll("rect"+ element.id+"bnodelabel"+element.x+element.y).data(element.nodes)
+         .enter().append("rect")
+         .attr("class",element.id+"bnodelabel"+element.x+element.y)
+         .attr("height","20")
+         .attr("width",function(d,i){return d.l.length*7.5;}) //changes with length of the label.
+         .attr("x",function(d,i){return d.x - d.l.length*7.5/2;})
+         .attr("y",function(d,i){return d.y + 25;})
+         .attr("stroke", function(d,i){return findColour(uniqueLabels,d.l);})
+         .attr("stroke-width", "2")
+         .attr("fill", "#f2f0f0");
+      zoomGroup.append("text").selectAll("text"+ element.id+"bnodelabels").data(element.nodes.map(x=> x.l)).enter().append("tspan").text(d => d)
+         .attr("class",element.id+"bnodelabels")
+         .attr("x",function(d,i){return element.nodes[i].x;})
+         .attr("y",function(d,i){return element.nodes[i].y + 35;})
+         .attr("font-size","12px")
+         .attr("text-anchor","middle")
+         .attr("font-weight", "900")
+         .attr("dominant-baseline","middle")
+         .attr("fill","black")
+         .attr("font-family","Arial");
 
 
          //drawing end nodes
