@@ -1,76 +1,76 @@
 
 
 // TEST DATA
-var data = {
-    "20008006": {
-        "edges": [
-            {
-                "src": 17,
-                "trg": 18,
-                "label": "ARG2/NEQ"
-            },
-            {
-                "src": 19,
-                "trg": 18,
-                "label": "RSTR/H"
-            },
-            {
-                "src": 20,
-                "trg": 18,
-                "label": "ARG1/EQ"
-            }
-        ],
-        "s_nodes": {
-            "18": {
-                "label": "normallabel",
-                "anchors": [
-                    15
-                ]
-            },
-            "19": {
-                "label": "def_implicit_q",
-                "anchors": [
-                    15
-                ]
-            }
-        },
-        "a_nodes": {
-            "17": {
-                "label": "_by_p_temp",
-                "anchors": [
-                    14
-                ]
-            },
-            "20": {
-                "label": "_then_p_temp",
-                "anchors": [
-                    15
-                ]
-            }
-        },
-        "tokens": {
-            "14": {
-                "form": "by",
-                "lemma": "by"
-            },
-            "15": {
-                "form": "then.",
-                "lemma": "then"
-            }
-        },
-        "tops": "18"
-    }}
+// var data = {
+//     "20008006": {
+//         "edges": [
+//             {
+//                 "src": 17,
+//                 "trg": 18,
+//                 "label": "ARG2/NEQ"
+//             },
+//             {
+//                 "src": 19,
+//                 "trg": 18,
+//                 "label": "RSTR/H"
+//             },
+//             {
+//                 "src": 20,
+//                 "trg": 18,
+//                 "label": "ARG1/EQ"
+//             }
+//         ],
+//         "s_nodes": {
+//             "18": {
+//                 "label": "normallabel",
+//                 "anchors": [
+//                     15
+//                 ]
+//             },
+//             "19": {
+//                 "label": "def_implicit_q",
+//                 "anchors": [
+//                     15
+//                 ]
+//             }
+//         },
+//         "a_nodes": {
+//             "17": {
+//                 "label": "_by_p_temp",
+//                 "anchors": [
+//                     14
+//                 ]
+//             },
+//             "20": {
+//                 "label": "_then_p_temp",
+//                 "anchors": [
+//                     15
+//                 ]
+//             }
+//         },
+//         "tokens": {
+//             "14": {
+//                 "form": "by",
+//                 "lemma": "by"
+//             },
+//             "15": {
+//                 "form": "then.",
+//                 "lemma": "then"
+//             }
+//         },
+//         "tops": "18"
+//     }}
 
-makeSubgraph(data,"body");
+// makeSubgraph(data,"body");
 
-//  export const makeSubgraph = function (data, elementId){
-function makeSubgraph(data,elementId){
-        //remove above
+export const makeSubgraph = function (data, elementId){
+// function makeSubgraph(data,elementId){
 var id;
 for(var boog in data){
     var data = data[boog];
     id = boog;
-}
+} //this stuff might not be necessary depnding on how you read it in @JOEL
+//  but please do make sure a variable called id reads in the id of the graph.
 
 var sNodes =[];
 var aNodes =[];
