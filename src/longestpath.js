@@ -90,6 +90,7 @@ var heightDP = 15;
 var heightUDP = directedPaths.length*55 + 45;
 
 let elementIdToAppendTo = `#${elementId}`;
+debugger
 var svg = d3.select(elementIdToAppendTo).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
 .attr("height", height).attr("width", width +8).attr("id", "comparison")
 .attr("viewBox","0,0,"+width+","+height)

@@ -1,55 +1,55 @@
-//TEST DATA
-var comparisonOutput ={
-   "matching": {
-       "edges": [
-           {
-               "src": "_attract_v_1",
-               "trg": "generic_entity",
-               "label": "ARG1/NEQ"
-           },
-           {
-               "src": "udef_q",
-               "trg": "_attention_n_to",
-               "label": "RSTR/H"
-           }
-       ]
-   },
-   "graph_1": {
-       "20013011": {
-           "edges": [
-               {
-                   "src": "_attract_v_1",
-                   "trg": "_attention_n_to",
-                   "label": "ARG2/NEQ"
-               },
-               {
-                   "src": "_that_q_dem",
-                   "trg": "generic_entity",
-                   "label": "RSTR/H"
-               }
-           ]
-       }
-   },
-   "graph_2": {
-       "20013014": {
-           "edges": [
-               {
-                   "src": "generic_entity",
-                   "trg": "_that_q_dem",
-                   "label": "RSTR/H"
-               },
-               {
-                   "src": "_that_q_dem",
-                   "trg": "_attract_v_1",
-                   "label": "RSTR/H"
-               }
-           ]
-       }
-   }
-};
-makeGraphComparison(comparisonOutput, "body");
+// //TEST DATA
+// var comparisonOutput ={
+//    "matching": {
+//        "edges": [
+//            {
+//                "src": "_attract_v_1",
+//                "trg": "generic_entity",
+//                "label": "ARG1/NEQ"
+//            },
+//            {
+//                "src": "udef_q",
+//                "trg": "_attention_n_to",
+//                "label": "RSTR/H"
+//            }
+//        ]
+//    },
+//    "graph_1": {
+//        "20013011": {
+//            "edges": [
+//                {
+//                    "src": "_attract_v_1",
+//                    "trg": "_attention_n_to",
+//                    "label": "ARG2/NEQ"
+//                },
+//                {
+//                    "src": "_that_q_dem",
+//                    "trg": "generic_entity",
+//                    "label": "RSTR/H"
+//                }
+//            ]
+//        }
+//    },
+//    "graph_2": {
+//        "20013014": {
+//            "edges": [
+//                {
+//                    "src": "generic_entity",
+//                    "trg": "_that_q_dem",
+//                    "label": "RSTR/H"
+//                },
+//                {
+//                    "src": "_that_q_dem",
+//                    "trg": "_attract_v_1",
+//                    "label": "RSTR/H"
+//                }
+//            ]
+//        }
+//    }
+// };
+// makeGraphComparison(comparisonOutput, "body");
 
-function makeGraphComparison(comparisonOutput, elementId){
+export const makeGraphComparison = function (comparisonOutput, elementId){
    var start = performance.now();
 
 // export const makeGraphComparison = function (comparisonOutput, elementId){
@@ -162,7 +162,8 @@ function makeGraphComparison(comparisonOutput, elementId){
       uniqueLabels[i] = {label: uniqueLabels[i], colour:colourScale(i)};
    }
 
-   var svg = d3.select(elementId).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
+   let elementIdToAppendTo = `#${elementId}`
+   var svg = d3.select(elementIdToAppendTo).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
    .attr("height", height).attr("width", width).attr("id", "comparison")
    .attr("viewBox","0,0,"+width+","+height)
    var group = svg.append("g").attr("id", "group");

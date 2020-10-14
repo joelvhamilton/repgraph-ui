@@ -1,7 +1,7 @@
 <template>
     <div>
         <h3 v-if="this.comparisonFailed"> Sorry, unable to display comparison. This is likely due to one of the following reasons: </h3>
-        <ul style="text-align:left">
+        <ul v-if="this.comparisonFailed" style="text-align:left">
             <li> They are not of the same sentence.</li>
             <li> One of the ids is invalid. </li>
             <li> Input is malformed. (Please enter input in the form: id1, id2) </li>
@@ -26,7 +26,6 @@ export default {
             this.comparisonFailed = true;
             }
         else {
-            console.log(this.graphComparisonResults);
             makeGraphComparison(this.graphComparisonResults, this.elementId);
         }
     },
