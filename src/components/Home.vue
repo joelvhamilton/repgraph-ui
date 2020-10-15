@@ -17,11 +17,11 @@
     <modal name="propertiesModal" :height="auto" :scrollable="true" :width="1000">
       <properties-modal id="propModal" :properties="propertiesToDisplay" :elementId="propModal"></properties-modal>
     </modal>
-    <modal name="subsetModal" :height="auto" :scrollable="true" :width="1000">
-      <subset-modal id="subsetModalId" :subset="getSubset" :elementId="subsetModalId"/>
-    </modal>
     <modal name="comparisonModal" :height="auto" :scrollable="true" :width="1200">
       <comparison-modal id="comparison" :graphComparisonResults="getComparisonResults" :elementId="comparison"/>
+    </modal>
+    <modal name="subsetModal" :height="auto" :scrollable="true" :width="1000">
+      <subset-modal id="subsetModalId" :subset="getSubset" :elementId="subsetModalId"/>
     </modal>
     <paging-bar/>
     <div class="col align-content-center">
