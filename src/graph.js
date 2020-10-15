@@ -1,2269 +1,487 @@
+
 // import {store} from './store';
-var data = {
-   "id": "20020014",
+var data ={
+   "id": "20001001",
    "a_nodes": {
-         "3": {
-            "label": "proper_q",
-            "anchors": [
-               4
-            ],
-            "incoming": [],
-            "outgoing": [
-               4
-            ]
-         },
-         "4": {
-            "label": "named",
-            "anchors": [
-               4
-            ],
-            "incoming": [
-               3,
-               19
-            ],
-            "outgoing": []
-         },
-         "5": {
-            "label": "proper_q",
-            "anchors": [
-               5
-            ],
-            "incoming": [],
-            "outgoing": [
-               6
-            ]
-         },
-         "6": {
-            "label": "named",
-            "anchors": [
-               5
-            ],
-            "incoming": [
-               5,
-               17
-            ],
-            "outgoing": []
-         },
-         "7": {
-            "label": "proper_q",
-            "anchors": [
-               6
-            ],
-            "incoming": [],
-            "outgoing": [
-               8
-            ]
-         },
-         "8": {
-            "label": "named",
-            "anchors": [
-               6
-            ],
-            "incoming": [
-               7,
-               15
-            ],
-            "outgoing": []
-         },
-         "9": {
-            "label": "proper_q",
-            "anchors": [
-               7
-            ],
-            "incoming": [],
-            "outgoing": [
-               10
-            ]
-         },
-         "10": {
-            "label": "named",
-            "anchors": [
-               7
-            ],
-            "incoming": [
-               9,
-               11
-            ],
-            "outgoing": []
-         },
-         "12": {
-            "label": "named",
-            "anchors": [
-               9
-            ],
-            "incoming": [
-               11,
-               13
-            ],
-            "outgoing": []
-         },
-         "13": {
-            "label": "proper_q",
-            "anchors": [
-               9,
-               10
-            ],
-            "incoming": [],
-            "outgoing": [
-               12
-            ]
-         },
-         "14": {
-            "label": "udef_q",
-            "anchors": [
-               7,
-               8,
-               9,
-               10
-            ],
-            "incoming": [],
-            "outgoing": [
-               11
-            ]
-         },
-         "15": {
-            "label": "implicit_conj",
-            "anchors": [
-               7,
-               8,
-               9,
-               10
-            ],
-            "incoming": [
-               16,
-               17
-            ],
-            "outgoing": [
-               8,
-               11
-            ]
-         },
-         "16": {
-            "label": "udef_q",
-            "anchors": [
-               6,
-               7,
-               8,
-               9,
-               10
-            ],
-            "incoming": [],
-            "outgoing": [
-               15
-            ]
-         },
-         "17": {
-            "label": "implicit_conj",
-            "anchors": [
-               6,
-               7,
-               8,
-               9,
-               10
-            ],
-            "incoming": [
-               18,
-               19
-            ],
-            "outgoing": [
-               6,
-               15
-            ]
-         },
-         "18": {
-            "label": "udef_q",
-            "anchors": [
-               5,
-               6,
-               7,
-               8,
-               9,
-               10
-            ],
-            "incoming": [],
-            "outgoing": [
-               17
-            ]
-         },
-         "19": {
-            "label": "implicit_conj",
-            "anchors": [
-               5,
-               6,
-               7,
-               8,
-               9,
-               10
-            ],
-            "incoming": [
-               2,
-               20
-            ],
-            "outgoing": [
-               4,
-               17
-            ]
-         },
-         "20": {
-            "label": "udef_q",
-            "anchors": [
-               4,
-               5,
-               6,
-               7,
-               8,
-               9,
-               10
-            ],
-            "incoming": [],
-            "outgoing": [
-               19
-            ]
-         },
-         "27": {
-            "label": "named_n",
-            "anchors": [
-               18
-            ],
-            "incoming": [
-               25,
-               26
-            ],
-            "outgoing": []
-         },
-         "30": {
-            "label": "parg_d",
-            "anchors": [
-               21
-            ],
-            "incoming": [],
-            "outgoing": [
-               29,
+       "0": {
+           "label": "proper_q",
+           "anchors": [
+               0
+           ],
+           "incoming": [],
+           "outgoing": [
                1
-            ]
-         },
-         "33": {
-            "label": "comp_less",
-            "anchors": [
-               25
-            ],
-            "incoming": [],
-            "outgoing": [
-               32,
-               46
-            ]
-         },
-         "37": {
-            "label": "udef_q",
-            "anchors": [
-               29
-            ],
-            "incoming": [],
-            "outgoing": [
-               38
-            ]
-         },
-         "41": {
-            "label": "udef_q",
-            "anchors": [
-               30,
-               31
-            ],
-            "incoming": [],
-            "outgoing": [
-               40
-            ]
-         },
-         "42": {
-            "label": "udef_q",
-            "anchors": [
-               29,
-               30,
-               31
-            ],
-            "incoming": [],
-            "outgoing": [
-               39
-            ]
-         },
-         "44": {
-            "label": "compound",
-            "anchors": [
-               29,
-               30,
-               31,
-               32
-            ],
-            "incoming": [],
-            "outgoing": [
-               43,
-               39
-            ]
-         },
-         "45": {
-            "label": "udef_q",
-            "anchors": [
-               28,
-               29,
-               30,
-               31,
-               32
-            ],
-            "incoming": [],
-            "outgoing": [
-               43
-            ]
-         },
-         "46": {
-            "label": "generic_entity",
-            "anchors": [
-               34
-            ],
-            "incoming": [
-               33,
-               47,
-               48
-            ],
-            "outgoing": []
-         },
-         "50": {
-            "label": "udef_q",
-            "anchors": [
-               37
-            ],
-            "incoming": [],
-            "outgoing": [
-               51
-            ]
-         },
-         "53": {
-            "label": "compound",
-            "anchors": [
-               37,
-               38
-            ],
-            "incoming": [],
-            "outgoing": [
-               52,
-               51
-            ]
-         },
-         "54": {
-            "label": "udef_q",
-            "anchors": [
-               24,
-               25,
-               26,
-               27,
-               28,
-               29,
-               30,
-               31,
-               32,
-               33,
-               34,
-               35,
-               36,
-               37,
-               38
-            ],
-            "incoming": [],
-            "outgoing": [
-               34
-            ]
-         }
+           ]
+       },
+       "1": {
+           "label": "named",
+           "anchors": [
+               0
+           ],
+           "incoming": [
+               0,
+               3
+           ],
+           "outgoing": []
+       },
+       "2": {
+           "label": "named",
+           "anchors": [
+               1
+           ],
+           "incoming": [
+               8,
+               9,
+               10,
+               3
+           ],
+           "outgoing": []
+       },
+       "3": {
+           "label": "compound",
+           "anchors": [
+               0,
+               1
+           ],
+           "incoming": [],
+           "outgoing": [
+               1,
+               2
+           ]
+       },
+       "4": {
+           "label": "card",
+           "anchors": [
+               2
+           ],
+           "incoming": [],
+           "outgoing": [
+               5
+           ]
+       },
+       "6": {
+           "label": "measure",
+           "anchors": [
+               2,
+               3
+           ],
+           "incoming": [],
+           "outgoing": [
+               8,
+               5
+           ]
+       },
+       "7": {
+           "label": "udef_q",
+           "anchors": [
+               2,
+               3
+           ],
+           "incoming": [],
+           "outgoing": [
+               5
+           ]
+       },
+       "9": {
+           "label": "proper_q",
+           "anchors": [
+               0,
+               1,
+               2,
+               3,
+               4
+           ],
+           "incoming": [],
+           "outgoing": [
+               2
+           ]
+       },
+       "17": {
+           "label": "mofy",
+           "anchors": [
+               13
+           ],
+           "incoming": [
+               19,
+               20
+           ],
+           "outgoing": []
+       },
+       "18": {
+           "label": "def_explicit_q",
+           "anchors": [
+               13
+           ],
+           "incoming": [],
+           "outgoing": [
+               21
+           ]
+       },
+       "19": {
+           "label": "of_p",
+           "anchors": [
+               13
+           ],
+           "incoming": [],
+           "outgoing": [
+               17,
+               21
+           ]
+       },
+       "20": {
+           "label": "def_implicit_q",
+           "anchors": [
+               13
+           ],
+           "incoming": [],
+           "outgoing": [
+               17
+           ]
+       },
+       "21": {
+           "label": "dofm",
+           "anchors": [
+               14
+           ],
+           "incoming": [
+               18,
+               19,
+               22
+           ],
+           "outgoing": []
+       },
+       "22": {
+           "label": "loc_nonsp",
+           "anchors": [
+               13,
+               14
+           ],
+           "incoming": [],
+           "outgoing": [
+               10,
+               21
+           ]
+       }
    },
    "s_nodes": {
-         "0": {
-            "label": "_those_q_dem",
-            "anchors": [
-               0
-            ],
-            "incoming": [],
-            "outgoing": [
-               1
-            ]
-         },
-         "1": {
-            "label": "_country_n_of",
-            "anchors": [
-               1
-            ],
-            "incoming": [
-               0,
-               2,
-               22,
-               29,
-               30,
-               31
-            ],
-            "outgoing": []
-         },
-         "2": {
-            "label": "_include_v_1",
-            "anchors": [
+       "5": {
+           "label": "_year_n_1",
+           "anchors": [
                3
-            ],
-            "incoming": [],
-            "outgoing": [
-               1,
-               19
-            ]
-         },
-         "11": {
-            "label": "_and_c",
-            "anchors": [
+           ],
+           "incoming": [
+               4,
+               6,
+               7
+           ],
+           "outgoing": []
+       },
+       "8": {
+           "label": "_old_a_1",
+           "anchors": [
+               4
+           ],
+           "incoming": [
+               6
+           ],
+           "outgoing": [
+               2
+           ]
+       },
+       "10": {
+           "label": "_join_v_1",
+           "anchors": [
+               6
+           ],
+           "incoming": [
+               13,
+               22
+           ],
+           "outgoing": [
+               2,
+               12
+           ]
+       },
+       "11": {
+           "label": "_the_q",
+           "anchors": [
+               7
+           ],
+           "incoming": [],
+           "outgoing": [
+               12
+           ]
+       },
+       "12": {
+           "label": "_board_n_of",
+           "anchors": [
                8
-            ],
-            "incoming": [
+           ],
+           "incoming": [
+               10,
+               11
+           ],
+           "outgoing": []
+       },
+       "13": {
+           "label": "_as_p",
+           "anchors": [
+               9
+           ],
+           "incoming": [],
+           "outgoing": [
+               16,
+               10
+           ]
+       },
+       "14": {
+           "label": "_a_q",
+           "anchors": [
+               10
+           ],
+           "incoming": [],
+           "outgoing": [
+               16
+           ]
+       },
+       "15": {
+           "label": "_nonexecutive_u_unknown",
+           "anchors": [
+               11
+           ],
+           "incoming": [],
+           "outgoing": [
+               16
+           ]
+       },
+       "16": {
+           "label": "_director_n_of",
+           "anchors": [
+               12
+           ],
+           "incoming": [
+               13,
                14,
                15
-            ],
-            "outgoing": [
-               10,
-               12
-            ]
-         },
-         "21": {
-            "label": "_still_a_1",
-            "anchors": [
-               12
-            ],
-            "incoming": [],
-            "outgoing": [
-               22
-            ]
-         },
-         "22": {
-            "label": "_of_p",
-            "anchors": [
-               13
-            ],
-            "incoming": [
-               21,
-               28,
-               28
-            ],
-            "outgoing": [
-               1,
-               24
-            ]
-         },
-         "23": {
-            "label": "_some_q",
-            "anchors": [
-               14
-            ],
-            "incoming": [],
-            "outgoing": [
-               24
-            ]
-         },
-         "24": {
-            "label": "_concern_n_1",
-            "anchors": [
-               15
-            ],
-            "incoming": [
-               22,
-               23,
-               25
-            ],
-            "outgoing": []
-         },
-         "25": {
-            "label": "_to_p",
-            "anchors": [
-               16
-            ],
-            "incoming": [],
-            "outgoing": [
-               24,
-               27
-            ]
-         },
-         "26": {
-            "label": "_the_q",
-            "anchors": [
-               17
-            ],
-            "incoming": [],
-            "outgoing": [
-               27
-            ]
-         },
-         "28": {
-            "label": "_but_c",
-            "anchors": [
-               19
-            ],
-            "incoming": [],
-            "outgoing": [
-               22,
-               22,
-               29,
-               29
-            ]
-         },
-         "29": {
-            "label": "_deem_v_1",
-            "anchors": [
-               21
-            ],
-            "incoming": [
-               28,
-               28,
-               30
-            ],
-            "outgoing": [
-               1,
-               31
-            ]
-         },
-         "31": {
-            "label": "_pose_v_as",
-            "anchors": [
-               23
-            ],
-            "incoming": [
-               29
-            ],
-            "outgoing": [
-               1,
-               34
-            ]
-         },
-         "32": {
-            "label": "_serious_a_1",
-            "anchors": [
-               25
-            ],
-            "incoming": [
-               33
-            ],
-            "outgoing": [
-               34
-            ]
-         },
-         "34": {
-            "label": "_problem_n_of",
-            "anchors": [
-               26
-            ],
-            "incoming": [
-               31,
-               54,
-               32,
-               35
-            ],
-            "outgoing": []
-         },
-         "35": {
-            "label": "_for_p",
-            "anchors": [
-               27
-            ],
-            "incoming": [],
-            "outgoing": [
-               34,
-               43
-            ]
-         },
-         "36": {
-            "label": "_american_a_1",
-            "anchors": [
-               28
-            ],
-            "incoming": [],
-            "outgoing": [
-               43
-            ]
-         },
-         "38": {
-            "label": "_patent_n_of",
-            "anchors": [
-               29
-            ],
-            "incoming": [
-               37,
-               39
-            ],
-            "outgoing": []
-         },
-         "39": {
-            "label": "_and_c",
-            "anchors": [
-               30
-            ],
-            "incoming": [
-               44,
-               42
-            ],
-            "outgoing": [
-               38,
-               40
-            ]
-         },
-         "40": {
-            "label": "_copyright_n_1",
-            "anchors": [
-               31
-            ],
-            "incoming": [
-               41,
-               39
-            ],
-            "outgoing": []
-         },
-         "43": {
-            "label": "_owner_n_of",
-            "anchors": [
-               32
-            ],
-            "incoming": [
-               35,
-               45,
-               36,
-               44
-            ],
-            "outgoing": []
-         },
-         "47": {
-            "label": "_those_q_dem",
-            "anchors": [
-               34
-            ],
-            "incoming": [],
-            "outgoing": [
-               46
-            ]
-         },
-         "48": {
-            "label": "_on_p",
-            "anchors": [
-               35
-            ],
-            "incoming": [],
-            "outgoing": [
-               46,
-               52
-            ]
-         },
-         "49": {
-            "label": "_the_q",
-            "anchors": [
-               36
-            ],
-            "incoming": [],
-            "outgoing": [
-               52
-            ]
-         },
-         "51": {
-            "label": "_priority_n_1",
-            "anchors": [
-               37
-            ],
-            "incoming": [
-               53,
-               50
-            ],
-            "outgoing": []
-         },
-         "52": {
-            "label": "_list_n_of",
-            "anchors": [
-               38
-            ],
-            "incoming": [
-               48,
-               49,
-               53
-            ],
-            "outgoing": []
-         }
+           ],
+           "outgoing": []
+       }
    },
    "edges": [
-         {
-            "src": 0,
-            "trg": 1,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 2,
-            "trg": 1,
-            "label": "ARG1/EQ"
-         },
-         {
-            "src": 2,
-            "trg": 19,
-            "label": "ARG2/NEQ"
-         },
-         {
-            "src": 20,
-            "trg": 19,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 18,
-            "trg": 17,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 16,
-            "trg": 15,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 3,
-            "trg": 4,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 5,
-            "trg": 6,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 7,
-            "trg": 8,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 9,
-            "trg": 10,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 13,
-            "trg": 12,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 19,
-            "trg": 4,
-            "label": "L-INDEX/NEQ"
-         },
-         {
-            "src": 17,
-            "trg": 6,
-            "label": "L-INDEX/NEQ"
-         },
-         {
-            "src": 15,
-            "trg": 8,
-            "label": "L-INDEX/NEQ"
-         },
-         {
-            "src": 19,
-            "trg": 17,
-            "label": "R-INDEX/NEQ"
-         },
-         {
-            "src": 17,
-            "trg": 15,
-            "label": "R-INDEX/NEQ"
-         },
-         {
-            "src": 14,
-            "trg": 11,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 42,
-            "trg": 39,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 15,
-            "trg": 11,
-            "label": "R-INDEX/NEQ"
-         },
-         {
-            "src": 11,
-            "trg": 10,
-            "label": "L-INDEX/NEQ"
-         },
-         {
-            "src": 11,
-            "trg": 12,
-            "label": "R-INDEX/NEQ"
-         },
-         {
-            "src": 21,
-            "trg": 22,
-            "label": "ARG1/EQ"
-         },
-         {
-            "src": 22,
-            "trg": 1,
-            "label": "ARG1/NEQ"
-         },
-         {
-            "src": 22,
-            "trg": 24,
-            "label": "ARG2/NEQ"
-         },
-         {
-            "src": 23,
-            "trg": 24,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 25,
-            "trg": 24,
-            "label": "ARG1/EQ"
-         },
-         {
-            "src": 25,
-            "trg": 27,
-            "label": "ARG2/NEQ"
-         },
-         {
-            "src": 26,
-            "trg": 27,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 28,
-            "trg": 22,
-            "label": "L-HNDL/HEQ || L-INDEX/NEQ"
-         },
-         {
-            "src": 28,
-            "trg": 29,
-            "label": "R-HNDL/HEQ || R-INDEX/NEQ"
-         },
-         {
-            "src": 29,
-            "trg": 1,
-            "label": "ARG2/NEQ"
-         },
-         {
-            "src": 29,
-            "trg": 31,
-            "label": "ARG3/H"
-         },
-         {
-            "src": 30,
-            "trg": 29,
-            "label": "ARG1/EQ"
-         },
-         {
-            "src": 30,
-            "trg": 1,
-            "label": "ARG2/NEQ"
-         },
-         {
-            "src": 31,
-            "trg": 1,
-            "label": "ARG1/NEQ"
-         },
-         {
-            "src": 31,
-            "trg": 34,
-            "label": "ARG2/NEQ"
-         },
-         {
-            "src": 54,
-            "trg": 34,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 33,
-            "trg": 32,
-            "label": "ARG1/EQ"
-         },
-         {
-            "src": 33,
-            "trg": 46,
-            "label": "ARG2/NEQ"
-         },
-         {
-            "src": 32,
-            "trg": 34,
-            "label": "ARG1/EQ"
-         },
-         {
-            "src": 35,
-            "trg": 34,
-            "label": "ARG1/EQ"
-         },
-         {
-            "src": 35,
-            "trg": 43,
-            "label": "ARG2/NEQ"
-         },
-         {
-            "src": 45,
-            "trg": 43,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 36,
-            "trg": 43,
-            "label": "ARG1/EQ"
-         },
-         {
-            "src": 44,
-            "trg": 43,
-            "label": "ARG1/EQ"
-         },
-         {
-            "src": 44,
-            "trg": 39,
-            "label": "ARG2/NEQ"
-         },
-         {
-            "src": 37,
-            "trg": 38,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 41,
-            "trg": 40,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 39,
-            "trg": 38,
-            "label": "L-INDEX/NEQ"
-         },
-         {
-            "src": 39,
-            "trg": 40,
-            "label": "R-INDEX/NEQ"
-         },
-         {
-            "src": 47,
-            "trg": 46,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 48,
-            "trg": 46,
-            "label": "ARG1/EQ"
-         },
-         {
-            "src": 48,
-            "trg": 52,
-            "label": "ARG2/NEQ"
-         },
-         {
-            "src": 49,
-            "trg": 52,
-            "label": "RSTR/H"
-         },
-         {
-            "src": 53,
-            "trg": 52,
-            "label": "ARG1/EQ"
-         },
-         {
-            "src": 53,
-            "trg": 51,
-            "label": "ARG2/NEQ"
-         },
-         {
-            "src": 50,
-            "trg": 51,
-            "label": "RSTR/H"
-         }
+       {
+           "src": 9,
+           "trg": 2,
+           "label": "RSTR/H"
+       },
+       {
+           "src": 0,
+           "trg": 1,
+           "label": "RSTR/H"
+       },
+       {
+           "src": 3,
+           "trg": 2,
+           "label": "ARG1/EQ"
+       },
+       {
+           "src": 3,
+           "trg": 1,
+           "label": "ARG2/NEQ"
+       },
+       {
+           "src": 6,
+           "trg": 8,
+           "label": "ARG1/EQ"
+       },
+       {
+           "src": 6,
+           "trg": 5,
+           "label": "ARG2/NEQ"
+       },
+       {
+           "src": 7,
+           "trg": 5,
+           "label": "RSTR/H"
+       },
+       {
+           "src": 4,
+           "trg": 5,
+           "label": "ARG1/EQ"
+       },
+       {
+           "src": 8,
+           "trg": 2,
+           "label": "ARG1/EQ"
+       },
+       {
+           "src": 10,
+           "trg": 2,
+           "label": "ARG1/NEQ"
+       },
+       {
+           "src": 10,
+           "trg": 12,
+           "label": "ARG2/NEQ"
+       },
+       {
+           "src": 11,
+           "trg": 12,
+           "label": "RSTR/H"
+       },
+       {
+           "src": 13,
+           "trg": 10,
+           "label": "ARG1/EQ"
+       },
+       {
+           "src": 13,
+           "trg": 16,
+           "label": "ARG2/NEQ"
+       },
+       {
+           "src": 14,
+           "trg": 16,
+           "label": "RSTR/H"
+       },
+       {
+           "src": 15,
+           "trg": 16,
+           "label": "ARG1/EQ"
+       },
+       {
+           "src": 22,
+           "trg": 10,
+           "label": "ARG1/EQ"
+       },
+       {
+           "src": 22,
+           "trg": 21,
+           "label": "ARG2/NEQ"
+       },
+       {
+           "src": 18,
+           "trg": 21,
+           "label": "RSTR/H"
+       },
+       {
+           "src": 19,
+           "trg": 21,
+           "label": "ARG1/EQ"
+       },
+       {
+           "src": 19,
+           "trg": 17,
+           "label": "ARG2/NEQ"
+       },
+       {
+           "src": 20,
+           "trg": 17,
+           "label": "RSTR/H"
+       }
    ],
    "tokens": {
-         "0": {
-            "form": "those",
-            "lemma": "those"
-         },
-         "1": {
-            "form": "countries",
-            "lemma": "country"
-         },
-         "2": {
-            "form": "\u2013",
-            "lemma": "\u2013"
-         },
-         "3": {
-            "form": "including",
-            "lemma": "include"
-         },
-         "4": {
-            "form": "japan,",
-            "lemma": "Japan",
-            "carg": "Japan"
-         },
-         "5": {
-            "form": "italy,",
-            "lemma": "Italy",
-            "carg": "Italy"
-         },
-         "6": {
-            "form": "canada,",
-            "lemma": "Canada",
-            "carg": "Canada"
-         },
-         "7": {
-            "form": "greece",
-            "lemma": "Greece",
-            "carg": "Greece"
-         },
-         "8": {
-            "form": "and",
-            "lemma": "and"
-         },
-         "9": {
-            "form": "spain",
-            "lemma": "Spain",
-            "carg": "Spain"
-         },
-         "10": {
-            "form": "\u2013",
-            "lemma": "\u2013"
-         },
-         "11": {
-            "form": "are",
-            "lemma": "are"
-         },
-         "12": {
-            "form": "still",
-            "lemma": "still"
-         },
-         "13": {
-            "form": "of",
-            "lemma": "of"
-         },
-         "14": {
-            "form": "some",
-            "lemma": "some"
-         },
-         "15": {
-            "form": "concern",
-            "lemma": "concern"
-         },
-         "16": {
-            "form": "to",
-            "lemma": "to"
-         },
-         "17": {
-            "form": "the",
-            "lemma": "the"
-         },
-         "18": {
-            "form": "u.s.",
-            "lemma": "US",
-            "carg": "US"
-         },
-         "19": {
-            "form": "but",
-            "lemma": "but"
-         },
-         "20": {
-            "form": "are",
-            "lemma": "are"
-         },
-         "21": {
-            "form": "deemed",
-            "lemma": "deem"
-         },
-         "22": {
-            "form": "to",
-            "lemma": "to"
-         },
-         "23": {
-            "form": "pose",
-            "lemma": "pose"
-         },
-         "24": {
-            "form": "less-",
-            "lemma": "less-"
-         },
-         "25": {
-            "form": "serious",
-            "lemma": "serious"
-         },
-         "26": {
-            "form": "problems",
-            "lemma": "problem"
-         },
-         "27": {
-            "form": "for",
-            "lemma": "for"
-         },
-         "28": {
-            "form": "american",
-            "lemma": "american"
-         },
-         "29": {
-            "form": "patent",
-            "lemma": "patent"
-         },
-         "30": {
-            "form": "and",
-            "lemma": "and"
-         },
-         "31": {
-            "form": "copyright",
-            "lemma": "copyright"
-         },
-         "32": {
-            "form": "owners",
-            "lemma": "owner"
-         },
-         "33": {
-            "form": "than",
-            "lemma": "than"
-         },
-         "34": {
-            "form": "those",
-            "lemma": "those"
-         },
-         "35": {
-            "form": "on",
-            "lemma": "on"
-         },
-         "36": {
-            "form": "the",
-            "lemma": "the"
-         },
-         "37": {
-            "form": "\u201cpriority\u201d",
-            "lemma": "priority"
-         },
-         "38": {
-            "form": "list.",
-            "lemma": "list"
-         }
+       "0": {
+           "form": "pierre",
+           "lemma": "Pierre",
+           "carg": "Pierre"
+       },
+       "1": {
+           "form": "Vinken,",
+           "lemma": "Vinken",
+           "carg": "Vinken"
+       },
+       "2": {
+           "form": "61",
+           "lemma": "61",
+           "carg": "61"
+       },
+       "3": {
+           "form": "years",
+           "lemma": "year"
+       },
+       "4": {
+           "form": "old,",
+           "lemma": "old"
+       },
+       "5": {
+           "form": "will",
+           "lemma": "will"
+       },
+       "6": {
+           "form": "join",
+           "lemma": "join"
+       },
+       "7": {
+           "form": "the",
+           "lemma": "the"
+       },
+       "8": {
+           "form": "board",
+           "lemma": "board"
+       },
+       "9": {
+           "form": "as",
+           "lemma": "as"
+       },
+       "10": {
+           "form": "a",
+           "lemma": "a"
+       },
+       "11": {
+           "form": "nonexecutive",
+           "lemma": "nonexecutive"
+       },
+       "12": {
+           "form": "director",
+           "lemma": "director"
+       },
+       "13": {
+           "form": "nov.",
+           "lemma": "Nov",
+           "carg": "Nov"
+       },
+       "14": {
+           "form": "29.",
+           "lemma": "29",
+           "carg": "29"
+       }
    },
    "tops": {
-         "28": {
-            "label": "_but_c",
-            "anchors": [
-               19
-            ],
-            "incoming": [],
-            "outgoing": [
-               22,
-               22,
-               29,
-               29
-            ]
-         }
+       "10": {
+           "label": "_join_v_1",
+           "anchors": [
+               6
+           ],
+           "incoming": [
+               13,
+               22
+           ],
+           "outgoing": [
+               2,
+               12
+           ]
+       }
    },
    "sentence": [
-         "those",
-         "countries",
-         "\u2013",
-         "including",
-         "japan,",
-         "italy,",
-         "canada,",
-         "greece",
-         "and",
-         "spain",
-         "\u2013",
-         "are",
-         "still",
-         "of",
-         "some",
-         "concern",
-         "to",
-         "the",
-         "u.s.",
-         "but",
-         "are",
-         "deemed",
-         "to",
-         "pose",
-         "less-",
-         "serious",
-         "problems",
-         "for",
-         "american",
-         "patent",
-         "and",
-         "copyright",
-         "owners",
-         "than",
-         "those",
-         "on",
-         "the",
-         "\u201cpriority\u201d",
-         "list."
+       "pierre",
+       "Vinken,",
+       "61",
+       "years",
+       "old,",
+       "will",
+       "join",
+       "the",
+       "board",
+       "as",
+       "a",
+       "nonexecutive",
+       "director",
+       "nov.",
+       "29."
    ]
 }
-// },
-// "20013017": {
-//    "id": "20013017",
-//    "a_nodes": {
-//          "0": {
-//             "label": "proper_q",
-//             "anchors": [
-//                0
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                1
-//             ]
-//          },
-//          "1": {
-//             "label": "named",
-//             "anchors": [
-//                0
-//             ],
-//             "incoming": [
-//                0,
-//                2
-//             ],
-//             "outgoing": []
-//          },
-//          "3": {
-//             "label": "pron",
-//             "anchors": [
-//                2
-//             ],
-//             "incoming": [
-//                4,
-//                6,
-//                15
-//             ],
-//             "outgoing": []
-//          },
-//          "4": {
-//             "label": "pronoun_q",
-//             "anchors": [
-//                2
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                3
-//             ]
-//          },
-//          "8": {
-//             "label": "def_explicit_q",
-//             "anchors": [
-//                5
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                12
-//             ]
-//          },
-//          "9": {
-//             "label": "poss",
-//             "anchors": [
-//                5
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                12,
-//                11
-//             ]
-//          },
-//          "10": {
-//             "label": "pronoun_q",
-//             "anchors": [
-//                5
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                11
-//             ]
-//          },
-//          "11": {
-//             "label": "pron",
-//             "anchors": [
-//                5
-//             ],
-//             "incoming": [
-//                9,
-//                10
-//             ],
-//             "outgoing": []
-//          },
-//          "18": {
-//             "label": "parg_d",
-//             "anchors": [
-//                12
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                17,
-//                19
-//             ]
-//          },
-//          "22": {
-//             "label": "named",
-//             "anchors": [
-//                16
-//             ],
-//             "incoming": [
-//                20,
-//                21
-//             ],
-//             "outgoing": []
-//          },
-//          "24": {
-//             "label": "pron",
-//             "anchors": [
-//                19
-//             ],
-//             "incoming": [
-//                25,
-//                27
-//             ],
-//             "outgoing": []
-//          },
-//          "25": {
-//             "label": "pronoun_q",
-//             "anchors": [
-//                19
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                24
-//             ]
-//          },
-//          "31": {
-//             "label": "def_implicit_q",
-//             "anchors": [
-//                25
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                33
-//             ]
-//          },
-//          "33": {
-//             "label": "season",
-//             "anchors": [
-//                26
-//             ],
-//             "incoming": [
-//                30,
-//                31,
-//                32
-//             ],
-//             "outgoing": []
-//          },
-//          "35": {
-//             "label": "def_explicit_q",
-//             "anchors": [
-//                28
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                39
-//             ]
-//          },
-//          "36": {
-//             "label": "poss",
-//             "anchors": [
-//                28
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                39,
-//                38
-//             ]
-//          },
-//          "37": {
-//             "label": "pronoun_q",
-//             "anchors": [
-//                28
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                38
-//             ]
-//          },
-//          "38": {
-//             "label": "pron",
-//             "anchors": [
-//                28
-//             ],
-//             "incoming": [
-//                36,
-//                37
-//             ],
-//             "outgoing": []
-//          },
-//          "42": {
-//             "label": "generic_entity",
-//             "anchors": [
-//                32
-//             ],
-//             "incoming": [
-//                40,
-//                41,
-//                43,
-//                44,
-//                45
-//             ],
-//             "outgoing": []
-//          },
-//          "43": {
-//             "label": "card",
-//             "anchors": [
-//                32
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                42
-//             ]
-//          },
-//          "45": {
-//             "label": "parg_d",
-//             "anchors": [
-//                33
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                44,
-//                42
-//             ]
-//          },
-//          "47": {
-//             "label": "udef_q",
-//             "anchors": [
-//                36
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                48
-//             ]
-//          },
-//          "50": {
-//             "label": "compound",
-//             "anchors": [
-//                36,
-//                37
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                49,
-//                48
-//             ]
-//          }
-//    },
-//    "s_nodes": {
-//          "2": {
-//             "label": "_say_v_to",
-//             "anchors": [
-//                1
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                1,
-//                13
-//             ]
-//          },
-//          "5": {
-//             "label": "_would_v_modal",
-//             "anchors": [
-//                3
-//             ],
-//             "incoming": [
-//                13,
-//                13
-//             ],
-//             "outgoing": [
-//                6
-//             ]
-//          },
-//          "6": {
-//             "label": "_file_v_1",
-//             "anchors": [
-//                4
-//             ],
-//             "incoming": [
-//                5,
-//                7
-//             ],
-//             "outgoing": [
-//                3,
-//                12
-//             ]
-//          },
-//          "7": {
-//             "label": "_re-_a_again",
-//             "anchors": [
-//                4
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                6
-//             ]
-//          },
-//          "12": {
-//             "label": "_request_n_for",
-//             "anchors": [
-//                6
-//             ],
-//             "incoming": [
-//                6,
-//                8,
-//                9
-//             ],
-//             "outgoing": []
-//          },
-//          "13": {
-//             "label": "_and_c",
-//             "anchors": [
-//                7
-//             ],
-//             "incoming": [
-//                2
-//             ],
-//             "outgoing": [
-//                5,
-//                5,
-//                23,
-//                15
-//             ]
-//          },
-//          "14": {
-//             "label": "_still_a_1",
-//             "anchors": [
-//                8
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                15
-//             ]
-//          },
-//          "15": {
-//             "label": "_hope_v_for",
-//             "anchors": [
-//                9
-//             ],
-//             "incoming": [
-//                13,
-//                14,
-//                23
-//             ],
-//             "outgoing": [
-//                3,
-//                19
-//             ]
-//          },
-//          "16": {
-//             "label": "_a_q",
-//             "anchors": [
-//                11
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                19
-//             ]
-//          },
-//          "17": {
-//             "label": "_expedite_v_1",
-//             "anchors": [
-//                12
-//             ],
-//             "incoming": [
-//                18
-//             ],
-//             "outgoing": [
-//                19
-//             ]
-//          },
-//          "19": {
-//             "label": "_review_n_of",
-//             "anchors": [
-//                13
-//             ],
-//             "incoming": [
-//                15,
-//                16,
-//                17,
-//                18,
-//                20
-//             ],
-//             "outgoing": []
-//          },
-//          "20": {
-//             "label": "_by_p",
-//             "anchors": [
-//                14
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                19,
-//                22
-//             ]
-//          },
-//          "21": {
-//             "label": "_the_q",
-//             "anchors": [
-//                15
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                22
-//             ]
-//          },
-//          "23": {
-//             "label": "_so+that_x",
-//             "anchors": [
-//                17,
-//                18
-//             ],
-//             "incoming": [
-//                13
-//             ],
-//             "outgoing": [
-//                15,
-//                34
-//             ]
-//          },
-//          "26": {
-//             "label": "_could_v_modal",
-//             "anchors": [
-//                20
-//             ],
-//             "incoming": [
-//                34
-//             ],
-//             "outgoing": [
-//                27
-//             ]
-//          },
-//          "27": {
-//             "label": "_complete_v_2",
-//             "anchors": [
-//                21
-//             ],
-//             "incoming": [
-//                26,
-//                30
-//             ],
-//             "outgoing": [
-//                24,
-//                29
-//             ]
-//          },
-//          "28": {
-//             "label": "_the_q",
-//             "anchors": [
-//                22
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                29
-//             ]
-//          },
-//          "29": {
-//             "label": "_purchase_n_of",
-//             "anchors": [
-//                23
-//             ],
-//             "incoming": [
-//                27,
-//                28
-//             ],
-//             "outgoing": []
-//          },
-//          "30": {
-//             "label": "_by_p_temp",
-//             "anchors": [
-//                24
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                27,
-//                33
-//             ]
-//          },
-//          "32": {
-//             "label": "_next_a_1",
-//             "anchors": [
-//                25
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                33
-//             ]
-//          },
-//          "34": {
-//             "label": "_if_x_then",
-//             "anchors": [
-//                27
-//             ],
-//             "incoming": [
-//                23
-//             ],
-//             "outgoing": [
-//                26,
-//                40
-//             ]
-//          },
-//          "39": {
-//             "label": "_bid_n_1",
-//             "anchors": [
-//                29
-//             ],
-//             "incoming": [
-//                35,
-//                36,
-//                40
-//             ],
-//             "outgoing": []
-//          },
-//          "40": {
-//             "label": "_be_v_id",
-//             "anchors": [
-//                30
-//             ],
-//             "incoming": [
-//                34
-//             ],
-//             "outgoing": [
-//                39,
-//                42
-//             ]
-//          },
-//          "41": {
-//             "label": "_the_q",
-//             "anchors": [
-//                31
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                42
-//             ]
-//          },
-//          "44": {
-//             "label": "_approve_v_1",
-//             "anchors": [
-//                33
-//             ],
-//             "incoming": [
-//                45
-//             ],
-//             "outgoing": [
-//                49,
-//                42
-//             ]
-//          },
-//          "46": {
-//             "label": "_the_q",
-//             "anchors": [
-//                35
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                49
-//             ]
-//          },
-//          "48": {
-//             "label": "_bankruptcy_n_1",
-//             "anchors": [
-//                36
-//             ],
-//             "incoming": [
-//                50,
-//                47
-//             ],
-//             "outgoing": []
-//          },
-//          "49": {
-//             "label": "_court_n_of",
-//             "anchors": [
-//                37
-//             ],
-//             "incoming": [
-//                44,
-//                46,
-//                50
-//             ],
-//             "outgoing": []
-//          }
-//    },
-//    "edges": [
-//          {
-//             "src": 0,
-//             "trg": 1,
-//             "label": "RSTR/H"
-//          },
-//          {
-//             "src": 2,
-//             "trg": 1,
-//             "label": "ARG1/NEQ"
-//          },
-//          {
-//             "src": 2,
-//             "trg": 13,
-//             "label": "ARG2/H"
-//          },
-//          {
-//             "src": 4,
-//             "trg": 3,
-//             "label": "RSTR/H"
-//          },
-//          {
-//             "src": 10,
-//             "trg": 11,
-//             "label": "RSTR/H"
-//          },
-//          {
-//             "src": 25,
-//             "trg": 24,
-//             "label": "RSTR/H"
-//          },
-//          {
-//             "src": 37,
-//             "trg": 38,
-//             "label": "RSTR/H"
-//          },
-//          {
-//             "src": 5,
-//             "trg": 6,
-//             "label": "ARG1/H"
-//          },
-//          {
-//             "src": 6,
-//             "trg": 3,
-//             "label": "ARG1/NEQ"
-//          },
-//          {
-//             "src": 6,
-//             "trg": 12,
-//             "label": "ARG2/NEQ"
-//          },
-//          {
-//             "src": 7,
-//             "trg": 6,
-//             "label": "ARG1/EQ"
-//          },
-//          {
-//             "src": 8,
-//             "trg": 12,
-//             "label": "RSTR/H"
-//          },
-//          {
-//             "src": 9,
-//             "trg": 12,
-//             "label": "ARG1/EQ"
-//          },
-//          {
-//             "src": 9,
-//             "trg": 11,
-//             "label": "ARG2/NEQ"
-//          },
-//          {
-//             "src": 36,
-//             "trg": 38,
-//             "label": "ARG2/NEQ"
-//          },
-//          {
-//             "src": 13,
-//             "trg": 5,
-//             "label": "L-HNDL/HEQ || L-INDEX/NEQ"
-//          },
-//          {
-//             "src": 13,
-//             "trg": 23,
-//             "label": "R-HNDL/HEQ"
-//          },
-//          {
-//             "src": 13,
-//             "trg": 15,
-//             "label": "R-INDEX/NEQ"
-//          },
-//          {
-//             "src": 14,
-//             "trg": 15,
-//             "label": "ARG1/NEQ"
-//          },
-//          {
-//             "src": 15,
-//             "trg": 3,
-//             "label": "ARG1/NEQ"
-//          },
-//          {
-//             "src": 15,
-//             "trg": 19,
-//             "label": "ARG2/NEQ"
-//          },
-//          {
-//             "src": 16,
-//             "trg": 19,
-//             "label": "RSTR/H"
-//          },
-//          {
-//             "src": 17,
-//             "trg": 19,
-//             "label": "ARG2/EQ"
-//          },
-//          {
-//             "src": 18,
-//             "trg": 17,
-//             "label": "ARG1/EQ"
-//          },
-//          {
-//             "src": 18,
-//             "trg": 19,
-//             "label": "ARG2/EQ"
-//          },
-//          {
-//             "src": 20,
-//             "trg": 19,
-//             "label": "ARG1/EQ"
-//          },
-//          {
-//             "src": 20,
-//             "trg": 22,
-//             "label": "ARG2/NEQ"
-//          },
-//          {
-//             "src": 21,
-//             "trg": 22,
-//             "label": "RSTR/H"
-//          },
-//          {
-//             "src": 23,
-//             "trg": 15,
-//             "label": "ARG1/H"
-//          },
-//          {
-//             "src": 23,
-//             "trg": 34,
-//             "label": "ARG2/H"
-//          },
-//          {
-//             "src": 26,
-//             "trg": 27,
-//             "label": "ARG1/H"
-//          },
-//          {
-//             "src": 27,
-//             "trg": 24,
-//             "label": "ARG1/NEQ"
-//          },
-//          {
-//             "src": 27,
-//             "trg": 29,
-//             "label": "ARG2/NEQ"
-//          },
-//          {
-//             "src": 28,
-//             "trg": 29,
-//             "label": "RSTR/H"
-//          },
-//          {
-//             "src": 30,
-//             "trg": 27,
-//             "label": "ARG1/EQ"
-//          },
-//          {
-//             "src": 30,
-//             "trg": 33,
-//             "label": "ARG2/NEQ"
-//          },
-//          {
-//             "src": 31,
-//             "trg": 33,
-//             "label": "RSTR/H"
-//          },
-//          {
-//             "src": 32,
-//             "trg": 33,
-//             "label": "ARG1/EQ"
-//          },
-//          {
-//             "src": 34,
-//             "trg": 26,
-//             "label": "ARG1/H"
-//          },
-//          {
-//             "src": 34,
-//             "trg": 40,
-//             "label": "ARG2/H"
-//          },
-//          {
-//             "src": 35,
-//             "trg": 39,
-//             "label": "RSTR/H"
-//          },
-//          {
-//             "src": 36,
-//             "trg": 39,
-//             "label": "ARG1/EQ"
-//          },
-//          {
-//             "src": 40,
-//             "trg": 39,
-//             "label": "ARG1/NEQ"
-//          },
-//          {
-//             "src": 40,
-//             "trg": 42,
-//             "label": "ARG2/NEQ"
-//          },
-//          {
-//             "src": 41,
-//             "trg": 42,
-//             "label": "RSTR/H"
-//          },
-//          {
-//             "src": 43,
-//             "trg": 42,
-//             "label": "ARG1/EQ"
-//          },
-//          {
-//             "src": 44,
-//             "trg": 49,
-//             "label": "ARG1/NEQ"
-//          },
-//          {
-//             "src": 44,
-//             "trg": 42,
-//             "label": "ARG2/EQ"
-//          },
-//          {
-//             "src": 45,
-//             "trg": 44,
-//             "label": "ARG1/EQ"
-//          },
-//          {
-//             "src": 45,
-//             "trg": 42,
-//             "label": "ARG2/EQ"
-//          },
-//          {
-//             "src": 46,
-//             "trg": 49,
-//             "label": "RSTR/H"
-//          },
-//          {
-//             "src": 50,
-//             "trg": 49,
-//             "label": "ARG1/EQ"
-//          },
-//          {
-//             "src": 50,
-//             "trg": 48,
-//             "label": "ARG2/NEQ"
-//          },
-//          {
-//             "src": 47,
-//             "trg": 48,
-//             "label": "RSTR/H"
-//          }
-//    ],
-//    "tokens": {
-//          "0": {
-//             "form": "Northeast",
-//             "lemma": "Northeast",
-//             "carg": "Northeast"
-//          },
-//          "1": {
-//             "form": "said",
-//             "lemma": "say"
-//          },
-//          "2": {
-//             "form": "it",
-//             "lemma": "it"
-//          },
-//          "3": {
-//             "form": "would",
-//             "lemma": "would"
-//          },
-//          "4": {
-//             "form": "refile",
-//             "lemma": "file"
-//          },
-//          "5": {
-//             "form": "its",
-//             "lemma": "its"
-//          },
-//          "6": {
-//             "form": "request",
-//             "lemma": "request"
-//          },
-//          "7": {
-//             "form": "and",
-//             "lemma": "and"
-//          },
-//          "8": {
-//             "form": "still",
-//             "lemma": "still"
-//          },
-//          "9": {
-//             "form": "hopes",
-//             "lemma": "hope"
-//          },
-//          "10": {
-//             "form": "for",
-//             "lemma": "for"
-//          },
-//          "11": {
-//             "form": "an",
-//             "lemma": "a"
-//          },
-//          "12": {
-//             "form": "expedited",
-//             "lemma": "expedite"
-//          },
-//          "13": {
-//             "form": "review",
-//             "lemma": "review"
-//          },
-//          "14": {
-//             "form": "by",
-//             "lemma": "by"
-//          },
-//          "15": {
-//             "form": "the",
-//             "lemma": "the"
-//          },
-//          "16": {
-//             "form": "FERC",
-//             "lemma": "FERC",
-//             "carg": "FERC"
-//          },
-//          "17": {
-//             "form": "so",
-//             "lemma": "so"
-//          },
-//          "18": {
-//             "form": "that",
-//             "lemma": "that"
-//          },
-//          "19": {
-//             "form": "it",
-//             "lemma": "it"
-//          },
-//          "20": {
-//             "form": "could",
-//             "lemma": "could"
-//          },
-//          "21": {
-//             "form": "complete",
-//             "lemma": "complete"
-//          },
-//          "22": {
-//             "form": "the",
-//             "lemma": "the"
-//          },
-//          "23": {
-//             "form": "purchase",
-//             "lemma": "purchase"
-//          },
-//          "24": {
-//             "form": "by",
-//             "lemma": "by"
-//          },
-//          "25": {
-//             "form": "next",
-//             "lemma": "next"
-//          },
-//          "26": {
-//             "form": "summer",
-//             "lemma": "summer",
-//             "carg": "summer"
-//          },
-//          "27": {
-//             "form": "if",
-//             "lemma": "if"
-//          },
-//          "28": {
-//             "form": "its",
-//             "lemma": "its"
-//          },
-//          "29": {
-//             "form": "bid",
-//             "lemma": "bid"
-//          },
-//          "30": {
-//             "form": "is",
-//             "lemma": "be"
-//          },
-//          "31": {
-//             "form": "the",
-//             "lemma": "the"
-//          },
-//          "32": {
-//             "form": "one",
-//             "lemma": "1",
-//             "carg": "1"
-//          },
-//          "33": {
-//             "form": "approved",
-//             "lemma": "approve"
-//          },
-//          "34": {
-//             "form": "by",
-//             "lemma": "by"
-//          },
-//          "35": {
-//             "form": "the",
-//             "lemma": "the"
-//          },
-//          "36": {
-//             "form": "bankruptcy",
-//             "lemma": "bankruptcy"
-//          },
-//          "37": {
-//             "form": "court.",
-//             "lemma": "court"
-//          }
-//    },
-//    "tops": {
-//          "2": {
-//             "label": "_say_v_to",
-//             "anchors": [
-//                1
-//             ],
-//             "incoming": [],
-//             "outgoing": [
-//                1,
-//                13
-//             ]
-//          }
-//    },
-//    "sentence": [
-//          "Northeast",
-//          "said",
-//          "it",
-//          "would",
-//          "refile",
-//          "its",
-//          "request",
-//          "and",
-//          "still",
-//          "hopes",
-//          "for",
-//          "an",
-//          "expedited",
-//          "review",
-//          "by",
-//          "the",
-//          "FERC",
-//          "so",
-//          "that",
-//          "it",
-//          "could",
-//          "complete",
-//          "the",
-//          "purchase",
-//          "by",
-//          "next",
-//          "summer",
-//          "if",
-//          "its",
-//          "bid",
-//          "is",
-//          "the",
-//          "one",
-//          "approved",
-//          "by",
-//          "the",
-//          "bankruptcy",
-//          "court."
-//    ]
-// }
+
+
 
 makeGraph(data, true,"body")
     function makeGraph(data,showTokens,elementId){
@@ -2283,7 +501,7 @@ var start = performance.now();
     
     //TOP IS A SPECIFIC THING TAHT NEEDS TO BE READ IN FROM THE DATA AND IS NOT NECESSARILY LABELLED.
     dataTokens.forEach(element => {
-        tokenList.push(element);
+        tokenList.push({token: element[1], pos: 0});
     });
     a_nodes.forEach(element => {
         var dummyNodeA = {index:element[0],tokens:element[1].anchors,label:element[1].label,edges:element[1].outgoing,edgelabels:[],xPos:0,yPos:0,colour:"green"};
@@ -2294,6 +512,9 @@ var start = performance.now();
         var dummyNodeS = {index:element[0],tokens:element[1].anchors,label:element[1].label,edges:element[1].outgoing,edgelabels:[],xPos:0,yPos:0,colour:"green"};
         sNodes.push(dummyNodeS);
     });
+    for(var i=0; i<tokenList.length; i++){
+      tokenList[i].pos = i*200;
+    }
     
     var sNodeIndexes = sNodes.map(x => x.index);
     var aNodeIndexes = aNodes.map(x => x.index);
@@ -2344,10 +565,6 @@ var start = performance.now();
         anchorArray[i].height = 85*(i+1);
     }
     let aMap = anchorArray.map(x=> x.aLength);
-    console.log(aMap);
-
-    // for a in anchorarry booga booga add 50
-    
     // GRAPH SIZE DEFINITIONS.
     var width = tokenList.length*200;
     var offset = width/(tokenList.length*2);
@@ -2387,17 +604,37 @@ aNodes.forEach(element =>{
     }
 })
 //RESOLVING CLASHES
+var previousT = "t";
+var currentT;
 for(var j=0;j<aNodes.length;j++){
-    if(aNodes[j].label != "TOP"){
-        for(var i =0; i< aNodes.length; i++) {
-            if(aNodes[j].xPos == aNodes[i].xPos && aNodes[j].yPos == aNodes[i].yPos && aNodes[j].index != aNodes[i].index){
-                aNodes[j].xPos = aNodes[j].xPos -tokenGap/4+17;
-                aNodes[i].xPos = aNodes[i].xPos +tokenGap/4-17;
-                j=0;
+      for(var i =j+1; i< aNodes.length; i++) {
+         if(aNodes[j].xPos == aNodes[i].xPos && aNodes[j].yPos == aNodes[i].yPos && aNodes[j].index != aNodes[i].index){
+            currentT = aNodes[j].label;
+            console.log(aNodes[j].label);
+            if(currentT != previousT){
+               for(var an = i; an<aNodes.length; an++){
+                  if(aNodes[an].xPos > aNodes[j].xPos){
+                     aNodes[an].xPos = aNodes[an].xPos +200;
+                  }
+               }
+               for(var sn =0; sn<sNodes.length; sn++){
+                  if(sNodes[sn].xPos > aNodes[j].xPos){
+                     sNodes[sn].xPos = sNodes[sn].xPos +200;
+                  }
+               }
+               for(var t=0; t<tokenList.length;t++){
+                  if(tokenList[t].pos > aNodes[j].xPos-100){
+                     tokenList[t].pos = tokenList[t].pos + 200;
+                  }
+               }
             }
-        }
-    }
+            previousT = aNodes[j].label;
+            aNodes[i].xPos = aNodes[i].xPos +200;
+         }
+     }
 }
+
+var width = tokenList[tokenList.length-1].pos + 200;
 sNodes.forEach(element => {
     element.yPos = layers.surface + 100 + maxSNodeHeight - element.yPos;
     minSNode = Math.max(minSNode,element.yPos);
@@ -2500,9 +737,9 @@ zoomGroup.selectAll("line.layers").data(layerVals).enter().append("line")
     
 // DRAWING TOKENS
 if(showTokens){
-    zoomGroup.append("text").selectAll("text.tokens").data(tokenList).enter().append("tspan").text(d => d)
+    zoomGroup.append("text").selectAll("text.tokens").data(tokenList.map(x=> x.token)).enter().append("tspan").text(d => d)
     .attr("class","tokens")
-    .attr("x",function(d,i){return offset + i*tokenGap;})
+    .attr("x",function(d,i){return offset + tokenList[i].pos;})
     .attr("y",function(){return layers.bottom - 50;}) //change with depth of token layer.
     .attr("font-size","30")
     .attr("text-anchor","middle")
@@ -2533,7 +770,7 @@ zoomGroup.append("text").selectAll("text.layerText").data(layerText).enter().app
     .attr("font-family","Arial");
 
 //displaying graph label
-zoomGroup.append("text").selectAll("text.graphlabel").data(["Graph number: " + id]).enter().append("tspan").text(d => d)
+zoomGroup.append("text").selectAll("text.graphlabel").data(["Graph ID: " + id]).enter().append("tspan").text(d => d)
 .attr("class","graphlabel")
     .attr("x",width/2)
     .attr("y",height-40)
@@ -2562,7 +799,7 @@ if(showTokens){
     .attr("class",function(d,i){return "highlights rectangle"+id+i;}) //index of the token
     .attr("height","35")
     .attr("width",function(d,i){return 200;})
-    .attr("x",function(d,i){return offset + i*tokenGap -100;})
+    .attr("x",function(d,i){return offset + d.pos -100;})
     .attr("y",function(d,i){return layers.bottom - 67;})
     .attr("fill", "none")
     .style("opacity","0.4");
@@ -2645,18 +882,18 @@ sNodes.forEach(element => {
                 }
             }
             drawLine(element.colour,fromToS, element.index);
- // LABEL
-    var labelX = (fromToS[0].x+fromToS[1].x)/2 + 10;
-    var labelY = (fromToS[0].y+fromToS[1].y)/2 + 10;
-    zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
-        .text(d=> d.edgelabels[i])
-        .attr("x",labelX.toString())
-        .attr("y",labelY.toString())
-        .attr("font-family","Arial")
-        .attr("font-size","14px")
-        .attr("dominant-baseline", "middle")
-        .attr("text-anchor","middle")
-        .attr("fill", "black");
+            // LABEL
+               var labelX = (fromToS[0].x+fromToS[1].x)/2 + 10;
+               var labelY = (fromToS[0].y+fromToS[1].y)/2 + 10;
+               zoomGroup.selectAll("text.aLabels").data([element.edgelabels[i]]).enter().append("text")
+                  .text(d=> d)
+                  .attr("x",labelX.toString())
+                  .attr("y",labelY.toString())
+                  .attr("font-family","Arial")
+                  .attr("font-size","14px")
+                  .attr("dominant-baseline", "middle")
+                  .attr("text-anchor","middle")
+                  .attr("fill", "black");
         }
     }
 });
@@ -2761,7 +998,7 @@ zoomGroup.selectAll("rect.alabels")
     .attr("y",function(d,i){return d.yPos + 20;})
     .attr("stroke", function(d,i){return d.colour;})
     .attr("stroke-width", "2")
-    .attr("fill", "#f2f0f0");
+    .attr("fill", "none");
 zoomGroup.append("text").selectAll("text.anodeLabels").data(aNodeLabels).enter().append("tspan").text(d => d)
     .attr("class","anodeLabels")
     .attr("x",function(d,i){return aNodes[i].xPos;})
@@ -2793,7 +1030,7 @@ function mouseOut(type,index,id){
     .attr("fill", "none");
     d3.select("rect."+type+"labels"+id+index)
     // .lower()
-    .attr("fill", "#f2f0f0")
+    .attr("fill", "none")
     .style("opacity","1");
 
 };
