@@ -1,70 +1,207 @@
-// var data = {
-//     "id": "20013011",
-//     "connected": "True",
-//     "acyclic": "True",
-//     "longest_directed_path": {
-//         "[1, 0]": {
-//             "edges": [
-//                 {
-//                     "src": "_that_q_dem",
-//                     "trg": "generic_entity",
-//                     "label": "RSTR/H"
-//                 }
-//             ]
-//         },
-//         "[2, 0]": {
-//             "edges": [
-//                 {
-//                     "src": "_attract_v_1",
-//                     "trg": "generic_entity",
-//                     "label": "ARG1/NEQ"
-//                 }
-//             ]
-//         },
-//         "[2, 4]": {
-//             "edges": [
-//                 {
-//                     "src": "_attract_v_1",
-//                     "trg": "_attention_n_to",
-//                     "label": "ARG2/NEQ"
-//                 }
-//             ]
-//         },
-//         "[3, 4]": {
-//             "edges": [
-//                 {
-//                     "src": "udef_q",
-//                     "trg": "_attention_n_to",
-//                     "label": "RSTR/H"
-//                 }
-//             ]
-//         }
-//     },
-//     "longest_undirected_path": {
-//         "[0, 2, 4, 3]": {
-//             "edges": [
-//                 {
-//                     "src": "generic_entity",
-//                     "trg": "_attract_v_1",
-//                     "label": "ARG1/NEQ"
-//                 },
-//                 {
-//                     "src": "_attract_v_1",
-//                     "trg": "_attention_n_to",
-//                     "label": "ARG2/NEQ"
-//                 },
-//                 {
-//                     "src": "_attention_n_to",
-//                     "trg": "udef_q",
-//                     "label": "RSTR/H"
-//                 }
-//             ]
-//         }
-//     }
-// }
-// longestPath(data);
+var data = {
+        "id": "20020014",
+        "connected": "True",
+        "acyclic": "True",
+        "planar": "False",
+        "longest_directed_path": {
+            "[2, 19, 17, 15, 11, 10]": {
+                "edges": [
+                    {
+                        "src": "_include_v_1",
+                        "trg": "implicit_conj",
+                        "label": "ARG2/NEQ"
+                    },
+                    {
+                        "src": "implicit_conj",
+                        "trg": "implicit_conj",
+                        "label": "R-INDEX/NEQ"
+                    },
+                    {
+                        "src": "implicit_conj",
+                        "trg": "implicit_conj",
+                        "label": "R-INDEX/NEQ"
+                    },
+                    {
+                        "src": "implicit_conj",
+                        "trg": "_and_c",
+                        "label": "R-INDEX/NEQ"
+                    },
+                    {
+                        "src": "_and_c",
+                        "trg": "named",
+                        "label": "L-INDEX/NEQ"
+                    }
+                ]
+            },
+            "[2, 19, 17, 15, 11, 12]": {
+                "edges": [
+                    {
+                        "src": "_include_v_1",
+                        "trg": "implicit_conj",
+                        "label": "ARG2/NEQ"
+                    },
+                    {
+                        "src": "implicit_conj",
+                        "trg": "implicit_conj",
+                        "label": "R-INDEX/NEQ"
+                    },
+                    {
+                        "src": "implicit_conj",
+                        "trg": "implicit_conj",
+                        "label": "R-INDEX/NEQ"
+                    },
+                    {
+                        "src": "implicit_conj",
+                        "trg": "_and_c",
+                        "label": "R-INDEX/NEQ"
+                    },
+                    {
+                        "src": "_and_c",
+                        "trg": "named",
+                        "label": "R-INDEX/NEQ"
+                    }
+                ]
+            },
+            "[20, 19, 17, 15, 11, 10]": {
+                "edges": [
+                    {
+                        "src": "udef_q",
+                        "trg": "implicit_conj",
+                        "label": "RSTR/H"
+                    },
+                    {
+                        "src": "implicit_conj",
+                        "trg": "implicit_conj",
+                        "label": "R-INDEX/NEQ"
+                    },
+                    {
+                        "src": "implicit_conj",
+                        "trg": "implicit_conj",
+                        "label": "R-INDEX/NEQ"
+                    },
+                    {
+                        "src": "implicit_conj",
+                        "trg": "_and_c",
+                        "label": "R-INDEX/NEQ"
+                    },
+                    {
+                        "src": "_and_c",
+                        "trg": "named",
+                        "label": "L-INDEX/NEQ"
+                    }
+                ]
+            },
+            "[20, 19, 17, 15, 11, 12]": {
+                "edges": [
+                    {
+                        "src": "udef_q",
+                        "trg": "implicit_conj",
+                        "label": "RSTR/H"
+                    },
+                    {
+                        "src": "implicit_conj",
+                        "trg": "implicit_conj",
+                        "label": "R-INDEX/NEQ"
+                    },
+                    {
+                        "src": "implicit_conj",
+                        "trg": "implicit_conj",
+                        "label": "R-INDEX/NEQ"
+                    },
+                    {
+                        "src": "implicit_conj",
+                        "trg": "_and_c",
+                        "label": "R-INDEX/NEQ"
+                    },
+                    {
+                        "src": "_and_c",
+                        "trg": "named",
+                        "label": "R-INDEX/NEQ"
+                    }
+                ]
+            }
+        },
+        "longest_undirected_path": {
+            "[0, 1, 22, 28, 29, 31, 34, 32, 33, 46, 48, 52, 53, 51, 50]": {
+                "edges": [
+                    {
+                        "src": "_those_q_dem",
+                        "trg": "_country_n_of",
+                        "label": "RSTR/H"
+                    },
+                    {
+                        "src": "_country_n_of",
+                        "trg": "_of_p",
+                        "label": "ARG1/NEQ"
+                    },
+                    {
+                        "src": "_of_p",
+                        "trg": "_but_c",
+                        "label": "L-INDEX/NEQ"
+                    },
+                    {
+                        "src": "_but_c",
+                        "trg": "_deem_v_1",
+                        "label": "R-INDEX/NEQ"
+                    },
+                    {
+                        "src": "_deem_v_1",
+                        "trg": "_pose_v_as",
+                        "label": "ARG3/H"
+                    },
+                    {
+                        "src": "_pose_v_as",
+                        "trg": "_problem_n_of",
+                        "label": "ARG2/NEQ"
+                    },
+                    {
+                        "src": "_problem_n_of",
+                        "trg": "_serious_a_1",
+                        "label": "ARG1/EQ"
+                    },
+                    {
+                        "src": "_serious_a_1",
+                        "trg": "comp_less",
+                        "label": "ARG1/EQ"
+                    },
+                    {
+                        "src": "comp_less",
+                        "trg": "generic_entity",
+                        "label": "ARG2/NEQ"
+                    },
+                    {
+                        "src": "generic_entity",
+                        "trg": "_on_p",
+                        "label": "ARG1/EQ"
+                    },
+                    {
+                        "src": "_on_p",
+                        "trg": "_list_n_of",
+                        "label": "ARG2/NEQ"
+                    },
+                    {
+                        "src": "_list_n_of",
+                        "trg": "compound",
+                        "label": "ARG1/EQ"
+                    },
+                    {
+                        "src": "compound",
+                        "trg": "_priority_n_1",
+                        "label": "ARG2/NEQ"
+                    },
+                    {
+                        "src": "_priority_n_1",
+                        "trg": "udef_q",
+                        "label": "RSTR/H"
+                    }
+                ]
+            }
+        }
+    }
+longestPath(data,"body");
 
-export const longestPath = function (data, elementId){
+// export const longestPath = function (data, elementId){
+    function longestPath(data,elementId){
     // console.log(data);
     var connected = data.connected;
     var acyclic = data.acyclic;
@@ -89,9 +226,9 @@ var height = undirectedPaths.length*55 + directedPaths.length*55 + 130;
 var heightDP = 15;
 var heightUDP = directedPaths.length*55 + 45;
 
-let elementIdToAppendTo = `#${elementId}`;
-debugger
-var svg = d3.select(elementIdToAppendTo).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
+// let elementIdToAppendTo = `#${elementId}`;
+var svg = d3.select(elementId //elementIdToAppendTo
+    ).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
 .attr("height", height).attr("width", width +8).attr("id", "comparison")
 .attr("viewBox","0,0,"+width+","+height)
 var group = svg.append("g").attr("id", "group");
