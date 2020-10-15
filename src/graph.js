@@ -1,4 +1,4 @@
-// import {store} from './store';
+import {store} from './store';
 // var data = {
 
 // makeGraph(data, true,"body")
