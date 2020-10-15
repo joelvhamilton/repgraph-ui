@@ -2,25 +2,25 @@
   <div>
     <nav-bar/>
     <sub-menu-card/>
-    <modal name="nodeLabelSearchModal" :height="auto" :scrollable="true">
+    <modal name="nodeLabelSearchModal" :height="auto" :scrollable="true" :width="1000">
       <node-search-results-modal :nodeLabels="getNodesSearchedFor" :results="getNodeSearchResults"></node-search-results-modal>
     </modal>
-    <modal name="subgraphSearchModal" :height="auto" :scrollable="true">
+    <modal name="subgraphSearchModal" :height="auto" :scrollable="true" :width="1000">
       <subgraph-modal :results="getSubgraphResults"/>
     </modal>
     <modal name="tokenSearchResultsModal" :height="auto" :scrollable="true">
       <token-modal :results="getGraphsMatchingWords" id="tokenModal"></token-modal>
     </modal>
-    <modal name="individualGraph" :height="auto" :scrollable="true">
+    <modal name="individualGraph" :height="auto" :scrollable="true" :width="1200">
       <graph-modal :graph="graphToDisplayIndividually" id="individualDisplayModal"></graph-modal>
     </modal>
-    <modal name="propertiesModal" :height="auto" :scrollable="true" :width="800">
+    <modal name="propertiesModal" :height="auto" :scrollable="true" :width="1000">
       <properties-modal id="propModal" :properties="propertiesToDisplay" :elementId="propModal"></properties-modal>
     </modal>
-    <modal name="subsetModal" :height="auto" :scrollable="true">
+    <modal name="subsetModal" :height="auto" :scrollable="true" :width="1000">
       <subset-modal id="subsetModalId" :subset="getSubset" :elementId="subsetModalId"/>
     </modal>
-    <modal name="comparisonModal" :height="auto" :scrollable="true">
+    <modal name="comparisonModal" :height="auto" :scrollable="true" :width="1200">
       <comparison-modal id="comparison" :graphComparisonResults="getComparisonResults" :elementId="comparison"/>
     </modal>
     <paging-bar/>

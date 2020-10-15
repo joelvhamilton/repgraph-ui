@@ -8,6 +8,7 @@
                 <input v-model="newPage" class="form-control mr-sm-2" type="search" placeholder="e.g. 3" aria-label="Search">
                 <button class="btn btn-outline-info my-2 mr-2 my-sm-0" type="submit" @click.prevent="goToNewPage()">Go To Specific Page</button>
             </form>
+            Pages: {{`${getTotalPages}   `}}
         </ul>
     </div>
 
@@ -26,7 +27,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-        getCurrentPage: 'getCurrentPageOfGraphs'
+        getCurrentPage: 'getCurrentPageOfGraphs',
+        getTotalPages: 'getTotalNumberOfPages'
     })
   },
   methods: {

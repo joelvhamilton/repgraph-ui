@@ -212,7 +212,7 @@ export const makeGraphComparison = function (comparisonOutput, elementId){
    }
 
    let elementIdToAppendTo = `#${elementId}`
-   var svg = d3.select(elementId //elementIdToAppendTo
+   var svg = d3.select(elementIdToAppendTo
       ).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
    .attr("height", height-200).attr("width", width).attr("id", "comparison")
    .attr("viewBox","0,0,"+width+","+height)

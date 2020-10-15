@@ -1,6 +1,5 @@
 <template>
     <div>
-        Graph Id: {{graph.id}}
     </div>
 </template>
 <!-- all d3 logic will be here -->
@@ -14,7 +13,7 @@
     import {mapGetters} from "vuex"
 
     export default {
-        props: ["graph", "elementId", "word"],
+        props: ["graph", "elementId"],
         components: {
             [Progress.name]: Progress
         },
@@ -50,5 +49,6 @@
     border: 3px solid lightgray;
     border-radius: 4px;
     margin-top: 12px;
+    margin-bottom: 12px;
 }
 </style>
