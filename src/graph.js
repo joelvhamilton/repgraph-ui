@@ -1,6 +1,8 @@
   
-export const makeGraph = function (data, showTokens, elementId) {
 
+import {store} from './store';
+        
+export const makeGraph = function (data, showTokens, elementId) {
     var start = performance.now();
     var layers = {bottom:0,token:0,surface:0,top:10};
     var sNodes =[];
@@ -178,7 +180,6 @@ export const makeGraph = function (data, showTokens, elementId) {
     var zoomGroup = group.append("g");
     group.call(d3.zoom()
     .scaleExtent([0.5, 6])
-    .translateExtent([[-width+500,-height-100],[width+100,height+100]])    
     .on("zoom",function(){
         zoomGroup.attr("transform", d3.event.transform);
     }));

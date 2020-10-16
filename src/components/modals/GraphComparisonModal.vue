@@ -1,5 +1,7 @@
 <template>
     <div>
+        <graph-visual :graph="graphComparisonResults.graphs[0]" :elementId="elementId"/>
+        <graph-visual :graph="graphComparisonResults.graphs[1]" :elementId="elementId"/>
         <h3 v-if="this.comparisonFailed"> Sorry, unable to display comparison. This is likely due to one of the following reasons: </h3>
         <ul v-if="this.comparisonFailed" style="text-align:left">
             <li> They are not of the same sentence.</li>
@@ -18,7 +20,7 @@ export default {
             if (val.status == "Failed"){
                 this.comparisonFailed = true;
             }
-            else {makeGraphComparison(this.graphComparisonResults, this.elementId);}
+            else {makeGraphComparison(this.graphComparisonResults.comparison, this.elementId);}
         }
     },
     mounted(){
@@ -26,13 +28,16 @@ export default {
             this.comparisonFailed = true;
             }
         else {
-            makeGraphComparison(this.graphComparisonResults, this.elementId);
+            makeGraphComparison(this.graphComparisonResults.comparison, this.elementId);
         }
     },
     data() {
         return {
             comparisonFailed: false,
         }
+    },
+    components: {
+        'graph-visual': () => import("../GraphVisual")
     }
 }
 </script>

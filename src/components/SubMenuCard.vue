@@ -5,7 +5,7 @@
                 <form class="form-inline" v-on:submit.prevent="checkProperties()">
                     <button type="button" class="btn btn-info ml-1 mr-2" @click="togglePropertiesButton()">Test Graph Properties</button>
                     <input v-if="this.propertiesButtonClicked" v-model="graphId" class="form-control mr-sm-2" type="search" placeholder="graph id" aria-label="Search">
-                    <button v-if="this.propertiesButtonClicked" class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="checkProperties()">Check</button>
+                    <button v-if="this.propertiesButtonClicked" class="btn btn-outline-info my-2 my-sm-0" type="submit" @click.prevent="checkProperties()"> Compute </button>
                 </form>
             </li>
             <li>

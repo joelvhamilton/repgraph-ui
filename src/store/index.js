@@ -116,7 +116,7 @@ export const store = new Vuex.Store({
                     let newGraphs = res.data.graphs
                     commit("changeGraphsBeingDisplayed", newGraphs);
                     commit("changeCurrentPageOfGraphs", (Number(state.currentPageOfGraphs)+1));
-                    // state.numberOfPages = res.data.
+                    state.numberOfPages = res.data.total_pages;
                 }
                 else {
                     // TODO: MAKE A MODAL POP UP SAYING "SORRY THERE ARE NO MORE GRAPHS TO BE SEEN."" AND AUTOMATICALLY SHOW THEM THE LAST PAGE.
