@@ -156,12 +156,7 @@ export const makeGraphComparison = function (comparisonOutput, elementId){
 
    //INSTANTIATING SVG:
    let elementIdToAppendTo = `#${elementId}`
-<<<<<<< HEAD
-   var svg = d3.select(elementIdToAppendTo
-      ).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
-=======
    var svg = d3.select(elementIdToAppendTo).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
->>>>>>> master
    .attr("height", height-200).attr("width", width).attr("id", "comparison")
    .attr("viewBox","0,0,"+width+","+height)
    var group = svg.append("g").attr("id", "group");

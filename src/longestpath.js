@@ -17,45 +17,6 @@ export const longestPath = function (data, elementId){
     for (var y in temp2){
         undirectedPaths.push(temp2[y]);
     }
-<<<<<<< HEAD
-    // console.log(undirectedPaths);
-
-var width = Math.max(300,80 + undirectedPaths[0][1].edges.length*140 );
-// height determined by the longest path in the data.
-
-var height = undirectedPaths.length*55 + directedPaths.length*55 + 130;
-var heightDP = 15;
-var heightUDP = directedPaths.length*55 + 45;
-
-let elementIdToAppendTo = `#${elementId}`;
-var svg = d3.select(elementIdToAppendTo
-    ).append("svg").attr("id", "viewSvg").attr("class", "d3-comparison")
-.attr("height", height).attr("width", width +8).attr("id", "comparison")
-.attr("viewBox","0,0,"+width+","+height)
-var group = svg.append("g").attr("id", "group");
-var zoomGroup = group.append("g");
-group.call(d3.zoom()
-    .scaleExtent([0.5, 10])    
-    .on("zoom",function(){
-    zoomGroup.attr("transform", d3.event.transform);
-}));
-
-//BACKGROUND RECTANGLE
-zoomGroup.append("rect")
-.attr("class","back")
-.attr("height",height)
-.attr("width",width +8)
-.attr("x","0")
-.attr("y","0")
-.attr("fill","#f2f0f0");
-
-for(var i=0; i<directedPaths.length;i++){
-    // console.log(directedPaths[i][1].edges);
-    var dColour =  d3.scaleSequential().domain([0,directedPaths[i][1].edges.length +1 + directedPaths.length]).interpolator(d3.interpolateCool);
-    for(var j=0;j<directedPaths[i][1].edges.length;j++){
-        directedPaths[i][1].edges[j].srcColour = dColour(j+i);// TODO TEST AN MAYBE ADD i HERE
-        directedPaths[i][1].edges[j].trgColour = dColour(j+i+1);
-=======
 
     //determining height and width of SVG.
     var width = Math.max(300,80 + undirectedPaths[0][1].edges.length*140 );
@@ -90,7 +51,6 @@ for(var i=0; i<directedPaths.length;i++){
             directedPaths[i][1].edges[j].srcColour = dColour(j+i);
             directedPaths[i][1].edges[j].trgColour = dColour(j+i+1);
         }
->>>>>>> master
     }
     for(var i=0; i<undirectedPaths.length;i++){
         var udColour =  d3.scaleSequential().domain([0,undirectedPaths[i][1].edges.length +1 + undirectedPaths.length]).interpolator(d3.interpolatePlasma);

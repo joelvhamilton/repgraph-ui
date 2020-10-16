@@ -2,6 +2,7 @@
   <div>
     <nav-bar/>
     <sub-menu-card/>
+    <u @click="toggleHelp()" style="position: absolute; right:80px;"> How does this work? </u>
     <modal name="nodeLabelSearchModal" :height="auto" :scrollable="true" :width="1000">
       <node-search-results-modal :nodeLabels="getNodesSearchedFor" :results="getNodeSearchResults"></node-search-results-modal>
     </modal>
@@ -27,6 +28,9 @@
     <div class="col align-content-center">
       <graph-visual v-for="(v,i) in graphs" :key="i" :graph="v" :elementId="body"></graph-visual>
     </div>
+    <modal name="helpModal" :height="auto" :scrollable="true" :width="1400">
+      <img src="../assets/user_manual.png">
+    </modal>
   </div>
 </template>
 
@@ -48,7 +52,13 @@ export default {
       comparison: "comparison",
       auto: "auto",
       propModal: "propModal",
-      propertiesToDisplay: {}
+      propertiesToDisplay: {},
+      helpButtonClicked: false
+    }
+  },
+  methods: {
+    toggleHelp(){
+      this.$modal.show('helpModal');
     }
   },
   computed: {

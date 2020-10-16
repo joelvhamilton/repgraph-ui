@@ -1,24 +1,34 @@
-# repgraph-ui
+# Repgraph-ui
 
-## Project setup
-```
-npm install
-```
+Foobar is a Python library for dealing with word pluralization.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Installation
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### 1.) Make sure you have the following versions of the following languages/frameworks installed:
 
-### Lints and fixes files
-```
-npm run lint
-```
+#### npm: v6.9.0 [docs.npmjs.com]
+#### node: v12.3.1 [www.javascript.com]
+#### js: v10.19.0 [https://nodejs.org]
+#### vue.js: @vue/cli 4.4.6 [https://vuejs.org/]
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 2.) Navigate to repgraph-ui project directory in Ubuntu/Linux terminal.
+### 3.) Run the following command: 
+```bash
+npm install 
+```
+[this will install all necessary dependencies]
+
+
+## Running the server
+
+
+### 4.) Run the command: 
+```bash 
+npm run serve 
+```
+[this will serve the website at localhost:8080]
+### 5.) Ensure that the API server is also running (according to instructions found in the readme for the API).
+
+## Usage
+### 6.) Open up a browser (e.g. Google Chrome), and enjoy!
+
