@@ -1,76 +1,9 @@
-
-
-// TEST DATA
-// var data = {
-//     "20008006": {
-//         "edges": [
-//             {
-//                 "src": 17,
-//                 "trg": 18,
-//                 "label": "ARG2/NEQ"
-//             },
-//             {
-//                 "src": 19,
-//                 "trg": 18,
-//                 "label": "RSTR/H"
-//             },
-//             {
-//                 "src": 20,
-//                 "trg": 18,
-//                 "label": "ARG1/EQ"
-//             }
-//         ],
-//         "s_nodes": {
-//             "18": {
-//                 "label": "normallabel",
-//                 "anchors": [
-//                     15
-//                 ]
-//             },
-//             "19": {
-//                 "label": "def_implicit_q",
-//                 "anchors": [
-//                     15
-//                 ]
-//             }
-//         },
-//         "a_nodes": {
-//             "17": {
-//                 "label": "_by_p_temp",
-//                 "anchors": [
-//                     14
-//                 ]
-//             },
-//             "20": {
-//                 "label": "_then_p_temp",
-//                 "anchors": [
-//                     15
-//                 ]
-//             }
-//         },
-//         "tokens": {
-//             "14": {
-//                 "form": "by",
-//                 "lemma": "by"
-//             },
-//             "15": {
-//                 "form": "then.",
-//                 "lemma": "then"
-//             }
-//         },
-//         "tops": "18"
-//     }}
-
-// makeSubgraph(data,"body");
-
 export const makeSubgraph = function (data, elementId){
-// function makeSubgraph(data,elementId){
 var id;
 for(var boog in data){
     var data = data[boog];
     id = boog;
-} //this stuff might not be necessary depnding on how you read it in @JOEL
-//  but please do make sure a variable called id reads in the id of the graph.
+}
 
 var sNodes =[];
 var aNodes =[];
@@ -82,6 +15,7 @@ var dataEdges = Object.entries(data.edges);
 var tops = parseInt(data.tops,10);
 var selectedNodeIsAbstract;
 
+//READING IN NODE DATA;
 a_nodes.forEach(element => {
     if(element[0] == tops){
         selectedNodeIsAbstract =true;
@@ -110,6 +44,7 @@ var aNodeIndexes = aNodes.map(x => x.index);
 var sNodeLabels = sNodes.map(x => x.label);
 var aNodeLabels = aNodes.map(x => x.label);
 
+//READING IN EDGES OF EACH NODE:
 dataEdges.forEach(element => {
     if(sNodeIndexes.includes(element[1].src.toString())){
         sNodes[sNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
@@ -125,10 +60,9 @@ dataEdges.forEach(element => {
     }
 });
 
+//DETERMINING COOURS FOR EACH NODE:
 var abstractColourScale = d3.scaleLinear().domain([0,Math.max(...aNodeIndexes)]).range(["yellow", "red"]);
 var surfaceColourScale =  d3.scaleSequential().domain([0,Math.max(...sNodeIndexes)]).interpolator(d3.interpolateCool);
-
-// determining the colour of each node.
 for(var i=0; i<sNodeIndexes.length; i++){
     sNodes[i].colour = surfaceColourScale(sNodeIndexes[i]);
 }
@@ -136,6 +70,7 @@ for(var i=0; i<aNodeIndexes.length; i++){
     aNodes[i].colour = abstractColourScale(aNodeIndexes[i]);
 }
 
+//DIMENSIONAL VARIABLES:
 var width = Math.max(Math.max(aNodes.length, sNodes.length)*100,700);
 var height = 500;
 var abstractLayer = height/2;
@@ -144,6 +79,7 @@ var sNodeHeight = height -70;
 var aNodeInterval = width/aNodes.length;
 var sNodeInterval = width/sNodes.length;
 
+//DETERMINING POSITIONS OF EACH NODE:
 var ai =0;
 aNodes.forEach(element => {
     element.yPos = aNodeHeight;
@@ -203,16 +139,16 @@ zoomGroup.append("defs").selectAll("marker.s").data(allNodes).enter().append("ma
         .attr("fill", function(d,i){return d.colour;});
 
 function drawLine(colour, data, index){
-    var line = d3.line()
-    .x(function(d){return d.x;})
-    .y(function(d){return d.y;})
-    .curve(d3.curveBundle);
-zoomGroup.append("path")
-    .attr("d",line(data))
-    .attr("stroke", colour)
-    .attr("stroke-width","2")
-    .attr("marker-end", "url(#arrow-"+index+")")
-    .attr("fill", "none");
+        var line = d3.line()
+        .x(function(d){return d.x;})
+        .y(function(d){return d.y;})
+        .curve(d3.curveBundle);
+    zoomGroup.append("path")
+        .attr("d",line(data))
+        .attr("stroke", colour)
+        .attr("stroke-width","2")
+        .attr("marker-end", "url(#arrow-"+index+")")
+        .attr("fill", "none");
 };
 
 //BACKGROUND RECTANGLE
@@ -259,12 +195,13 @@ zoomGroup.selectAll("rect.labels")
     .enter().append("rect")
     .attr("class","labels")
     .attr("height","20")
-    .attr("width",function(d,i){return d.label.length*9;}) //changes with length of the label.
+    .attr("width",function(d,i){return d.label.length*9;})
     .attr("x",function(d,i){return d.xPos-d.label.length*9/2;})
     .attr("y",function(d,i){return d.yPos + 15;})
     .attr("stroke", function(d,i){return d.colour;})
     .attr("stroke-width", "2")
     .attr("fill", "#f2f0f0");
+
 zoomGroup.append("text").selectAll("text.nodeLabels").data(sNodeLabels).enter().append("tspan").text(d => d)
     .attr("class","nodeLabels")
     .attr("x",function(d,i){return sNodes[i].xPos;})
@@ -338,13 +275,13 @@ zoomGroup.append("text").selectAll("text.selectedLabels").data([selectedNode[0].
     .attr("fill","black")
     .attr("font-family","Arial");
 
-    //  SURFACE EDGES
+    //SURFACE EDGES
 sNodes.forEach(element => {
         for(var i=0; i<element.outgoing.length ;i++){
             var abDiffX = Math.abs(element.xPos - selectedNode[0].xPos);
             var scaleX = abDiffX/20;
             if(element.xPos >= selectedNode[0].xPos ){
-                if(abDiffX > 40){ //node is not directly underneath selected node
+                if(abDiffX > 40){
                     var fromToS = [{x:element.xPos,y:element.yPos - 15},{x:selectedNode[0].xPos + abDiffX/scaleX,y:selectedNode[0].yPos + 25}];
                 }
                 else{
@@ -352,7 +289,7 @@ sNodes.forEach(element => {
                 }
             }
             else{
-                if(abDiffX > 40){ //node is not directly underneath selected node
+                if(abDiffX > 40){
                     var fromToS = [{x:element.xPos,y:element.yPos - 15},{x:selectedNode[0].xPos - abDiffX/scaleX,y:selectedNode[0].yPos + 25}];
                 }
                 else{
@@ -361,7 +298,7 @@ sNodes.forEach(element => {
             }
         
             drawLine(element.colour,fromToS, element.index);
- // LABEL
+    // SURFACE LABELS
     var labelX = (fromToS[0].x+fromToS[1].x)/2 + 10;
     var labelY = (fromToS[0].y+fromToS[1].y)/2 + 10;
     zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
@@ -382,7 +319,7 @@ sNodes.forEach(element => {
             var abDiffX = Math.abs(element.xPos - selectedNode[0].xPos);
             var scaleX = abDiffX/20;
             if(element.xPos >= selectedNode[0].xPos ){
-                if(abDiffX > 40){ //node is not directly underneath selected node
+                if(abDiffX > 40){ 
                     var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos +abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
                 }
                 else{
@@ -390,7 +327,7 @@ sNodes.forEach(element => {
                 }
             }
             else{
-                if(abDiffX > 40){ //node is not directly underneath selected node
+                if(abDiffX > 40){
                     var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos -abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
                 }
                 else{
@@ -398,7 +335,7 @@ sNodes.forEach(element => {
                 }
             }
             drawLine(element.colour,fromToS, element.index);
- // LABEL
+    // ABTRACT LABELS
     var labelX = (fromToS[0].x+fromToS[1].x)/2 + 10;
     var labelY = (fromToS[0].y+fromToS[1].y)/2 + 10;
     zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
@@ -422,7 +359,7 @@ sNodes.forEach(element => {
                 var abDiffX = Math.abs(element.xPos - snode.xPos);
                 var scaleX = abDiffX/40;
                 if(element.xPos >= snode.xPos ){
-                    if(abDiffX > 40){ //node is not directly underneath selected node
+                    if(abDiffX > 40){
                         var fromToS = [{x:element.xPos -3,y:element.yPos +25},{x:snode.xPos ,y:snode.yPos -18}];
                     }
                     else{
@@ -430,7 +367,7 @@ sNodes.forEach(element => {
                     }
                 }
                 else{
-                    if(abDiffX > 40){ //node is not directly underneath selected node
+                    if(abDiffX > 40){
                         var fromToS = [{x:element.xPos +3,y:element.yPos + 25},{x:snode.xPos ,y:snode.yPos -18}];
                     }
                     else{
@@ -443,7 +380,7 @@ sNodes.forEach(element => {
                 var abDiffX = Math.abs(element.xPos - anode.xPos);
                 var scaleX = abDiffX/40;
                 if(element.xPos >= anode.xPos ){
-                    if(abDiffX > 40){ //node is not directly underneath selected node
+                    if(abDiffX > 40){
                         var fromToS = [{x:element.xPos - 3,y:element.yPos -32},{x:anode.xPos ,y:anode.yPos +18}];
                     }
                     else{
@@ -451,7 +388,7 @@ sNodes.forEach(element => {
                     }
                 }
                 else{
-                    if(abDiffX > 40){ //node is not directly underneath selected node
+                    if(abDiffX > 40){
                         var fromToS = [{x:element.xPos +3,y:element.yPos - 32},{x:anode.xPos ,y:anode.yPos +18}];
                     }
                     else{
@@ -461,7 +398,7 @@ sNodes.forEach(element => {
             }
         
             drawLine(element.colour,fromToS, element.index);
-        // LABEL
+        // SELECTED LABELS
             var labelX = (fromToS[0].x+fromToS[1].x)/2 + 10;
             var labelY = (fromToS[0].y+fromToS[1].y)/2 + 10;
             zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
@@ -475,9 +412,4 @@ sNodes.forEach(element => {
                 .attr("fill", "black");
         }
 });
-
 }
-
-
-
-
