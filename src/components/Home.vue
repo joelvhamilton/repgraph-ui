@@ -2,28 +2,35 @@
   <div>
     <nav-bar/>
     <sub-menu-card/>
-    <modal name="nodeLabelSearchModal" :height="auto" :scrollable="true">
+    <u @click="toggleHelp()" style="position: absolute; right:80px;"> How does this work? </u>
+    <modal name="nodeLabelSearchModal" :height="auto" :scrollable="true" :width="1000">
       <node-search-results-modal :nodeLabels="getNodesSearchedFor" :results="getNodeSearchResults"></node-search-results-modal>
     </modal>
-    <modal name="subgraphSearchModal" :height="auto" :scrollable="true">
+    <modal name="subgraphSearchModal" :height="auto" :scrollable="true" :width="1000">
       <subgraph-modal :results="getSubgraphResults"/>
     </modal>
-    <modal name="individualGraph" :height="auto" :scrollable="true">
+    <modal name="tokenSearchResultsModal" :height="auto" :scrollable="true">
+      <token-modal :results="getGraphsMatchingWords" id="tokenModal"></token-modal>
+    </modal>
+    <modal name="individualGraph" :height="auto" :scrollable="true" :width="1200">
       <graph-modal :graph="graphToDisplayIndividually" id="individualDisplayModal"></graph-modal>
     </modal>
-    <modal name="propertiesModal" :height="auto" :scrollable="true">
-      <properties-modal/>
+    <modal name="propertiesModal" :height="auto" :scrollable="true" :width="1000">
+      <properties-modal id="propModal" :properties="propertiesToDisplay" :elementId="propModal"></properties-modal>
     </modal>
-    <modal name="subsetModal" :height="auto" :scrollable="true">
-      <subset-modal id="subsetModalId" :subset="getSubset" :elementId="subsetModalId"/>
-    </modal>
-    <modal name="comparisonModal" :height="auto" :scrollable="true">
+    <modal name="comparisonModal" :height="auto" :scrollable="true" :width="1200">
       <comparison-modal id="comparison" :graphComparisonResults="getComparisonResults" :elementId="comparison"/>
+    </modal>
+    <modal name="subsetModal" :height="auto" :scrollable="true" :width="1000">
+      <subset-modal id="subsetModalId" :subset="getSubset" :elementId="subsetModalId"/>
     </modal>
     <paging-bar/>
     <div class="col align-content-center">
-      <graph-visual v-for="(v,i) in data" :key="i" :graph="v" :elementId="body"></graph-visual>
+      <graph-visual v-for="(v,i) in graphs" :key="i" :graph="v" :elementId="body"></graph-visual>
     </div>
+    <modal name="helpModal" :height="auto" :scrollable="true" :width="1400">
+      <img src="../assets/user_manual.png">
+    </modal>
   </div>
 </template>
 
@@ -36,14 +43,22 @@ export default {
   name: 'Home',
   data () {
     return {
-      data: [],
+      graphs: [],
       key: 0,
       tempArray: [{num:1}, {num:2}, {num:3}, {num:4}],
       graphToDisplayIndividually: null,
       body: "body",
       subsetModalId: "subsetModalId",
       comparison: "comparison",
-      auto: "auto"
+      auto: "auto",
+      propModal: "propModal",
+      propertiesToDisplay: {},
+      helpButtonClicked: false
+    }
+  },
+  methods: {
+    toggleHelp(){
+      this.$modal.show('helpModal');
     }
   },
   computed: {
@@ -56,19 +71,25 @@ export default {
       getNodesSearchedFor: 'getNodeLabelsToSearchFor',
       getSubset: 'getSubsetToDisplay',
       getSubgraphResults: 'getSubgraphSearchResults',
-      getComparisonResults: 'getResultsOfGraphComparison'
+      getComparisonResults: 'getResultsOfGraphComparison',
+      getProperties: 'getCurrentGraphProperties',
+      getGraphsMatchingWords:'getGraphsToDisplayIndividually'
     })
   },
   watch: {
     getGraphsToDisplay (val) {
-      this.data = val
+      this.graphs = val
       this.key += 1
   },
+    getGraphsMatchingWords(val){
+      this.$modal.show('tokenSearchResultsModal')
+    },
     getIndividualGraphToDisplay(val){
       this.graphToDisplayIndividually = val;
       this.$modal.show('individualGraph');
     },
-    getCurrentGraphProperties(val){
+    getProperties(val){
+      this.propertiesToDisplay = val;
       this.$modal.show('propertiesModal');
     },
     getNodeSearchResults(val){
@@ -96,6 +117,7 @@ export default {
     'subset-modal': () => import("./modals/GraphSubsetModal"),
     'subgraph-modal': () => import("./modals/SubgraphSearchResultsModal"),
     'comparison-modal': () => import("./modals/GraphComparisonModal"),
+    'token-modal': () => import("./modals/GraphsByWordsModal"),
     [Upload.name]: Upload,
     [Button.name]: Button
   },

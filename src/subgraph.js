@@ -1,169 +1,8 @@
-
-
-// TEST DATA
-// var data = {"20003019": {
-//     "edges": [
-//         {
-//             "src": 9,
-//             "trg": 10,
-//             "label": "ARG1/H"
-//         },
-//         {
-//             "src": 19,
-//             "trg": 10,
-//             "label": "ARG1/EQ"
-//         },
-//         {
-//             "src": 37,
-//             "trg": 10,
-//             "label": "MOD/EQ"
-//         },
-//         {
-//             "src": 10,
-//             "trg": 8,
-//             "label": "ARG1/NEQ"
-//         },
-//         {
-//             "src": 10,
-//             "trg": 12,
-//             "label": "ARG2/NEQ"
-//         }
-//     ],
-//     "a_nodes": {
-//         "37": {
-//             "label": "appos",
-//             "anchors": [
-//                 22,
-//                 23,
-//                 24,
-//                 25,
-//                 26,
-//                 27,
-//                 28,
-//                 29,
-//                 30,
-//                 31,
-//                 32,
-//                 33,
-//                 34
-//             ]
-//         },
-//         "8": {
-//             "label": "named_n",
-//             "anchors": [
-//                 10
-//             ]
-//         }
-//     },
-//     "s_nodes": {
-//         "10": {
-//             "label": "_regulate_v_1",
-//             "anchors": [
-//                 12
-//             ]
-//         },
-//         "9": {
-//             "label": "_should_v_modal",
-//             "anchors": [
-//                 11
-//             ]
-//         },
-//         "19": {
-//             "label": "_stringently_u_unknown",
-//             "anchors": [
-//                 20
-//             ]
-//         },
-//         "12": {
-//             "label": "_class_n_of",
-//             "anchors": [
-//                 14
-//             ]
-//         }
-//     },
-//     "tokens": {
-//         "32": {
-//             "form": "and",
-//             "lemma": "and"
-//         },
-//         "33": {
-//             "form": "other",
-//             "lemma": "other"
-//         },
-//         "34": {
-//             "form": "buildings,",
-//             "lemma": "building"
-//         },
-//         "10": {
-//             "form": "u.s.",
-//             "lemma": "US",
-//             "carg": "US"
-//         },
-//         "11": {
-//             "form": "should",
-//             "lemma": "should"
-//         },
-//         "14": {
-//             "form": "class",
-//             "lemma": "class"
-//         },
-//         "20": {
-//             "form": "stringently",
-//             "lemma": "stringently"
-//         },
-//         "22": {
-//             "form": "the",
-//             "lemma": "the"
-//         },
-//         "23": {
-//             "form": "common",
-//             "lemma": "common"
-//         },
-//         "24": {
-//             "form": "kind",
-//             "lemma": "kind"
-//         },
-//         "25": {
-//             "form": "of",
-//             "lemma": "of"
-//         },
-//         "26": {
-//             "form": "asbestos,",
-//             "lemma": "asbestos"
-//         },
-//         "27": {
-//             "form": "chrysotile,",
-//             "lemma": "chrysotile"
-//         },
-//         "28": {
-//             "form": "found",
-//             "lemma": "find"
-//         },
-//         "29": {
-//             "form": "in",
-//             "lemma": "in"
-//         },
-//         "30": {
-//             "form": "most",
-//             "lemma": "most"
-//         },
-//         "31": {
-//             "form": "schools",
-//             "lemma": "school"
-//         }
-//     },
-//     "tops": "10"
-// }
-// }
-
-// makeSubgraph(data,"body");
-
- export const makeSubgraph = function (data, elementId){
-// function makeSubgraph(data,elementId){
-        //remove above
-
+export const makeSubgraph = function (data, elementId){
+var id;
 for(var boog in data){
     var data = data[boog];
+    id = boog;
 }
 
 var sNodes =[];
@@ -176,6 +15,7 @@ var dataEdges = Object.entries(data.edges);
 var tops = parseInt(data.tops,10);
 var selectedNodeIsAbstract;
 
+//READING IN NODE DATA;
 a_nodes.forEach(element => {
     if(element[0] == tops){
         selectedNodeIsAbstract =true;
@@ -204,11 +44,12 @@ var aNodeIndexes = aNodes.map(x => x.index);
 var sNodeLabels = sNodes.map(x => x.label);
 var aNodeLabels = aNodes.map(x => x.label);
 
+//READING IN EDGES OF EACH NODE:
 dataEdges.forEach(element => {
     if(sNodeIndexes.includes(element[1].src.toString())){
         sNodes[sNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
         sNodes[sNodeIndexes.indexOf(element[1].src.toString())].outgoing.push(element[1].trg);
-            }
+    }
     else if (aNodeIndexes.includes(element[1].src.toString())){
         aNodes[aNodeIndexes.indexOf(element[1].src.toString())].edgelabels.push(element[1].label);
         aNodes[aNodeIndexes.indexOf(element[1].src.toString())].outgoing.push(element[1].trg);
@@ -219,10 +60,9 @@ dataEdges.forEach(element => {
     }
 });
 
+//DETERMINING COOURS FOR EACH NODE:
 var abstractColourScale = d3.scaleLinear().domain([0,Math.max(...aNodeIndexes)]).range(["yellow", "red"]);
 var surfaceColourScale =  d3.scaleSequential().domain([0,Math.max(...sNodeIndexes)]).interpolator(d3.interpolateCool);
-
-// determining the colour of each node.
 for(var i=0; i<sNodeIndexes.length; i++){
     sNodes[i].colour = surfaceColourScale(sNodeIndexes[i]);
 }
@@ -230,6 +70,7 @@ for(var i=0; i<aNodeIndexes.length; i++){
     aNodes[i].colour = abstractColourScale(aNodeIndexes[i]);
 }
 
+//DIMENSIONAL VARIABLES:
 var width = Math.max(Math.max(aNodes.length, sNodes.length)*100,700);
 var height = 500;
 var abstractLayer = height/2;
@@ -237,9 +78,8 @@ var aNodeHeight = height -430;
 var sNodeHeight = height -70;
 var aNodeInterval = width/aNodes.length;
 var sNodeInterval = width/sNodes.length;
-var allNodes = sNodes.concat(aNodes.concat(selectedNode));
 
-
+//DETERMINING POSITIONS OF EACH NODE:
 var ai =0;
 aNodes.forEach(element => {
     element.yPos = aNodeHeight;
@@ -266,19 +106,24 @@ selectedNode.forEach(element => {
 if (elementId !== "body"){
     elementId = `#${elementId}`;
 }
+var allNodes = sNodes.concat(aNodes.concat(selectedNode));
+
 //SVG definitions.
 var svg = d3.select(elementId).append("svg").attr("id", "viewSvg").attr("class", "d3-subgraph")
 .attr("height", "500px").attr("width", "700px")
 .attr("viewBox","0,0,700,500")
+
 var group = svg.append("g").attr("id", "group");
+
 var zoomGroup = group.append("g");
+
 group.call(d3.zoom()
     .scaleExtent([0.5, 10])    
     .on("zoom",function(){
     zoomGroup.attr("transform", d3.event.transform);
 }));
 
-// ARROW DEFINITIONS
+// ARROW HEAD DEFINITIONS
 const arrowPoints = [[0, 0], [0, 6], [6, 3]];
 zoomGroup.append("defs").selectAll("marker.s").data(allNodes).enter().append("marker")
         .attr("class","s")
@@ -292,33 +137,18 @@ zoomGroup.append("defs").selectAll("marker.s").data(allNodes).enter().append("ma
     .append('path')
         .attr('d', d3.line()(arrowPoints))
         .attr("fill", function(d,i){return d.colour;});
-        
-// zoomGroup.select("defs").selectAll("marker.a").data(aNodes).enter().append("marker")
-//         .attr("class","a")
-//         .attr('id', function(d,i){return "arrow-"+d.index;})
-//         .attr('viewBox', [0, 0, 7, 7])
-//         .attr('refX', 3.5)
-//         .attr('refY', 3.5)
-//         .attr('markerWidth', 6)
-//         .attr('markerHeight', 6)
-//         .attr('orient', 'auto')
-//     .append('path')
-//         .attr('d', d3.line()(arrowPoints))
-//         .attr("fill", function(d,i){return d.colour;});
-
-
 
 function drawLine(colour, data, index){
-    var line = d3.line()
-    .x(function(d){return d.x;})
-    .y(function(d){return d.y;})
-    .curve(d3.curveBundle);
-zoomGroup.append("path")
-    .attr("d",line(data))
-    .attr("stroke", colour)
-    .attr("stroke-width","2")
-    .attr("marker-end", "url(#arrow-"+index+")")
-    .attr("fill", "none");
+        var line = d3.line()
+        .x(function(d){return d.x;})
+        .y(function(d){return d.y;})
+        .curve(d3.curveBundle);
+    zoomGroup.append("path")
+        .attr("d",line(data))
+        .attr("stroke", colour)
+        .attr("stroke-width","2")
+        .attr("marker-end", "url(#arrow-"+index+")")
+        .attr("fill", "none");
 };
 
 //BACKGROUND RECTANGLE
@@ -359,18 +189,19 @@ zoomGroup.selectAll("circle.nodes").data(sNodes).enter().append("circle")
     .attr("r","12")
     .attr("fill", function(d,i){return d.colour;})
 
-    //LABELLING NODES.
+//LABELLING NODES.
 zoomGroup.selectAll("rect.labels")
     .data(sNodes)
     .enter().append("rect")
     .attr("class","labels")
     .attr("height","20")
-    .attr("width","70") //changes with length of the label.
-    .attr("x",function(d,i){return d.xPos-35;})
+    .attr("width",function(d,i){return d.label.length*9;})
+    .attr("x",function(d,i){return d.xPos-d.label.length*9/2;})
     .attr("y",function(d,i){return d.yPos + 15;})
     .attr("stroke", function(d,i){return d.colour;})
     .attr("stroke-width", "2")
     .attr("fill", "#f2f0f0");
+
 zoomGroup.append("text").selectAll("text.nodeLabels").data(sNodeLabels).enter().append("tspan").text(d => d)
     .attr("class","nodeLabels")
     .attr("x",function(d,i){return sNodes[i].xPos;})
@@ -404,8 +235,8 @@ zoomGroup.selectAll("rect.alabels")
     .enter().append("rect")
     .attr("class","alabels")
     .attr("height","20")
-    .attr("width","60")
-    .attr("x",function(d,i){ return d.xPos-30;})
+    .attr("width",function(d,i){return d.label.length*9;})
+    .attr("x",function(d,i){ return d.xPos-d.label.length*9/2;})
     .attr("y",function(d,i){return d.yPos - 45;})
     .attr("stroke", function(d,i){return d.colour;})
     .attr("stroke-width", "2")
@@ -427,15 +258,15 @@ zoomGroup.selectAll("rect.selectedlabels")
     .enter().append("rect")
     .attr("class","selectedlabels")
     .attr("height","20")
-    .attr("width","60")
-    .attr("x",function(d,i){ return d.xPos+30;})
+    .attr("width",function(d,i){return d.label.length*9;})
+    .attr("x",function(d,i){ return d.xPos + 50 - d.label.length*9/2 + d.label.length*4;})
     .attr("y",function(d,i){return d.yPos - 10;})
     .attr("stroke", function(d,i){return d.colour;})
     .attr("stroke-width", "2")
     .attr("fill", "#f2f0f0");
 zoomGroup.append("text").selectAll("text.selectedLabels").data([selectedNode[0].label]).enter().append("tspan").text(d => d)
     .attr("class","selectedLabels")
-    .attr("x",function(d,i){return selectedNode[i].xPos + 60;})
+    .attr("x",function(d,i){return selectedNode[i].xPos + 50 + d.length*4;})
     .attr("y",function(d,i){return selectedNode[i].yPos + 2;})
     .attr("font-size","12px")
     .attr("text-anchor","middle")
@@ -444,13 +275,13 @@ zoomGroup.append("text").selectAll("text.selectedLabels").data([selectedNode[0].
     .attr("fill","black")
     .attr("font-family","Arial");
 
-    //  SURFACE EDGES
+    //SURFACE EDGES
 sNodes.forEach(element => {
         for(var i=0; i<element.outgoing.length ;i++){
             var abDiffX = Math.abs(element.xPos - selectedNode[0].xPos);
-            var scaleX = abDiffX/40;
+            var scaleX = abDiffX/20;
             if(element.xPos >= selectedNode[0].xPos ){
-                if(abDiffX > 40){ //node is not directly underneath selected node
+                if(abDiffX > 40){
                     var fromToS = [{x:element.xPos,y:element.yPos - 15},{x:selectedNode[0].xPos + abDiffX/scaleX,y:selectedNode[0].yPos + 25}];
                 }
                 else{
@@ -458,7 +289,7 @@ sNodes.forEach(element => {
                 }
             }
             else{
-                if(abDiffX > 40){ //node is not directly underneath selected node
+                if(abDiffX > 40){
                     var fromToS = [{x:element.xPos,y:element.yPos - 15},{x:selectedNode[0].xPos - abDiffX/scaleX,y:selectedNode[0].yPos + 25}];
                 }
                 else{
@@ -467,7 +298,7 @@ sNodes.forEach(element => {
             }
         
             drawLine(element.colour,fromToS, element.index);
- // LABEL
+    // SURFACE LABELS
     var labelX = (fromToS[0].x+fromToS[1].x)/2 + 10;
     var labelY = (fromToS[0].y+fromToS[1].y)/2 + 10;
     zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
@@ -486,26 +317,25 @@ sNodes.forEach(element => {
     aNodes.forEach(element => {
         for(var i=0; i<element.outgoing.length ;i++){
             var abDiffX = Math.abs(element.xPos - selectedNode[0].xPos);
-            var scaleX = abDiffX/40;
+            var scaleX = abDiffX/20;
             if(element.xPos >= selectedNode[0].xPos ){
-                if(abDiffX > 40){ //node is not directly underneath selected node
+                if(abDiffX > 40){ 
                     var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos +abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
                 }
                 else{
-                    var fromToS = [{x:element.xPos,y:element.yPos +15},{x:selectedNode[0].xPos +abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
+                    var fromToS = [{x:element.xPos,y:element.yPos +15},{x:selectedNode[0].xPos,y:selectedNode[0].yPos - 32}];
                 }
             }
             else{
-                if(abDiffX > 40){ //node is not directly underneath selected node
+                if(abDiffX > 40){
                     var fromToS = [{x:element.xPos,y:element.yPos + 15},{x:selectedNode[0].xPos -abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
                 }
                 else{
-                    var fromToS = [{x:element.xPos,y:element.yPos +15 },{x:selectedNode[0].xPos -abDiffX/scaleX,y:selectedNode[0].yPos - 32}];
+                    var fromToS = [{x:element.xPos,y:element.yPos +15 },{x:selectedNode[0].xPos,y:selectedNode[0].yPos - 32}];
                 }
             }
-        
             drawLine(element.colour,fromToS, element.index);
- // LABEL
+    // ABTRACT LABELS
     var labelX = (fromToS[0].x+fromToS[1].x)/2 + 10;
     var labelY = (fromToS[0].y+fromToS[1].y)/2 + 10;
     zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
@@ -529,7 +359,7 @@ sNodes.forEach(element => {
                 var abDiffX = Math.abs(element.xPos - snode.xPos);
                 var scaleX = abDiffX/40;
                 if(element.xPos >= snode.xPos ){
-                    if(abDiffX > 40){ //node is not directly underneath selected node
+                    if(abDiffX > 40){
                         var fromToS = [{x:element.xPos -3,y:element.yPos +25},{x:snode.xPos ,y:snode.yPos -18}];
                     }
                     else{
@@ -537,7 +367,7 @@ sNodes.forEach(element => {
                     }
                 }
                 else{
-                    if(abDiffX > 40){ //node is not directly underneath selected node
+                    if(abDiffX > 40){
                         var fromToS = [{x:element.xPos +3,y:element.yPos + 25},{x:snode.xPos ,y:snode.yPos -18}];
                     }
                     else{
@@ -550,7 +380,7 @@ sNodes.forEach(element => {
                 var abDiffX = Math.abs(element.xPos - anode.xPos);
                 var scaleX = abDiffX/40;
                 if(element.xPos >= anode.xPos ){
-                    if(abDiffX > 40){ //node is not directly underneath selected node
+                    if(abDiffX > 40){
                         var fromToS = [{x:element.xPos - 3,y:element.yPos -32},{x:anode.xPos ,y:anode.yPos +18}];
                     }
                     else{
@@ -558,7 +388,7 @@ sNodes.forEach(element => {
                     }
                 }
                 else{
-                    if(abDiffX > 40){ //node is not directly underneath selected node
+                    if(abDiffX > 40){
                         var fromToS = [{x:element.xPos +3,y:element.yPos - 32},{x:anode.xPos ,y:anode.yPos +18}];
                     }
                     else{
@@ -568,7 +398,7 @@ sNodes.forEach(element => {
             }
         
             drawLine(element.colour,fromToS, element.index);
-        // LABEL
+        // SELECTED LABELS
             var labelX = (fromToS[0].x+fromToS[1].x)/2 + 10;
             var labelY = (fromToS[0].y+fromToS[1].y)/2 + 10;
             zoomGroup.selectAll("text.aLabels").data([element]).enter().append("text")
@@ -582,9 +412,4 @@ sNodes.forEach(element => {
                 .attr("fill", "black");
         }
 });
-
 }
-
-
-
-

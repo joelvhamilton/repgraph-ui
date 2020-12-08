@@ -1,6 +1,5 @@
 <template>
     <div>
-        <p style="text-align:center;"> Graph: {{graph.id}} </p>
     </div>
 </template>
 <!-- all d3 logic will be here -->
@@ -26,12 +25,13 @@
                 makeGraph(this.graph, this.displayTokens, this.elementId);
             },
             elementId (val){
-                this.idOfElementToAppendTo = val;
                 makeGraph(this.graph, this.displayTokens, this.elementId);
             }
         },
         mounted () {
-            makeGraph(this.graph, this.displayTokens, this.elementId);
+            if(this.graph !== null && this.graph !== undefined && this.graph.status !== "Failed"){
+                makeGraph(this.graph, this.displayTokens, this.elementId);
+            }
         },
         computed: {
             ...mapGetters({
@@ -49,5 +49,6 @@
     border: 3px solid lightgray;
     border-radius: 4px;
     margin-top: 12px;
+    margin-bottom: 12px;
 }
 </style>
