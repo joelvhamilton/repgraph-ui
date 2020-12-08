@@ -1,7 +1,5 @@
 # Repgraph-ui
 
-Foobar is a Python library for dealing with word pluralization.
-
 ## Installation
 
 ### 1.) Make sure you have the following versions of the following languages/frameworks installed:
