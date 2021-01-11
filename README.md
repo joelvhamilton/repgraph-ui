@@ -25,7 +25,7 @@ npm install
 npm run serve 
 ```
 [this will serve the website at localhost:8080]
-### 5.) Ensure that the API server is also running (according to instructions found in the readme for the API).
+### 5.) Ensure that the API server is also running (according to instructions found in the readme for the API). (https://github.com/gregfurman/repgraph-api)
 
 ## Usage
 ### 6.) Open up a browser (e.g. Google Chrome), and enjoy!
